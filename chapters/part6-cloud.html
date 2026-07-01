@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Part 6 — Cloud Security (AWS, Azure, GCP)</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="breadcrumb">
+<a href="../index.html">🏠 Home</a> &rsaquo; <strong>Part 6 — Cloud Security</strong>
+</nav>
+
+<header class="part-header">
+<h1>☁️ PART 6 — CLOUD SECURITY (AWS, Azure, GCP)</h1>
+<p class="subtitle">Cloud configuration audits, IAM, storage, network, compute, serverless, container services.</p>
+<div class="chapters">
+<a href="#ch34"><span class="ch-num">34</span> Cloud Security Foundations</a>
+<a href="#ch35"><span class="ch-num">35</span> AWS Cloud VAPT</a>
+<a href="#ch36"><span class="ch-num">36</span> Azure Cloud VAPT</a>
+<a href="#ch37"><span class="ch-num">37</span> GCP Cloud VAPT</a>
+<a href="#ch38"><span class="ch-num">38</span> Cloud Pentest Real-Life Scenarios</a>
+</div>
+</header>
+
+<main>
+
+<!-- =================== CH 34 =================== -->
+<h1 id="ch34">🛫 Chapter 34 — Cloud Security Foundations</h1>
+
+<h2>34.1 The Cloud Shared Responsibility Model</h2>
+<div class="diagram">
+SHARED RESPONSIBILITY MODEL
+═══════════════════════════
+                                  Provider              You
+                                  Secures                Secure
+─────────────────────────────────────────────────────────────
+Physical data center              ▓▓▓▓
+Host OS / Hypervisor              ▓▓▓▓
+Network infrastructure             ▓▓▓▓
+Storage device encryption         ▓▓▓▓
+─────────────────────────────────────────────────────────────
+OS patching / config                              ▓▓▓▓
+Application security                              ▓▓▓▓
+Network firewall (SG)                             ▓▓▓▓
+Identity &amp; Access Mgmt (IAM)                     ▓▓▓▓
+Data encryption (your keys)                       ▓▓▓▓
+─────────────────────────────────────────────────────────────
+</div>
+
+<h2>34.2 Cloud Configuration Audit vs True Pentest</h2>
+<ul>
+  <li><strong>Configuration Audit</strong> — Static review of cloud resources (most pentests today)</li>
+  <li><strong>Active Pentest</strong> — Deploy attacker resources inside same account &amp; try to pivot</li>
+  <li><strong>External Pentest</strong> — From internet, attack exposed endpoints</li>
+</ul>
+
+<h2>34.3 Top Cloud CVE Classes</h2>
+<table>
+<tr><th>Class</th><th>Examples</th></tr>
+<tr><td>Misconfigured storage</td><td>Public S3/Azure Blob/GCS, lax bucket policies</td></tr>
+<tr><td>IAM privilege escalation</td><td>AssumeRole chains, instance profile abuse</td></tr>
+<tr><td>Exposed services</td><td>SSH on EC2 with 0.0.0.0/0, RDS publicly accessible</td></tr>
+<tr><td>Secrets in code</td><td>git-blame-quality secrets, GitHub repo leaks</td></tr>
+<tr><td>Serverless misconfigs</td><td>Lambda with admin role, public Function URL</td></tr>
+<tr><td>Network exposure</td><td>VPC peering without segmentation</td></tr>
+<tr><td>SSRF → metadata service</td><td>Capital One breach (165M users)</td></tr>
+<tr><td>Earned access via dev</td><td>CloudFormation misconfig with secrets in plain</td></tr>
+</table>
+
+<h2>34.4 Tools You'll Use Daily</h2>
+<table>
+<tr><th>Tool</th><th>Cover Clouds</th><th>Free?</th></tr>
+<tr><td>ScoutSuite</td><td>AWS/Azure/GCP</td><td>✓</td></tr>
+<tr><td>Prowler</td><td>AWS/Azure/GCP</td><td>✓</td></tr>
+<tr><td>Steampipe</td><td>Multi (incl. M365)</td><td>✓</td></tr>
+<tr><td>CloudSploit</td><td>AWS/Azure/GCP</td><td>✓</td></tr>
+<tr><td>CloudMapper</td><td>AWS</td><td>✓</td></tr>
+<tr><td>Nuclei cloud templates</td><td>Multi</td><td>✓</td></tr>
+<tr><td>Pacu</td><td>AWS exploitation</td><td>✓</td></tr>
+<tr><td>iam-vulnerable</td><td>AWS lab w/ intentional issues</td><td>✓</td></tr>
+</table>
+
+
+<!-- =================== CH 35 =================== -->
+<h1 id="ch35">🟧 Chapter 35 — AWS Cloud VAPT</h1>
+
+<h2>35.1 AWS Recon from Outside</h2>
+<pre><code class="cmd"># AWS account ID enumeration (no creds)
+$ python3 cloud_enum.py -k target
+# Find S3 buckets with predictable name
+
+# S3 bucket enumeration
+$ python3 S3Scanner.py --bucket target-company-data
+$ curl http://target-company-data.s3.amazonaws.com  # if no auth → leaks!
+
+# Public S3 detection — search via Greyhat Warfare
+https://buckets.grayhatwarfare.com
+
+# Test bucket policy from your account
+$ aws s3 ls s3://target-company-data --no-sign-request
+$ aws s3api get-bucket-policy --bucket target-company-data
+$ aws s3api get-bucket-acl --bucket target-company-data
+</code></pre>
+
+<h2>35.2 AWS Pentest as Authorized User</h2>
+<pre><code class="cmd"># Identity &amp; access reconnaissance
+$ aws sts get-caller-identity
+$ aws iam get-user
+$ aws iam list-attached-user-policies --user-name &lt;me&gt;
+$ aws iam list-groups-for-user --user-name &lt;me&gt;
+
+# Whoami — enumeration
+$ aws sts get-caller-identity --output json | jq -r '.Arn'
+$ python3 enumerate-iam.py      # https://github.com/andresriancho/enumerate-iam
+
+# Top EC2 metadata exposure check
+$ curl http://169.254.169.254/latest/meta-data/
+$ curl http://169.254.169.254/latest/meta-data/iam/security-credentials/
+$ curl http://169.254.169.254/latest/user-data
+# IMDSv2 mitigates this
+</code></pre>
+
+<h2>35.3 AWS Privilege Escalation Paths (Most Common)</h2>
+<table>
+<tr><th>Permission</th><th>Escalation Path</th></tr>
+<tr><td>iam:UpdateAssumeRolePolicy</td><td>Trust your role → assume parent role</td></tr>
+<tr><td>iam:PassRole + ec2:RunInstances</td><td>Launch EC2 with privileged instance profile</td></tr>
+<tr><td>iam:CreateAccessKey</td><td>Create keys for higher-privilege user</td></tr>
+<tr><td>lambda:UpdateFunctionCode</td><td>Inject code into lambda → run as its role</td></tr>
+<tr><td>glue:UpdateDevEndpoint</td><td>SSH into endpoint with security config</td></tr>
+<tr><td>kms:Decrypt broad</td><td>Decrypt any encrypted data</td></tr>
+<tr><td>secretsmanager:GetSecretValue broad</td><td>Read everyone else's secrets</td></tr>
+<tr><td>s3:GetObject broad</td><td>Dump the entire org's S3</td></tr>
+</table>
+
+<pre><code class="cmd"># Find your escalation paths
+$ python3 ./escalate.py --usernames my-user
+</code></pre>
+
+<h2>35.4 Pacu — AWS Exploitation Framework</h2>
+<pre><code class="cmd">$ pip install pacu
+$ pacu
+Pacu &gt; set_keys access_key_id=AKIA... secret_access_key=...
+Pacu &gt; run iam__enum_users_roles_policies_groups
+Pacu &gt; run iam__bruteforce_permissions
+Pacu &gt; run ec2__enum
+Pacu &gt; run s3__enum
+Pacu &gt; run lambda__enum
+Pacu &gt; whoami
+</code></pre>
+
+<h2>35.5 Real AWS Pentest Workflow</h2>
+<div class="methodology">
+<h4>10-step AWS Pentest Playbook</h4>
+<ol>
+<li>Get scoped AWS accounts (read-only IAM user required)</li>
+<li>Enumerate identity — whoami, list-account, organizations</li>
+<li>Enumerate users, roles, policies with ScoutSuite + enumerate-iam</li>
+<li>Map attack paths — iam::privesc paths</li>
+<li>Enumerate S3 — public buckets, sensitive data</li>
+<li>Enumerate IAM users + access keys</li>
+<li>Enumerate EC2 + check public IPs, IMDSv1/v2, user-data, security groups</li>
+<li>Enumerate RDS — public accessibility, encryption</li>
+<li>Enumerate Lambda + Step Functions — secrets, env vars</li>
+<li>Try to escalate; document every step with screenshots</li>
+</ol>
+</div>
+
+<h2>35.6 AWS Real-Life Scenario: Capital One Breach</h2>
+<div class="scenario">
+<h3>📍 Scenario Recap: Capital One, 2019 — $190M Penalty</h3>
+<p><strong>Root cause:</strong> SSRF in a misconfigured WAF EC2 instance → reached
+metadata service → WAF's overly-permissive role enabled cross-account S3 read → 106M
+customer records.</p>
+<p><strong>Pentest-stops-this checklist:</strong></p>
+<ul>
+<li>Deny 0.0.0.0/0 ingress + restrict IMDSv1</li>
+<li>Role policies with least privilege</li>
+<li>S3 account-level Block Public Access enabled</li>
+<li>Continuous configuration scanning</li>
+<li>Bug bounty program</li>
+</ul>
+</div>
+
+
+<!-- =================== CH 36 =================== -->
+<h1 id="ch36">🟦 Chapter 36 — Azure Cloud VAPT</h1>
+
+<h2>36.1 Azure Threat Landscape</h2>
+<ul>
+  <li>Dominant for enterprise Windows shops</li>
+  <li>Active Directory lives in Azure AD / Entra ID — huge target</li>
+  <li>Azure is more "policy-managed" than AWS</li>
+  <li>Common misconfigs: storage accounts open, Key Vault access, exposed App Services</li>
+</ul>
+
+<h2>36.2 Recon from Outside</h2>
+<pre><code class="cmd"># Find tenant
+$ curl https://login.microsoftonline.com/getuserrealm.srf?login=admin@target.onmicrosoft.com
+
+# Subdomain enumeration
+# Azure often exposed: 
+target.azurewebsites.net
+target.azurefd.net
+target.azure-api.net
+target.blob.core.windows.net
+target.azurehdinsight.net
+target.database.windows.net
+target.redis.cache.windows.net
+
+# Test
+$ curl https://target.scm.azurewebsites.net      # Kudu console — if credential leak
+$ curl https://target.azurewebsites.net/.auth/   # /.auth/me → auth info
+
+# Tools
+$ MicroBurst (PowerShell)
+$ AzScout (Python)
+$ azure-cli
+</code></pre>
+
+<h2>36.3 Azure Internal Pentest</h2>
+<pre><code class="cmd"># Check creds we have
+$ az login --service-principal -u $client_id -p $secret --tenant $tenant
+$ az account get-access-token
+
+# Identity
+$ az ad signed-in-user show
+$ az account list
+
+# Enumerate subscription
+$ az resource list --output table
+$ az vm list
+$ az webapp list
+$ az storage account list
+$ az sql server list
+$ az keyvault list
+
+# BloodHound for Azure AD!
+$ bloodhound-python -c All -d target.onmicrosoft.com -u user -p 'Passw0rd!'
+</code></pre>
+
+<h2>36.4 Azure Privilege Escalation</h2>
+<table>
+<tr><th>Permission</th><th>Escalation</th></tr>
+<tr><td>Microsoft.Authorization/roleAssignments/write</td><td>Assign Owner role to yourself</td></tr>
+<tr><td>Microsoft.KeyVault/vaults/accessPolicies/write</td><td>Add yourself to vault access</td></tr>
+<tr><td>Microsoft.Compute/virtualMachines/extensions/write</td><td>Run CustomScriptExtension as root</td></tr>
+<tr><td>Microsoft.Web/sites/config/write</td><td>Modify web app config + get credentials</td></tr>
+<tr><td>Microsoft.Storage/storageAccounts/listKeys/action</td><td>Steal all storage keys</td></tr>
+<tr><td>Microsoft.Sql/servers/securityAlertPolicies/*</td><td>Disable security alerts</td></tr>
+</table>
+
+<h2>36.5 Real-Life Scenario: Microsoft AI Studio Breach (2023)</h2>
+<div class="scenario">
+<h3>📍 Scenario — Wiz Research found a 38TB Azure AI Studio exposure</h3>
+<p>A shared endpoint in Azure AI Studio gave open access to Microsoft internal
+training data — including sensitive customer information. The misconfiguration was
+accidentally exposed by a Microsoft engineer. Wiz discovered it through external
+recon of <code>*.blob.core.windows.net</code> buckets.</p>
+<p><strong>Lesson:</strong> Even cloud giants are vulnerable. Always configure
+"deny by default" + audit data exposure.</p>
+</div>
+
+
+<!-- =================== CH 37 =================== -->
+<h1 id="ch37">🟩 Chapter 37 — GCP Cloud VAPT</h1>
+
+<h2>37.1 Why GCP Is Different</h2>
+<ul>
+  <li>Strong default security model (deny by default on IAM)</li>
+  <li>Identity-centric — uses IAM for everything</li>
+  <li>Project-based tenancy</li>
+  <li>AI/ML leadership — Vertex AI, BigQuery ML</li>
+</ul>
+
+<h2>37.2 Recon</h2>
+<pre><code class="cmd"># Find projects
+$ curl https://target.com/
+# Response headers: server, x-goog-*, set-cookie for *.googleusercontent.com
+
+# Enumerate buckets — naming convention: *.appspot.com
+$ curl https://storage.googleapis.com/target.appspot.com/
+$ curl https://target.storage.googleapis.com/
+
+# Tools
+$ GCPBucketBrute
+$ goop
+$ nuclei -t cloud/gcp
+</code></pre>
+
+<h2>37.3 Inside GCP (Authorized)</h2>
+<pre><code class="cmd">$ gcloud init
+$ gcloud config list
+$ gcloud projects list
+$ gcloud compute instances list
+$ gcloud iam service-accounts list
+$ gcloud iam roles list
+$ gcloud sql instances list
+$ gcloud functions list
+$ gcloud container clusters list
+
+# Get current identity
+$ gcloud auth list
+
+# Privilege escalation
+$ gcloud deployment-manager deployments list
+# iam.serviceAccountUser + iam.roleAdmin → escalate
+</code></pre>
+
+<h2>37.4 GCP Privilege Escalation</h2>
+<table>
+<tr><th>Permission</th><th>Escalation</th></tr>
+<tr><td>iam.serviceAccountTokenCreator</td><td>Impersonate any SA</td></tr>
+<tr><td>iam.serviceAccountKeys.create</td><td>Create a key for any SA</td></tr>
+<tr><td>deploymentmanager.deployments.create</td><td>Deploy Cloud Function w/ privileged SA</td></tr>
+<tr><td>compute.instances.setServiceAccount</td><td>Replace SA on existing VM</td></tr>
+<tr><td>storage.buckets.setIamPolicy</td><td>Grant yourself storage.objects.list/get</td></tr>
+</table>
+
+
+<!-- =================== CH 38 =================== -->
+<h1 id="ch38">🏁 Chapter 38 — Real-Life Cloud Pentest Scenarios</h1>
+
+<div class="scenario">
+<h3>📍 Master Scenario — "FinCloudX" Multi-Cloud (AWS + Azure)</h3>
+<p>FinCloudX uses AWS for prod + Azure for corporate. They hired us for a joint
+audit. We found:</p>
+<ol>
+  <li><span class="cvss">CVSS 9.6</span> Cross-account trust misconfigured — AWS prod role could be assumed by any Azure user</li>
+  <li><span class="cvss">CVSS 9.1</span> S3 bucket "fincloudx-kyc" public-read (3.4M PII records)</li>
+  <li><span class="cvss">CVSS 8.8</span> Lambda execution role had <code>iam:*</code> privileges</li>
+  <li><span class="cvss">CVSS 8.0</span> Azure tenant had 14 stale Global Admin accounts (ex-employees!)</li>
+  <li><span class="cvss">CVSS 7.0</span> IMDSv1 enabled on all EC2 — SSRF chain to creds possible</li>
+  <li><span class="cvss">CVSS 6.5</span> Storage account "fcxprodblob" allowed anonymous enumeration</li>
+</ol>
+
+<p>Client CTO said: "We passed our SOC2 audit 2 months ago — how?" Answer: SOC2
+audits typically don't check <em>penetration depth</em> — they check documented
+controls. This is why organizations need <strong>technical VAPT</strong> alongside
+compliance.</p>
+</div>
+
+<h2>38.1 Cloud Pentest — Reporting Best Practices</h2>
+<ul>
+  <li>Use exact CLI/API commands in evidence</li>
+  <li>Include screenshots with timestamp + cloud console URL</li>
+  <li>Map findings to CIS Benchmarks + Cloud Custodian Framework</li>
+  <li>Provide Terraform/ARM/GCP YAML remediation snippets</li>
+  <li>Include threats-outside-scope (e.g., DDoS, social eng) explicitly</li>
+</ul>
+
+<h2>38.2 Cloud vs On-Prem Findings — Different Mindset</h2>
+<table>
+<tr><th>Aspect</th><th>On-Prem</th><th>Cloud</th></tr>
+<tr><td>Patching</td><td>Critical KPI</td><td>Provider does it (mostly)</td></tr>
+<tr><td>Biggest risk</td><td>Software vulns</td><td>IAM misconfigurations</td></tr>
+<tr><td>Recon speed</td><td>Weeks</td><td>Hours via ScoutSuite</td></tr>
+<tr><td>Reporting impact</td><td>CVEs</td><td>Policies &amp; exposures</td></tr>
+<tr><td>Exploit speed</td><td>Long chains</td><td>Often 1-click prone</td></tr>
+</table>
+
+</main>
+
+<nav class="next-prev">
+<a href="part5-devsecops.html" class="prev">⬅ Part 5</a>
+<a href="part7-specialized.html" class="next">Part 7 — Specialized VAPT ➡</a>
+</nav>
+
+</body>
+</html>

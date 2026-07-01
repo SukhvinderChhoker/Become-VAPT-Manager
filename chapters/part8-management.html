@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Part 8 — Management, Reporting &amp; Compliance</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="breadcrumb">
+<a href="../index.html">🏠 Home</a> &rsaquo; <strong>Part 8 — Management, Reporting &amp; Compliance</strong>
+</nav>
+
+<header class="part-header">
+<h1>👔 PART 8 — MANAGEMENT, REPORTING &amp; COMPLIANCE</h1>
+<p class="subtitle">Become a VAPT leader — scoping, risk management, reporting, budgeting, standards, certifications.</p>
+<div class="chapters">
+<a href="#ch45"><span class="ch-num">45</span> VAPT Project Management</a>
+<a href="#ch46"><span class="ch-num">46</span> Risk Assessment &amp; CVSS Mastery</a>
+<a href="#ch47"><span class="ch-num">47</span> VAPT Report Writing</a>
+<a href="#ch48"><span class="ch-num">48</span> Compliance &amp; Standards</a>
+<a href="#ch49"><span class="ch-num">49</span> Building a VAPT Team</a>
+<a href="#ch50"><span class="ch-num">50</span> Commercial &amp; Pricing Models</a>
+<a href="#ch51"><span class="ch-num">51</span> VAPT Manager vs Director — Mindset</a>
+</div>
+</header>
+
+<main>
+
+<!-- =================== CH 45 =================== -->
+<h1 id="ch45">📊 Chapter 45 — VAPT Project Management</h1>
+
+<h2>45.1 Pre-Engagement: The Most Critical Phase</h2>
+<p>Most junior testers jump into scanning on Day 1. <strong>Senior managers</strong>
+spend weeks on pre-engagement. This is where you win or lose the engagement.</p>
+
+<div class="methodology">
+<h4>Pre-Engagement Checklist</h4>
+<ul class="checklist">
+  <li>Signed NDA / MNDA</li>
+  <li>Signed Scope of Work (SOW)</li>
+  <li>Master Service Agreement (MSA)</li>
+  <li>Rules of Engagement (RoE) document</li>
+  <li>LoA — Letter of Authorization to test</li>
+  <li>Insurance — professional indemnity &amp; cyber liability</li>
+  <li>Contact tree (24×7 emergency contact for client)</li>
+  <li>Test windows agreed (off-hours for production)</li>
+  <li>Communication channel established (Slack / Teams)</li>
+<li>Crisis communication plan (what if something breaks?)</li>
+  <li>Data handling / cleanup agreement</li>
+  <li>Acceptable testing techniques (DDOS? Social eng? Phyiscal?)</li>
+  <li>Deliverables agreed (report format, retest inclusion)</li>
+  <li>Success criteria (no. of findings, severity distribution)</li>
+</ul>
+</div>
+
+<h2>45.2 Scoping Like a Pro</h2>
+<h3>45.2.1 What Goes in Scope?</h3>
+<ul>
+  <li>Domains (e.g., *.target.com, api.target.com, admin.target.com)</li>
+  <li>IP ranges (e.g., 203.0.113.0/24)</li>
+  <li>Apps (e.g., iOS + Android binaries, backend API)</li>
+  <li>Network ranges (e.g., internal 10.0.0.0/8)</li>
+  <li>Source code (e.g., .git repo, specific folders)</li>
+  <li>Cloud account(s) (AWS account 1234-5678-9012)</li>
+</ul>
+
+<h3>45.2.2 Out-of-Scope (Always Document!)</h3>
+<ul>
+  <li>Production payment processing endpoints (PCI compliance issues)</li>
+  <li>Customer data warehouses</li>
+  <li>Third-party SaaS apps (no permission!)</li>
+  <li>DDoS-style stress testing</li>
+  <li>Social engineering of employees without HR sign-off</li>
+</ul>
+
+<h2>45.3 Effort Estimation Formula</h2>
+<table>
+<tr><th>Component</th><th>Effort (Person-Days)</th></tr>
+<tr><td>Web app (basic, 50 endpoints)</td><td>5–8 PDs</td></tr>
+<tr><td>Web app (complex, 500 endpoints)</td><td>15–25 PDs</td></tr>
+<tr><td>External network (10 IPs)</td><td>3–5 PDs</td></tr>
+<tr><th>Internal network (1 AD domain)</th><th>8–15 PDs</th></tr>
+<tr><td>Mobile (Android or iOS, basic)</td><td>5–10 PDs</td></tr>
+<tr><td>Mobile + backend integration</td><td>10–18 PDs</td></tr>
+<tr><td>Cloud configuration (1 account)</td><td>3–7 PDs</td></tr>
+<tr><td>Source code review (50k LoC)</td><td>8–15 PDs</td></tr>
+<tr><td>Reporting + remediation review</td><td>3–5 PDs</td></tr>
+</table>
+
+<h2>45.4 The Pentest Lifecycle Sprint (Agile)</h2>
+<div class="diagram">
+THE PENTEST SPRINT
+══════════════════
+
+Day 1     ▓▓▓▓░░░░░░░░░░   Pre-engagement / Setup
+Day 2     ▓▓▓░░░░░░░░░░░   Recon / Threat modeling
+Day 3-7   ░▓▓▓▓▓▓▓▓▓░░░░   Testing (focused blocks)
+Day 8     ░░░░▓░░░░░░░░░   Mid-eng call + findings triage
+Day 9-10  ░░░░░▓▓▓▓▓░░░░   Exploitation phase
+Day 11-13 ░░░░░░░▓▓▓▓▓▓░   Final testing
+Day 14    ░░░░░░░░▓░░░░░   Closeout call
+Day 15-18 ░░░░░░░░░▓▓▓▓░   Reporting
+Day 19+   ░░░░░░░░░░░▓▓░   QA + delivery + retest (separate)
+</div>
+
+<h2>45.5 Daily Standup With Client</h2>
+<p>Run a 15-min daily call. Format:</p>
+<ul>
+  <li>What we tested yesterday</li>
+  <li>What we plan to test today</li>
+  <li>Any blockers / asks</li>
+  <li>Critical findings (sanitized) for client awareness</li>
+</ul>
+
+<h2>45.6 Risk-Driven Decision Tree</h2>
+<div class="diagram">
+         Critical Finding Discovered Mid-Engagement
+                          │
+        ┌─────────────────┴──────────────────┐
+        ▼                                    ▼
+   Will exploit cause                Will exploit reveal
+   production outage?                mass sensitive data?
+        │                                    │
+        ▼                                    ▼
+  STOP! Coordinate                  Coordinate with client
+  with client FIRST                 FIRST (within hours)
+</div>
+
+<h2>45.7 Real-Life Scenario: When Things Go Wrong</h2>
+<div class="scenario">
+<h3>📍 Scenario — Pentest Brought Down Production</h3>
+<p>A junior tester ran a vulnerability scanner in "intrusive mode" against a
+client's production banking platform with 5 million concurrent users. The
+scan generated 100k requests/second. The load balancer crashed. The
+banking platform was down for 90 minutes. Thousands of customers couldn't
+pay bills. The junior tester had not read the RoE clearly.</p>
+
+<p><strong>Damage:</strong> $50K in remediation + client trust damaged. The junior
+tester was fired. The pentest firm lost the contract.</p>
+
+<p><strong>Lesson:</strong> NEVER test beyond what's agreed. STOP on warnings. Have
+a kill switch. Always test in staging if possible.</p>
+</div>
+
+<h2>45.8 Project Management KPIs for VAPT</h2>
+<table>
+<tr><th>KPI</th><th>Target</th></tr>
+<tr><td>On-time delivery (within agreed timeframe)</td><td>&gt; 95%</td></tr>
+<tr><td>Findings per 1,000 LoC / endpoint</td><td>Industry dependent</td></tr>
+<tr><td>Median time-to-find (T2F) per finding</td><td>Senior: 4 hours; Junior: 1 day</td></tr>
+<tr><td>Report re-work iterations (QA cycles)</td><td>&lt; 2</td></tr>
+<tr><td>Client satisfaction score (CSAT)</td><td>&gt; 4.5 / 5</td></tr>
+<tr><td>Critical/high finding re-test closure</td><td>&gt; 90% in 30 days</td></tr>
+<tr><td>Revenue per senior tester</td><td>$300K–$600K / year</td></tr>
+</table>
+
+
+<!-- =================== CH 46 =================== -->
+<h1 id="ch46">📈 Chapter 46 — Risk Assessment &amp; CVSS Mastery</h1>
+
+<h2>46.1 CVSS — Common Vulnerability Scoring System</h2>
+<p>CVSS v3.1 is the industry standard. Knowing how to compute it correctly is
+vital for accurate reporting.</p>
+
+<h2>46.2 CVSS v3.1 Vector Anatomy</h2>
+<pre><code class="cmd">CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H = 9.8 Critical
+
+Breakdown:
+AV  = Attack Vector           (N=Network, A=Adjacent, L=Local, P=Physical)
+AC  = Attack Complexity       (L=Low, H=High)
+PR  = Privileges Required     (N=None, L=Low, H=High)
+UI  = User Interaction        (N=None, R=Required)
+S   = Scope                    (U=Unchanged, C=Changed)
+C   = Confidentiality impact  (N=None, L=Low, H=High)
+I   = Integrity impact        (N=None, L=Low, H=High)
+A   = Availability impact     (N=None, L=Low, H=High)
+</pre>
+
+<h2>46.3 Compute CVSS — Real Examples</h2>
+<h3>46.3.1 SQL Injection in Login (Public Internet)</h3>
+<pre><code class="cmd">Vector: CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H
+= 9.8 (Critical)
+
+Explanation: Network attack, low complexity, no privileges, no UI,
+unaffected products, full disclosure + integrity + availability impact.
+</code></pre>
+
+<h3>46.3.2 Stored XSS in Admin Tool</h3>
+<pre><code class="cmd">Vector: CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:C/C:L/I:L/A:N
+= 5.4 (Medium)
+
+Explanation: Network attack, low complexity, requires admin login,
+user interaction required (admin views page), scope changed, low impact
+on C/I.
+</code></pre>
+
+<h2>46.4 Severity vs Business Risk</h2>
+<p>CVSS = technical severity. <strong>Business risk</strong> = impact to YOUR organization's
+mission + data. A 10.0 SQLi in a marketing site matters less than a 5.4 XSS in your
+</em>payment system</em>.</p>
+
+<h2>46.5 Risk Matrix Template</h2>
+<table>
+<tr><th></th><th>Low Impact</th><th>Medium</th><th>High Impact</th></tr>
+<tr><td><strong>High Likelihood</strong></td><td style="background:#fbc531">Medium</td>
+<td style="background:#e55039;color:#fff">High</td>
+<td style="background:#e55039;color:#fff"><strong>Critical</strong></td></tr>
+<tr><td><strong>Medium Likelihood</strong></td><td>Low</td>
+<td style="background:#fbc531">Medium</td>
+<td style="background:#e55039;color:#fff">High</td></tr>
+<tr><td><strong>Low Likelihood</strong></td><td>Informational</td><td>Low</td>
+<td style="background:#fbc531">Medium</td></tr>
+</table>
+
+<h2>46.6 Tailoring CVSS — Adding Context</h2>
+<p>CVSS-B (Business) and CVSS-E (Environmental) metrics let you adjust for:</p>
+<ul>
+  <li>Confidentiality of impacted data (PII, PCI, PHI, IP)</li>
+  <li>Affected population size</li>
+  <li>Discoverability (public known, internal only)</li>
+  <li>Availability of mitigations</li>
+</ul>
+
+<h2>46.7 Real-Life Scenario: Why Always Think Beyond CVSS</h2>
+<div class="scenario">
+<h3>📍 Scenario — When CVSS Lies</h3>
+<p>A 6.5 medium-rated IDOR vulnerability in a marketing application's lead capture
+form might be totally irrelevant. But the exact same CVSS in a healthcare patient
+lookup API = HIPAA breach + $50,000+ fine. Always contextualize.</p>
+</div>
+
+
+<!-- =================== CH 47 =================== -->
+<h1 id="ch47">📝 Chapter 47 — VAPT Report Writing Mastery</h1>
+
+<h2>47.1 The 5 Sections of Every Great Report</h2>
+<div class="diagram">
+                    ┌─────────────────┐
+                    │ 1. EXECUTIVE     │ ◄── C-Suite reads this
+                    │   SUMMARY        │     1-2 pages
+                    └────────┬─────────┘
+                             ▼
+                    ┌─────────────────┐
+                    │ 2. METHODOLOGY   │ ─── Tech teams read
+                    │   &amp; SCOPE        │     What we tested
+                    └────────┬─────────┘
+                             ▼
+                    ┌─────────────────┐
+                    │ 3. FINDINGS      │ ─── Tech teams deep dive
+                    │   (Detailed)     │     Each vuln explained
+                    └────────┬─────────┘
+                             ▼
+                    ┌─────────────────┐
+                    │ 4. RISK SUMMARY  │ ─── Both readers
+                    │   (Score &amp; CVSS) │
+                    └────────┬─────────┘
+                             ▼
+                    ┌─────────────────┐
+                    │ 5. NEXT STEPS    │ ─── Actionable
+                    │   &amp; ROADMAP      │     What to fix first
+                    └─────────────────┘
+</div>
+
+<h2>47.2 Executive Summary — The Most Important 1 Page</h2>
+<p>C-Suite / Board reads ONLY this. It must convey:</p>
+<ul>
+  <li>What was tested, by whom, for how long</li>
+  <li>Overall security posture (Critical/Low/Improving)</li>
+  <li>Top 3–5 most critical issues in PLAIN english (no jargon!)</li>
+  <li>Business impact of EACH (e.g., "$1.5M breach possibility")</li>
+  <li>Recommended next steps (concrete actions)</li>
+  <li>Risk-graded comparison to industry/peers if possible</li>
+</ul>
+
+<h2>47.3 Detailed Finding Format (One Per Page Min)</h2>
+<table>
+<tr><th>Section</th><th>Content</th></tr>
+<tr><td>Title</td><td>One-line summary — informative</td></tr>
+<tr><td>Severity</td><td>CVSS 9.8 (Critical) + business context</td></tr>
+<tr><td>Description</td><td>What's the issue?</td></tr>
+<tr><td>Impact</td><td>What could attacker do?</td></tr>
+<tr><td>Affected Components</td><td>Specific URL / endpoint / system</td></tr>
+<tr><td>Steps to Reproduce</td><td>Numbered, copy-pasteable</td></tr>
+<tr><td>Proof of Concept (PoC)</td><td>Screenshots / curl / code</td></tr>
+<tr><td>Remediation</td><td>Specific code/config fix</td></tr>
+<tr><td>References</td><td>CWE, CVE, OWASP</td></tr>
+</table>
+
+<h2>47.4 Sample Finding (Real-World)</h2>
+
+<div class="callout">
+<div class="callout-title">FINDING 1: SQL INJECTION in /api/search</div>
+
+<h4>Severity</h4>
+<p><span class="cvss">CVSS 9.8 (Critical)</span>
+<strong>Business Risk:</strong> Complete database compromise — 2.4M user records exfiltrable.
+PCI-DSS violation risk.</p>
+
+<h4>Description</h4>
+<p>The <code>q</code> parameter of <code>GET /api/search</code> is concatenated
+directly into a SQL query without parameterization.</p>
+
+<h4>Affected Endpoint</h4>
+<p><code>https://target.com/api/search?q=&lt;attacker&gt;</code></p>
+
+<h4>Steps to Reproduce</h4>
+<pre><code class="cmd"># Step 1: Confirm normal
+$ curl "https://target.com/api/search?q=phone"
+# Returns: {"results": [...]}
+
+# Step 2: Inject single quote
+$ curl "https://target.com/api/search?q=phone'"
+# Returns: 500 Internal Server Error
+
+# Step 3: Confirm SQLi with boolean
+$ curl "https://target.com/api/search?q=phone'+AND+1=1--"
+# Returns: 200 OK
+$ curl "https://target.com/api/search?q=phone'+AND+1=2--"
+# Returns: 200 OK, empty results
+
+# Step 4: Enumerate tables (UNION)
+$ curl "https://target.com/api/search?q=test'+UNION+SELECT+NULL,table_name+FROM+information_schema.tables--"
+</code></pre>
+
+<h4>Proof of Concept</h4>
+<p>Screenshot 1: <code>img1_sqli_boolean.png</code></p>
+<p>Screenshot 2: <code>img2_sqli_union_dump.png</code> — shows email table
+extracted.</p>
+
+<h4>Remediation</h4>
+<p>Use parameterized queries / prepared statements:</p>
+
+<pre><code class="cmd">// VULNERABLE:
+String q = request.getParameter("q");
+String sql = "SELECT * FROM products WHERE name LIKE '%" + q + "%'";
+
+// SECURE (Java):
+String q = request.getParameter("q");
+PreparedStatement ps = conn.prepareStatement(
+    "SELECT * FROM products WHERE name LIKE ?");
+ps.setString(1, "%" + q + "%");
+ResultSet rs = ps.executeQuery();
+</code></pre>
+
+<h4>References</h4>
+<ul>
+<li>CWE-89: SQL Injection</li>
+<li>OWASP A03:2021 — Injection</li>
+<li>OWASP Cheat Sheet: Query Parameterization</li>
+</ul>
+</div>
+
+<h2>47.5 Screenshot Best Practices</h2>
+<ul>
+  <li>Always show the URL bar + timestamp + clock visible</li>
+  <li>Highlight sensitive data with a red box (still beachside next screenshot)</li>
+  <li>Capture terminal output with <code>script</code> command for reproducibility</li>
+  <li>Annotate with numbers (Step 1, Step 2, ...)</li>
+</ul>
+
+<h2>47.6 Reporting Anti-Patterns</h2>
+<div class="box danger">
+<strong>❌ DON'T:</strong>
+<ul>
+  <li>Describe findings buried in jargon — exec won't read</li>
+  <li>Use vendor template that hides criticals in lots of headers</li>
+  <li>Recommend vendor's product (looks like a sales pitch)</li>
+  <li>Be vague ("Update the input validation") — give exact code snippets</li>
+  <li>Lack reproducible PoC — client must verify</li>
+  <li>Ship report without executive summary</li>
+  <li>Forget to cite CVE, CWE, OWASP references</li>
+  <li>Forget timeline of testing (when, how long, who)</li>
+</ul>
+</div>
+
+<h2>47.7 The Retest Report</h2>
+<p>After client's remediation, do a focused retest and produce a one-pager:</p>
+<table>
+<tr><th>Status</th><th>Meaning</th></tr>
+<tr><td><span style="color:#44bd32;font-weight:bold">✓ FIXED</span></td><td>Validated fix in place, no re-test needed</td></tr>
+<tr><td><span style="color:#fbc531;font-weight:bold">⚠ PARTIAL</span></td><td>Fix attempted but incomplete</td></tr>
+<tr><td><span style="color:#0097e6;font-weight:bold">↓ DOWNGRADED</span></td><td>Risk reduced (e.g., WAF added)</td></tr>
+<tr><td><span style="color:#e55039;font-weight:bold">✗ NOT FIXED</span></td><td>Still vulnerable</td></tr>
+</table>
+
+
+<!-- =================== CH 48 =================== -->
+<h1 id="ch48">📋 Chapter 48 — Compliance &amp; Standards</h1>
+
+<h2>48.1 Standards vs Pentests — Don't Confuse</h2>
+<ul>
+  <li><strong>Compliance =</strong> Following documented controls. Evidence-based.</li>
+  <li><strong>VAPT =</strong> Technical validation. Adversary simulation.</li>
+  <li>Many companies pass compliance and still get breached. Because compliance != security.</li>
+</ul>
+
+<h2>48.2 ISO 27001 / 27002</h2>
+<ul>
+  <li>International ISMS standard</li>
+  <li>Annex A controls (114 controls)</li>
+  <li>Annual VAPT recommended for "Annex A 8.8 — Technical vulnerabilities"</li>
+</ul>
+
+<h2>48.3 PCI-DSS (Cards)</h2>
+<table>
+<tr><th>Requirement</th><th>Mandate</th></tr>
+<tr><td>11.2.1</td><td>Quarterly internal vulnerability scans</td></tr>
+<tr><td>11.3.1</td><td>Annual external pentest</td></tr>
+<tr><td>11.3.4</td><td>Annual pentest of segmentation controls</td></tr>
+</table>
+
+<h2>48.4 SOC 2 (Trust Services Criteria)</h2>
+<p>Annual pentest recommended for CC7.1 (system operations), CC7.2 (incident response).
+The pentest report becomes evidence for the SOC 2 audit.</p>
+
+<h2>48.5 NIST CSF</h2>
+<ul>
+  <li>Identify, Protect, Detect, Respond, Recover</li>
+  <li>VAPT feeds "Identify" + "Detect" considerations</li>
+</ul>
+
+<h2>48.6 GDPR / DPDP Act India — VAPT Implications</h2>
+<table>
+<tr><th>Law</th><th>Fine</th><th>VAPT Mandate?</th></tr>
+<tr><td>GDPR (EU)</td><td>≤4% global rev or €20M</td><td>Implied (Art 32)</td></tr>
+<tr><td>HIPAA (US)</td><td>Up to $1.5M/yr / category</td><td>Addressable</td></tr>
+<tr><td>PCI-DSS</td><td>Loss of card processing</td><td>Required (11.3)</td></tr>
+<tr><td>DPDP (India 2023)</td><td>Up to ₹250 cr</td><td>Inferred from Sec 8(5)</td></tr>
+<tr><td>CCPA (California)</td><td>$7,500 per violation</td><td>No explicit</td></tr>
+<tr><td>RBI Cyber Security (India)</td><td>License at risk</td><td>Required for banks/fintech</td></tr>
+<tr><td>FedRAMP (US Gov Cloud)</td><td>Cannot sell to govt</td><td>Annual required</td></tr>
+</table>
+
+<h2>48.7 Frameworks You Should Know</h2>
+<ul>
+  <li><strong>NIST 800-115</strong> — Technical Security Testing</li>
+  <li><strong>NIST 800-53</strong> — Security &amp; Privacy Controls</li>
+  <li><strong>OWASP ASVS</strong> — Application Verification Standard</li>
+  <li><strong>CIS Critical Security Controls v8</strong> — Top 18 controls</li>
+  <li><strong>MITRE ATT&amp;CK</strong> — Adversary TTPs</li>
+  <li><strong>CWE</strong> — Common Weakness Enumeration</li>
+  <li><strong>CVE</strong> — Common Vulnerabilities &amp; Exposures</li>
+</ul>
+
+
+<!-- =================== CH 49 =================== -->
+<h1 id="ch49">👥 Chapter 49 — Building a VAPT Team</h1>
+
+<h2>49.1 Roles in a VAPT Team</h2>
+<table>
+<tr><th>Role</th><th>Skills</th><th>Salary Range (Annual USD equiv.)</th></tr>
+<tr><td>Junior Analyst (0–2 yrs)</td><td>OSCP/CEH fundamental; runs tool-driven tests</td><td>$30K–$60K</td></tr>
+<tr><td>Senior Pentester (3–5 yrs)</td><td>Multiple certs, manual testing, exploitation</td><td>$80K–$140K</td></tr>
+<tr><td>Lead Pentester (5–7 yrs)</td><td>Owns engagements, mentors juniors</td><td>$110K–$180K</td></tr>
+<tr><td>VAPT Manager (7–10 yrs)</td><td>People mgmt, scoping, client mgmt</td><td>$150K–$220K</td></tr>
+<tr><td>VAPT Director (10+ yrs)</td><td>Strategy, sales support, org-wide security vision</td><td>$200K–$350K+</td></tr>
+</table>
+
+<h2>49.2 Team Structure for a 20-Person VAPT Team</h2>
+<div class="diagram">
+20-PERSON VAPT TEAM ORG CHART
+══════════════════════════════
+
+       ┌──────────────┐
+       │   DIRECTOR   │   Strategy, board reporting, sales enablement
+       └──────┬───────┘
+              │
+   ┌──────────┼──────────┬──────────┐
+   ▼          ▼          ▼          ▼
+ MGR         MGR        MGR        MGR
+NA/EU       APAC       Cloud      RedTeam  ◄── each manager: 5-6 testers
+   │          │          │          │
+ Seniors      Seniors   Seniors    Seniors        ◄── Tech subject matter experts
+ +
+ Juniors      Juniors   Juniors    Juniors
+</div>
+
+<h2>49.3 Hiring Checklist</h2>
+<ul class="checklist">
+<li>Strong networking + OS fundamentals</li>
+<li>Has run actual engagements (portfolio of anonymized reports!)</li>
+<li>Active in CTFs, HTB/TryHackMe rankings</li>
+<li>Certifications (CEH/OSCP — entry; OSCP/OSWE for senior)</li>
+<li>Teaching / mentoring ability (leadership signal)</li>
+<li>Communication &amp; report-writing samples</li>
+<li>Curiosity &amp; self-learning mindset</li>
+<li>Ethical &amp; trustworthy (background check mandatory)</li>
+</ul>
+
+<h2>49.4 Mentoring Your Team</h2>
+<ul>
+  <li>Weekly knowledge-sharing sessions (every tester presents a topic)</li>
+  <li>Pair testing — senior + junior on real engagements</li>
+  <li>Hack-The-Box weekly challenges (all must complete)</li>
+  <li>External CTF competitions quarterly (Red Team vs Blue Team)</li>
+  <li>"Office hours" with manager for free-form technical Q&amp;A</li>
+  <li>Encourage conference attendance — DEF CON, Black Hat, OWASP Global</li>
+</ul>
+
+<h2>49.5 Keeping Skills Sharp</h2>
+<div class="grid-3">
+<div class="card"><h4>🏴 CTF Platforms</h4><p>HTB, TryHackMe, PicoCTF, OverTheWire, Vulnhub</p></div>
+<div class="card"><h4>🎓 Certs Worth Pursuing</h4><p>OSCP, OSWE, OSEP, OSEE, CRTP, CRTE, GPEN, GXPN, CISM, CISSP</p></div>
+<div class="card"><h4>📚 Reading</h4><p>"Web Hacking 101", "The Hacker Playbook 3", "Pentester Academy"</p></div>
+</div>
+
+
+<!-- =================== CH 50 =================== -->
+<h1 id="ch50">💰 Chapter 50 — Commercial &amp; Pricing Models for VAPT</h1>
+
+<h2>50.1 Pricing Models Explained</h2>
+<table>
+<tr><th>Model</th><th>How</th><th>Risk</th><th>Used When</th></tr>
+<tr><td>Fixed Bid</td><td>One price per project</td><td>Vendor bears overrun risk</td><td>Clear scope</td></tr>
+<tr><td>T&amp;M (Time &amp; Material)</td><td>Day rate × days</td><td>Client bears overrun</td><td>Scope unclear</td></tr>
+<tr><td>Subscription</td><td>Monthly retainer</td><td>Stable income</td><td>MSSP / MDR</td></tr>
+<tr><td>Bug Bounty</td><td>Per-vulnerability payout</td><td>Unknown total cost</td><td>Public programs</td></tr>
+<tr><td>Hybrid</td><td>Module + discovery</td><td>Balanced</td><td>Enterprise contracts</td></tr>
+</table>
+
+<h2>50.2 Typical Market Rates (2026 — global market rates)</h2>
+<table>
+<tr><th>Service</th><th>Price Range (USD)</th></tr>
+<tr><td>Web app pentest (single, simple)</td><td>$3K–$10K</td></tr>
+<tr><td>Web app pentest (complex enterprise)</td><td>$15K–$50K</td></tr>
+<tr><td>Network pentest (external /24)</td><td>$5K–$15K</td></tr>
+<tr><td>Network pentest (internal AD)</td><td>$15K–$50K</td></tr>
+<tr><td>Mobile pentest (single OS)</td><td>$10K–$25K</td></tr>
+<tr><td>Cloud configuration review</td><td>$5K–$20K</td></tr>
+<tr><td>Source code review (100k LoC)</td><td>$15K–$40K</td></tr>
+<tr><td>IoT / Hardware</td><td>$25K–$100K+</td></tr>
+<tr><td>Red Team (full engagement)</td><td>$50K–$250K+</td></tr>
+</table>
+
+<h2>50.3 Delivery Models</h2>
+<table>
+<tr><th>Model</th><th>Description</th></tr>
+<tr><td>One-Off</td><td>Project-based, fixed term, deliver report</td></tr>
+<tr><td>Continuous</td><td>Monthly retainer for ongoing scanning + manual testing</td></tr>
+<tr><td>Bug Bounty</td><td>Public (HackerOne / Bugcrowd) or private</td></tr>
+<tr><td>Crowdsourced</td><td>Many testers, payouts per finding</td></tr>
+<tr><td>Managed Testing</td><td>MSSP fully owns testing &amp; reporting</td></tr>
+</table>
+
+<h2>50.4 Profit &amp; Loss of a VAPT Team</h2>
+<table>
+<tr><th>Component</th><th>% of Revenue</th></tr>
+<tr><td>Senior tester salary</td><td>35%</td></tr>
+<tr><td>Junior tester salary</td><td>15%</td></tr>
+<tr><td>Manager salary</td><td>10%</td></tr>
+<tr><td>Tooling (Burp, Nessus, M365 Defender)</td><td>5%</td></tr>
+<tr><td>Cloud lab / AWS</td><td>2%</td></tr>
+<tr><td>Insurance (PI + liability)</td><td>3%</td></tr>
+<tr><th>Total cost</th><th>~70%</th></tr>
+<tr><td><strong>Gross margin</strong></td><td><strong>30%</strong></td></tr>
+</table>
+
+<h2>50.5 Sales Enablement for VAPT</h2>
+<ul>
+  <li>Speak the client's language (industry-specific)</li>
+  <li>Reference compliance frameworks they care about (PCI for retail, HIPAA for healthcare)</li>
+  <li>Showcase CVSS / report samples (anonymized)</li>
+  <li>Quantify ROI — "1 VAPT uncovered $X in potential breaches"</li>
+  <li>Offer 2-week paid pilots for skeptical clients</li>
+  <li>Maintain reference testimonials from past clients</li>
+</ul>
+
+
+<!-- =================== CH 51 =================== -->
+<h1 id="ch51">🎯 Chapter 51 — VAPT Manager vs Director — Mindset Shift</h1>
+
+<h2>51.1 The Promotion Ladder</h2>
+<div class="diagram">
+YOUR CAREER PROGRESSION
+═══════════════════════
+
+   Tester ──► Senior ──► Lead ──► Manager ──► Director ──► CISO
+      │         │           │         │            │           │
+      │         │           │         │            │           │
+   Hands-on   Mentors    Manages    Manages    Strategy    Board
+   tests      juniors    projects   team       org-wide   ascendant
+              guides                  process    security
+              client reports          mgmt       vision
+</div>
+
+<h2>51.2 Manager vs Director — Different Mindsets</h2>
+<table>
+<tr><th>Aspect</th><th>VAPT Manager</th><th>VAPT Director</th></tr>
+<tr><td>Time Horizon</td><td>Quarterly</td><td>3–5 year</td></tr>
+<tr><td>Audience</td><td>Project teams</td><td>Executive / Board</td></tr>
+<tr><td>Focus</td><td>Engagement quality</td><td>Org security culture</td></tr>
+<tr><td>Skill #1</td><td>People management</td><td>Strategic influence</td></tr>
+<tr><td>KPIs</td><td>On-time, CSAT, finding count</td><td>Security posture maturity</td></tr>
+<tr><td>Politic</td><td>Within team</td><td>Cross-functional</td></tr>
+</table>
+
+<h2>51.3 Habit of a Successful Director</h2>
+<ul>
+<li><strong>Read 1 strategic report</strong> weekly (Mandiant, IBM X-Force, Verizon DBIR)</li>
+<li><strong>Coffee chat</strong> with 1 peer/leader weekly (builds coalition)</li>
+<li><strong>Quarterly OKR review</strong> (track security goals)</li>
+<li><strong>Annual "1-pager"</strong> for C-suite on security posture</li>
+<li><strong>Personal monthly technical engagement</strong> (stay sharp)</li>
+<li><strong>Public speaking</strong> at conferences (builds brand)</li>
+</ul>
+
+<h2>51.4 Building Relationships with Other Functions</h2>
+<div class="grid-3">
+<div class="card"><h4>🧑‍💼 CTO/CIO</h4><p>VAPT informs tech debt; align to roadmaps</p></div>
+<div class="card"><h4>👩‍💼 CFO</h4><p>VAPT is insurance; quantify ROI</p></div>
+<div class="card"><h4>📋 CISO</h4><p>VAPT is a sensor; feed into SOC dashboards</p></div>
+<div class="card"><h4>👩‍⚖️ Legal</h4><p>VAPT ensures compliance; pre-litigation prep</p></div>
+<div class="card"><h4>🛒 Sales</h4><p>VAPT report = competitive advantage in client RFPs</p></div>
+<div class="card"><h4>👨‍💻 Dev teams</h4><p>VAPT helps them write secure code</p></div>
+</div>
+
+<h2>51.5 First 90 Days as a New Director</h2>
+<ol>
+  <li><strong>Days 1–30: Listen &amp; Learn.</strong> Meet every stakeholder. Read prior
+  reports. Audit existing tooling, processes, and team skills.</li>
+  <li><strong>Days 31–60: Quick wins.</strong> Pick 1–2 low-effort, high-impact
+  improvements (tooling consolidation, a new testing checklist, better
+  deliverable template).</li>
+  <li><strong>Days 61–90: Strategic plan.</strong> Draft a 12-month security roadmap.
+  Present to leadership. Get budget approvals. Hire 1–2 missing skills.</li>
+</ol>
+
+<h2>51.6 Boards and Audits — Talks Like a C-Suite Speaker</h2>
+<h3>The 1-Pager for the Board</h3>
+<table>
+<tr><th>Section</th><th>Max Lines</th></tr>
+<tr><td>Security Posture (RAG status)</td><td>1</td></tr>
+<tr><td>Top 3 reduction initiatives this quarter</td><td>3</td></tr>
+<tr><td>KPIs (mean findings per test, fix %, MTTR)</td><td>3</td></tr>
+<tr><td>Budget utilization</td><td>2</td></tr>
+<tr><td>Ask — budget / headcount / tools</td><td>1</td></tr>
+</table>
+
+<h2>51.7 The One Skill Nobody Teaches — Empathy</h2>
+<p>As a manager, you may one day fire a tester. As a director, you may have to
+tell the CEO the company has been breached. The technical skills taught in this
+book are 50%. The other 50% is emotional intelligence, empathy, and courage.</p>
+
+<blockquote style="background:#f0f8ff;border-left:5px solid #0097e6;padding:18px;font-size:1.1em;font-style:italic;color:#0c2461">
+"A good manager gets the right things done. A great manager makes people
+better than they knew they could be."
+— paraphrased from Peter Drucker
+</blockquote>
+
+</main>
+
+<nav class="next-prev">
+<a href="part7-specialized.html" class="prev">⬅ Part 7</a>
+<a href="part9-templates.html" class="next">Part 9 — Templates ➡</a>
+</nav>
+
+</body>
+</html>

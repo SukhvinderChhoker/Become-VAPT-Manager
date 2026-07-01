@@ -1,0 +1,17 @@
+# OS / Editor junk
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.tmp
+
+# Node / build artefacts
+node_modules/
+dist/
+build/
+
+# Credentials & artefacts
+*.key
+*.pem
+!certs/*.pem

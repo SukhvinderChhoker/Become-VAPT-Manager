@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Part 4 — Mobile Application VAPT</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="breadcrumb">
+<a href="../index.html">🏠 Home</a> &rsaquo; <strong>Part 4 — Mobile Application VAPT</strong>
+</nav>
+
+<header class="part-header">
+<h1>📱 PART 4 — MOBILE APPLICATION VAPT</h1>
+<p class="subtitle">Android &amp; iOS security testing — reverse engineering, Frida, Mobile OWASP</p>
+<div class="chapters">
+<a href="#ch21"><span class="ch-num">21</span> Mobile Threat Landscape</a>
+<a href="#ch22"><span class="ch-num">22</span> Android Security Testing</a>
+<a href="#ch23"><span class="ch-num">23</span> iOS Security Testing</a>
+<a href="#ch24"><span class="ch-num">24</span> Mobile API &amp; Backend</a>
+<a href="#ch25"><span class="ch-num">25</span> OWASP MASVS / MASTG</a>
+<a href="#ch26"><span class="ch-num">26</span> Real-Life Mobile Pentest</a>
+</div>
+</header>
+
+<main>
+
+<!-- =================== CH 21 =================== -->
+<h1 id="ch21">🌍 Chapter 21 — Mobile Threat Landscape</h1>
+
+<h2>21.1 Why Mobile VAPT is Different</h2>
+<p>Mobile apps run on constrained, sandboxed devices, but they are still vulnerable to:</p>
+<ul>
+  <li>Insecure data storage (device shared with multiple apps &amp; users)</li>
+  <li>Weak cryptography (custom algorithms, hardcoded keys)</li>
+  <li>Insecure authentication (just JWT in shared prefs!)</li>
+  <li>Insufficient transport security (HTTPS only sometimes)</li>
+  <li>Reverse engineering (APK is open source for everyone)</li>
+  <li>Code tampering (signing not enforced)</li>
+  <li>Extraneous functionality (debug code, hidden APIs)</li>
+</ul>
+
+<h2>21.2 OWASP Mobile Top 10 (2016 / 2024)</h2>
+<table>
+<tr><th>ID</th><th>Risk</th></tr>
+<tr><td>M1</td><td>Improper Credential Usage</td></tr>
+<tr><td>M2</td><td>Inadequate Supply Chain Security</td></tr>
+<tr><td>M3</td><td>Insecure Authentication/Authorization</td></tr>
+<tr><td>M4</td><td>Insufficient Input/Output Validation</td></tr>
+<tr><td>M5</td><td>Insecure Communication</td></tr>
+<tr><td>M6</td><td>Inadequate Privacy Controls</td></tr>
+<tr><td>M7</td><td>Insufficient Binary Protections</td></tr>
+<tr><td>M8</td><td>Security Misconfiguration</td></tr>
+<tr><td>M9</td><td>Insecure Data Storage</td></tr>
+<tr><td>M10</td><td>Insufficient Cryptography</td></tr>
+</table>
+
+<h2>21.3 Mobile Attack Surface Diagram</h2>
+<div class="diagram">
+        MOBILE ATTACK SURFACE
+══════════════════════════
+
+  ┌──────────────────────────────────────────┐
+  │           ON-DEVICE ATTACKS              │
+  │  • APK / IPA reverse engineering         │
+  │  • Tampering / repackaging               │
+  │  • Runtime manipulation (Frida)          │
+  │  • Local data extraction                 │
+  │  • Memory dumps                          │
+  └─────────────┬────────────────────────────┘
+                │
+┌───────────────┼──────────────────────┐
+│  NETWORK       │                    │
+│ ATTACKS        │   BACKEND ATTACKS   │
+│ • MITM with    │   • API testing      │
+│   Charles/     │   • Web services     │
+│   Burp         │   • Auth bypass      │
+│ • SSL pinning  │   • IDOR / BOLA      │
+│   bypass       │   • Mass assignment  │
+│ • Cert pin-    │                      │
+│   ning         │                      │
+└───────────────┴──────────────────────┘
+</div>
+
+<h2>21.4 Tools You'll Need</h2>
+<table>
+<tr><th>Tool</th><th>Use</th><th>Platform</th></tr>
+<tr><td>apktool</td><td>Decode / rebuild APK</td><td>Android</td></tr>
+<tr><td>jadx</td><td>Decompile DEX to Java</td><td>Android</td></tr>
+<tr><td>Frida</td><td>Runtime hooking</td><td>Android/iOS</td></tr>
+<tr><td>Objection</td><td>Frida wrapper, automates checks</td><td>Android/iOS</td></tr>
+<tr><td>MobSF</td><td>All-in-one mob scanner</td><td>Android/iOS</td></tr>
+<tr><td>Android Studio / emulator</td><td>Test on Android 5–14</td><td>Android</td></tr>
+<tr><td>Xcode / Corellium</td><td>Test on iOS 12–17+</td><td>iOS</td></tr>
+<tr><td>class-dump / hopper</td><td>Decompile IPA</td><td>iOS</td></tr>
+<tr><td>Burp Suite / Charles</td><td>MITM proxy</td><td>Both</td></tr>
+<tr><td>mitmproxy</td><td>Same as Burp but scriptable</td><td>Both</td></tr>
+</table>
+
+
+<!-- =================== CH 22 =================== -->
+<h1 id="ch22">🤖 Chapter 22 — Android Security Testing</h1>
+
+<h2>22.1 Setting Up the Test Lab</h2>
+<pre><code class="cmd"># Hardware options
+# 1) Real Android device — best (or Pixel with GrapheneOS)
+# 2) Android emulator (AVD from Android Studio)
+
+# Rooted device required for deep testing:
+# - Magisk + custom ROM
+# - Frida server
+# - Xposed framework
+
+# OR use Genymotion / Corellium
+</code></pre>
+
+<h2>22.2 Installing &amp; Analyzing the APK</h2>
+<pre><code class="cmd"># Get the APK
+# App store → use APK extractor (e.g., ML Manager)
+# Or check internal distribution channels
+
+# Static analysis
+$ apktool d app.apk -o app_decoded/   # Resources + Smali code
+$ jadx app.apk                        # Java source
+
+# Inspect AndroidManifest.xml — KEY file!
+# Look for:
+#   exported activities (android:exported="true")
+#   permissions used (INTERNET, READ_CONTACTS)
+#   debuggable=true
+#   allowBackup=true
+#   usesCleartextTraffic="true"
+#   networkSecurityConfig
+</code></pre>
+
+<h2>22.3 Hunting Common Android Issues</h2>
+<pre><code class="cmd"># 1) Insecure data storage
+# After running app, explore:
+$ adb shell run-as com.target.app cat databases/db.db
+
+# Common locations:
+/sdcard/Android/data/&lt;pkg&gt;/
+/data/data/&lt;pkg&gt;/databases/
+/data/data/&lt;pkg&gt;/shared_prefs/  # XML prefs
+/data/data/&lt;pkg&gt;/files/
+
+# 2) Hardcoded secrets in source
+$ jadx app.apk | grep -iE "(api[_-]?key|secret|password|token)" -r
+
+# 3) Insecure WebView
+# Smali/Java:
+WebView.loadUrl(...)
+setJavaScriptEnabled(true)
+addJavascriptInterface(@JavascriptInterface, "bridge")
+
+# 4) Exported activities — call directly
+$ adb shell am start -n com.target.app/.SecretActivity
+
+# 5) Improper certificate validation
+# grep for:
+TrustManager (overrides ALL checks)
+HostnameVerifier (always returns true)
+setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER)
+</code></pre>
+
+<h2>22.4 Frida — Runtime Manipulation</h2>
+<pre><code class="cmd"># Setup
+$ pip install frida-tools
+
+# On Android (rooted):
+$ adb push frida-server /data/local/tmp/
+$ adb shell chmod 755 /data/local/tmp/frida-server
+$ adb shell /data/local/tmp/frida-server &amp;
+
+# Hook a function — example bypass root detection
+$ cat byp.js
+Java.perform(function() {
+  var RootBeer = Java.use("com.scottyab.rootbeer.RootBeer");
+  RootBeer.isRooted.implementation = function() { return false; };
+});
+
+$ frida -U -f com.target.app -l byp.js --no-pause
+
+# Bypass SSL pinning — universal script
+$ frida -U -f com.target.app -l frida-multiple-unpinning.js
+</code></pre>
+
+<h2>22.5 Objection — Automation Over Frida</h2>
+<pre><code class="cmd">$ objection -g com.target.app explore
+
+# Inside the shell:
+com.target.app on (iPhone: 13.0.0) [usb] # ios
+[usb] # help
+[usb] # env                       # Show environment
+[usb] # ios keychain dump         # iOS keychain
+[usb] # ios nsuserdefaults get    # NSUserDefaults dump
+[usb] # android clipboard monitor
+[usb] # android hook_class_method com.target.app.LoginActivity.authenticate
+[usb] # android keystore list
+[usb] # android sslpinning disable
+[usb] # env                       # env info
+</code></pre>
+
+<h2>22.6 MobSF — Automated All-in-One Scan</h2>
+<pre><code class="cmd">$ docker pull opensecurity/mobile-security-framework-mobsf
+$ docker run -it --rm -p 8000:8000 opensecurity/mobile-security-framework-mobsf
+
+# Open http://127.0.0.1:8000  →  upload APK/IPA  →  comprehensive scan in <2 min
+# Output: security score, malware check, manifest issues, hardcoded URLs, dangerous permissions
+</code></pre>
+
+<h2>22.7 Real-Life Scenario: Banking App Security Audit</h2>
+<div class="scenario">
+<h3>📍 Scenario — "PayOne" Banking App on Android</h3>
+<p><strong>Findings:</strong></p>
+<ol>
+  <li><span class="cvss">CVSS 9.8</span> JWT token stored in plaintext SharedPreferences (`auth_token.xml`)</li>
+  <li><span class="cvss">CVSS 9.1</span> Hardcoded AES key in `BuildConfig.AES_KEY` (value: "0123456789abcdef")</li>
+  <li><span class="cvss">CVSS 8.5</span> Root detection bypassed via Frida — bypassable in 2 minutes</li>
+  <li><span class="cvss">CVSS 8.0</span> Backup allowed — `adb backup` extracts entire app data</li>
+  <li><span class="cvss">CVSS 7.5</span> WebView with `setJavaScriptEnabled(true)` and bridge interface loads untrusted HTML</li>
+  <li><span class="cvss">CVSS 6.5</span> Cleartext HTTP allowed for some analytics endpoints</li>
+</ol>
+<p>The bank released it in 2018, fixed after a 90-day disclosure. The same app was
+lessons-learned for their <strong>20+ app portfolio</strong> going forward.</p>
+</div>
+
+
+<!-- =================== CH 23 =================== -->
+<h1 id="ch23">🍎 Chapter 23 — iOS Security Testing</h1>
+
+<h2>23.1 iOS Architecture &amp; Pentest Challenges</h2>
+<ul>
+  <li>iOS is more locked-down than Android (sandbox, code signing, attestation)</li>
+  <li>You nearly always need a jailbroken device</li>
+  <li>Apple Silicon Mac + Xcode = best setup</li>
+  <li>Sources: GitHub toolset like <strong>iOSSecuritySuite</strong>, <strong>needle</strong></li>
+</ul>
+
+<h2>23.2 Getting the IPA</h2>
+<pre><code class="cmd"># Get IPA via:
+# 1) iTunes (older versions) or Apple Configurator
+# 2) ipa-sharer sites (e.g., ipa-apk)
+# 3) Deploying for testing via TestFlight + frida-ios-dump
+
+# Most popular method:
+$ git clone https://github.com/AeonLucid/frida-ios-dump
+$ pip install -r requirements.txt
+$ # Connect jailbroken iPhone, open app
+$ python3 frida-ios-dump.py com.target.app
+
+# Now you have Target.ipa → rename to .zip → unzip → Payload/*.app
+</code></pre>
+
+<h2>23.3 Static Analysis</h2>
+<pre><code class="cmd"># Tools
+$ class-dump Target.app/Target        # List Obj-C classes
+$ otool -L Target.app/Target          # Linked libraries
+$ strings Target.app/Target            # Find secrets!
+
+# GUI disassemblers
+$ hopper
+# Decompile binary → read classes, methods, properties
+
+# Plist files
+$ plutil -p Info.plist
+# Look for: NSAppTransportSecurity (ATS dictionary)
+#   NSAllowsArbitraryLoads = true → HTTP allowed!
+#   NSExceptionDomains → domain-specific allowances
+
+# Source code review
+$ unipaTH -a Target.ipa
+</code></pre>
+
+<h2>23.4 Dynamic Analysis — Frida on iOS</h2>
+<pre><code class="cmd"># Jailbroken iPhone must have frida-server (from Cydia/Sileo: Frida)
+
+# Universal SSL pinning bypass
+$ cat frida-bypass-ssl.js
+
+if (ObjC.available) {
+  var resolver = new ApiResolver('objc');
+  resolver.enumerateMatches('*[* URLSession:*didReceiveAuthenticationChallenge:*]', {
+    onMatch: function(match) {
+      console.log('Hooking ' + match.name);
+      Interceptor.attach(match.address, { onEnter: function(args) { } });
+    }
+  });
+}
+
+$ frida -U -f com.target.app -l frida-bypass-ssl.js
+
+# Hook keychain function
+$ cat keychain-hook.js
+var SecItemCopyMatching = new NativeFunction(
+  Module.findExportByName('Security','SecItemCopyMatching'),
+  'int', ['pointer','pointer','pointer']);
+Interceptor.attach(SecItemCopyMatching, {
+  onLeave: function(retval) {
+    console.log('SecItemCopyMatching returned: ' + retval);
+  }
+});
+</code></pre>
+
+<h2>23.5 iOS Jailbreak Detection Bypass</h2>
+<pre><code class="cmd">$ cat bypass-jb.js
+// Bypass common checks:
+if (ObjC.available) {
+  var paths = [
+    '/Applications/Cydia.app',
+    '/Library/MobileSubstrate/MobileSubstrate.dylib',
+    '/bin/bash',
+    '/usr/sbin/sshd',
+    '/etc/apt',
+    '/private/var/lib/apt/'
+  ];
+  
+  var NSFileManager = ObjC.classes.NSFileManager;
+  var existsAtPath = NSFileManager.fileExistsAtPath_('aaa');
+  existsAtPath.implementation = function(path) {
+    if (paths.indexOf(path.toString()) !== -1) return false;
+    return this.call(this, path);
+  };
+}
+</code></pre>
+
+<h2>23.6 iOS Data Storage Vulnerabilities</h2>
+<table>
+<tr><th>Location</th><th>Vulnerability</th></tr>
+<tr><td>NSUserDefaults</td><td>Plaintext credentials</td></tr>
+<tr><td>Keychain</td><td>Wrong access group (other apps can read)</td></tr>
+<tr><td>Core Data</td><td>Unencrypted SQLite DB</td></tr>
+<tr><td>Files in Caches</td><td>Sensitive data without NSFileProtection</td></tr>
+<tr><td>Realtime Console logs</td><td>Debug logs leak PII</td></tr>
+<tr><td>Backups</td><td>iCloud / iTunes saves sensitive data</td></tr>
+</table>
+
+
+<!-- =================== CH 24 =================== -->
+<h1 id="ch24">🔗 Chapter 24 — Mobile API &amp; Backend Testing</h2>
+
+<h2>24.1 Mobile APIs Add a Backend Layer</h2>
+<div class="diagram">
+MOBILE APP BEST-IN-CLASS ATTACK SURFACE
+══════════════════════════════════════════
+
+ Mobile App (UI/UX) ───────────────► API Gateway ───► Microservices ───► DBs/S3/etc
+       │                                │                  │
+       ▼                                ▼                  ▼
+   Frida hooks                    Burp + Mobile         SQLi, IDOR
+   Keychain dump                  proxy traffic         S3 misconfig
+   Reverse engineer               JWT testing           Cloud creds
+   SSL pinning bypass
+</div>
+
+<h2>24.2 The Magic of Burp + Mobile</h2>
+<pre><code class="cmd"># 1) Install Burp cert on phone
+# Push burp-ca.der → convert to PEM → push to phone → install
+adb push burp-ca.der /sdcard/
+adb shell settings put global http_proxy 192.168.1.10:8080
+
+# Or use ADB keyboard for quick typing
+
+# 2) ALL traffic from mobile is now proxied through Burp
+
+# 3) Test:
+# - Authorization headers
+# - JWT tokens
+# - API endpoints that the app uses
+# - Hidden admin endpoints
+# - IDOR between user accounts
+
+# 4) Bypass SSL pinning if app refuses
+# Use Frida scripts
+</code></pre>
+
+<h2>24.3 Reverse Engineering API Endpoints</h2>
+<pre><code class="cmd"># Strings from APK / IPA
+$ strings app.apk | grep -E "https?://[^\s]+"
+# Output: list of all URLs the app talks to
+
+# Use API explorer tools
+$ mitmproxy --mode reverse:https://api.target.com
+# Watch API calls in real-time
+</code></pre>
+
+
+<!-- =================== CH 25 =================== -->
+<h1 id="ch25">📐 Chapter 25 — OWASP MASVS &amp; MASTG</h1>
+
+<p>The OWASP MASVS (Mobile Application Security Verification Standard) is the <em>gold
+standard</em> for mobile pentest coverage. The MASTG (Mobile Application Security Testing
+Guide) is the methodology.</p>
+
+<h2>25.1 MASVS Categories — V1 to V8 + MSTG-RESILIENCE</h2>
+<table>
+<tr><th>ID</th><th>Category</th><th>Some Requirements</th></tr>
+<tr><td>V1</td><td>Architecture, Design &amp; Threat Modeling</td><td>Document threat model, secure SDLC</td></tr>
+<tr><td>V2</td><td>Data Storage &amp; Privacy</td><td>No sensitive data in plaintext, encrypt with strong keys</td></tr>
+<tr><td>V3</td><td>Cryptography</td><td>Use platform crypto, no custom algorithms</td></tr>
+<tr><td>V4</td><td>Authentication &amp; Session Mgmt</td><td>Strong authN, secure session, biometric needs fallback</td></tr>
+<tr><td>V5</td><td>Network Communication</td><td>TLS everywhere, cert pinning for sensitive apps</td></tr>
+<tr><td>V6</td><td>Platform Interaction</td><td>WebView restrictions, IPC safety</td></tr>
+<tr><td>V7</td><td>Code Quality &amp; Build Settings</td><td>No debug code, signed release APK, ProGuard/R8</td></tr>
+<tr><td>V8</td><td>Resilience</td><td>Anti-tampering, anti-debugging, jailbreak/root detection</td></tr>
+</table>
+
+<h2>25.2 Three Verification Levels</h2>
+<div class="grid-3">
+<div class="card"><h4>Level 1 (L1)</h4><p>Basic — block simplest attacks. Required for ALL apps.</p></div>
+<div class="card"><h4>Level 2 (L2)</h4><p>Standard — defense-in-depth. Banking/health apps.</p></div>
+<div class="card"><h4>Level 3 (L3)</h4><p>High-Assurance — national-security, finance, healthcare top tiers.</p></div>
+</div>
+
+
+<!-- =================== CH 26 =================== -->
+<h1 id="ch26">🏁 Chapter 26 — Real-Life Mobile Pentest Walkthrough</h1>
+
+<div class="scenario">
+<h3>📍 Master Scenario — "WhatsOn" Media App (Android + iOS)</h3>
+
+<p><strong>Scope:</strong> Android (com.whats.on) + iOS (id1234567890) + backend API</p>
+<p><strong>Type:</strong> Grey-box, 1 user premium account</p>
+
+<h3>Phase 1 — Setup</h3>
+<ul>
+  <li>Pixel 6 rooted (Magisk), iPhone 13 jailbroken (palera1n iOS 16.5)</li>
+  <li>Burp Suite as proxy on Wi-Fi</li>
+  <li>Frida server installed on both</li>
+  <li>Mock backend used by API not in scope</li>
+</ul>
+
+<h3>Phase 2 — Static Analysis</h3>
+<pre><code class="cmd"># Decompile
+$ apktool d whatsapp.apk; jadx whatsapp.apk
+# Found in strings:
+#  "https://api.whats.on/v2/" (production)
+#  "https://dev-api.whats.on/" (dev endpoint still active!)
+#  "secret_key=HELLOWORLD12345678" (hardcoded AES key)
+
+# Plist (iOS)
+$ plutil -p Info.plist
+# NSAllowsArbitraryLoads = true → HTTP allowed globally!
+</code></pre>
+
+<h3>Phase 3 — Dynamic with Frida</h3>
+<pre><code class="cmd"># Bypass cert pinning
+$ frida -U -f com.whats.on -l universal-pinning-bypass.js
+
+# Now traffic flows
+# 1) Premium user requests /api/v2/premium-content
+# 2) Response → JWT (RS256)
+# 3) Reset JWT iat to future date → session never expires!
+
+# Hook into encryption:
+$ frida -U -f com.whats.on -l hook-encrypt.js
+# Hooked AES_encrypt(key, plaintext) → discovered plaintext contained user email
+</code></pre>
+
+<h3>Phase 4 — Network MITM</h3>
+<pre><code class="cmd"># Repeated premium content request → tampered response
+# /api/v2/premium-content → returns video URL
+# Substituted video_id → accessed PREMIUM-CONTENT-0020 (another user's premium video)
+# → IDOR / BOLA confirmed!
+
+# Also tried:
+# /api/v2/users/§user_id§/profile → IDOR → access any user profile
+</code></pre>
+
+<h3>Findings Summary</h3>
+<table>
+<tr><th>Severity</th><th>Issue</th></tr>
+<tr><td><span class="pill pill-r">Critical</span></td><td>JWT never expires + signing key in client</td></tr>
+<tr><td><span class="pill pill-r">Critical</span></td><td>Hardcoded AES key in Android/iOS source</td></tr>
+<tr><td><span class="pill pill-o">High</span></td><td>Dev API endpoint still active</td></tr>
+<tr><td><span class="pill pill-o">High</span></td><td>BOLA in user profile &amp; premium content</td></tr>
+<tr><td><span class="pill pill-y">Medium</span></td><td>Root detection bypassable in 90 sec</td></tr>
+<tr><td><span class="pill pill-y">Medium</span></td><td>NSAllowsArbitraryLoads allows HTTP</td></tr>
+</table>
+<p>Client retested — 100% closure after 60 days.</p>
+</div>
+
+</main>
+
+<nav class="next-prev">
+<a href="part3-network.html" class="prev">⬅ Part 3</a>
+<a href="part5-devsecops.html" class="next">Part 5 — DevSecOps ➡</a>
+</nav>
+
+</body>
+</html>
