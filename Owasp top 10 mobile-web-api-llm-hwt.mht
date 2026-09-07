@@ -1,0 +1,4127 @@
+MIME-Version: 1.0
+Content-Type: multipart/related; boundary="----=_NextPart_01DD3F3D.67724580"
+
+This document is a Single File Web Page, also known as a Web Archive file.  If you are seeing this message, your browser or editor doesn't support Web Archive files.  Please download a browser that supports Web Archive.
+
+------=_NextPart_01DD3F3D.67724580
+Content-Location: file:///C:/2F289A50/Owasptop10.htm
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html; charset="utf-8"
+
+<html xmlns:o=3D"urn:schemas-microsoft-com:office:office"
+xmlns:dt=3D"uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"
+xmlns=3D"http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=3DContent-Type content=3D"text/html; charset=3Dutf-8">
+<meta name=3DProgId content=3DOneNote.File>
+<meta name=3DGenerator content=3D"Microsoft OneNote 15">
+<link id=3DMain-File rel=3DMain-File href=3DOwasptop10.htm>
+<link rel=3DFile-List href=3D"Owasptop10_files/filelist.xml">
+</head>
+
+<body lang=3Den-IN style=3D'font-family:Calibri;font-size:18.0pt'>
+
+<div style=3D'direction:ltr;border-width:100%'>
+
+<div style=3D'direction:ltr;margin-top:0in;margin-left:0in;width:50.7895in'>
+
+<div style=3D'direction:ltr;margin-top:0in;margin-left:.075in;width:2.0986i=
+n'>
+
+<p style=3D'margin:0in;font-family:"Calibri Light";font-size:20.0pt' lang=
+=3Den-US>Owasp
+top 10</p>
+
+</div>
+
+<div style=3D'direction:ltr;margin-top:.0388in;margin-left:.075in;width:2.1=
+326in'>
+
+<p style=3D'margin:0in;font-family:Calibri;font-size:10.0pt;color:#767676'>=
+08
+September 2026</p>
+
+<p style=3D'margin:0in;font-family:Calibri;font-size:10.0pt;color:#767676'>=
+01:54
+AM</p>
+
+</div>
+
+<table border=3D0 cellpadding=3D0 cellspacing=3D0 cols=3D3 valign=3Dtop sty=
+le=3D'direction:
+ ltr;border-collapse:collapse;border-width:0pt;margin-top:.4305in;margin-le=
+ft:
+ 0in;width:46.3361in'>
+ <tr>
+  <td valign=3Dtop style=3D'vertical-align:top;margin:0in;padding:0pt;width=
+:1px;
+  height:1px;font-size:1pt'>
+  <p style=3D'font-size:1pt'>&nbsp;</p>
+  </td>
+  <td valign=3Dtop style=3D'vertical-align:top;margin:0in;padding:0pt;width=
+:21.7604in;
+  height:1px;font-size:1pt'>
+  <p style=3D'font-size:1pt'></p>
+  </td>
+  <td valign=3Dtop style=3D'vertical-align:top;margin:0in;padding:0pt;width=
+:5.4895in;
+  height:1px;font-size:1pt'>
+  <p style=3D'font-size:1pt'></p>
+  </td>
+  <td valign=3Dtop style=3D'vertical-align:top;margin:0in;padding:0pt;width=
+:19.0861in;
+  height:1px;font-size:1pt'>
+  <p style=3D'font-size:1pt'></p>
+  </td>
+ </tr>
+ <tr>
+  <td valign=3Dtop style=3D'vertical-align:top;margin:0in;padding:0pt;width=
+:1px;
+  height:.25in;font-size:1pt'>
+  <p style=3D'font-size:1pt'>&nbsp;</p>
+  </td>
+  <td rowspan=3D2 valign=3Dtop style=3D'vertical-align:top;margin:0in;paddi=
+ng:0pt;
+  width:21.7604in;height:28.5812in'>
+  <div style=3D'direction:ltr'>
+  <table border=3D0 cellpadding=3D0 cellspacing=3D0 valign=3Dtop style=3D'd=
+irection:ltr;
+   border-collapse:collapse;border-style:solid;border-color:#A3A3A3;border-=
+width:
+   0pt' title=3D"" summary=3D"">
+   <tr>
+    <td style=3D'border-width:0pt;vertical-align:top;width:1.2145in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>OWASP</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:2.7708in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold'>Vulnerability</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:10.0006in;paddin=
+g:
+    2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'font-weight:bold'>Practical testing / attack types</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:7.443in;padding:=
+2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>Recommendation / Protection</span></p>
+    </td>
+   </tr>
+   <tr>
+    <td style=3D'border-width:0pt;vertical-align:top;width:1.2145in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US>&nbsp;</p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:2.7708in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold'>Broken Access Control</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:10.0006in;paddin=
+g:
+    2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'font-weight:bold' lang=3Den-IN>1. Parameter tampering:</span><=
+span
+    lang=3Den-IN> URL/request me </span><span lang=3Den-US>id</span><span
+    lang=3Den-IN>, </span><span lang=3Den-US>user_id</span><span lang=3Den-=
+IN>, </span><span
+    lang=3Den-US>account_id</span><span lang=3Den-IN> jaise identifiers cha=
+nge
+    karke doosre user's object ko access karne ki koshish. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'font-weight:bold' lang=3Den-US>2. Guess/forced browsing:</span=
+><span
+    lang=3Den-IN> </span><span lang=3Den-US>/admin</span><span lang=3Den-IN=
+>, </span><span
+    lang=3Den-US>/admin/users</span><span lang=3Den-IN>, </span><span lang=
+=3Den-US>/manage</span><span
+    lang=3Den-IN> jaise restricted functions ko normal user session se requ=
+est
+    karna. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'font-weight:bold' lang=3Den-US>3. UI bypass:</span><span lang=
+=3Den-IN>
+    browser ke buttons/menus ko ignore karke Burp se backend request direct=
+ly
+    bhejna. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'font-weight:bold' lang=3Den-US>4. HTTP method tampering:</span=
+><span
+    lang=3Den-IN> GET se blocked operation ko POST/PUT/DELETE ke through try
+    karna. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'font-weight:bold' lang=3Den-US>5. Horizontal privilege test:</=
+span><span
+    lang=3Den-IN> User A =E2=86=92 User B resource. </span><span style=3D'f=
+ont-weight:bold'
+    lang=3Den-US>6. Vertical privilege test:</span><span lang=3Den-IN> norm=
+al user
+    =E2=86=92 admin function.</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:7.443in;padding:=
+2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>1. Authorization server-side enforce karo. <=
+/span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>2. Deny-by-default follow karo. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>3. Centralized access-control policy use kar=
+o. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>4. Har sensitive object/function par authori=
+zation
+    check lagao.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'><span style=3D'mso-spacerun:yes'>=C2=A0</spa=
+n>5.
+    Security-event logging + alerting enable karo. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>6. Rate limiting/abuse controls lagao. </spa=
+n></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>7. Logout par session invalidate karo. </spa=
+n></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>8. Client-side restrictions par trust mat ka=
+ro.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'>&nbsp;</p>
+    </td>
+   </tr>
+   <tr>
+    <td style=3D'border-width:0pt;vertical-align:top;width:1.2145in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US>&nbsp;</p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:2.7708in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold'>Security Misconfiguration</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:10.0006in;paddin=
+g:
+    2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'font-weight:bold'>1. Verbose error:</span> invalid request dek=
+ar
+    stack trace/version/path disclosure check.</p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    lang=3Den-IN><span style=3D'mso-spacerun:yes'>=C2=A0</span></span><span
+    style=3D'font-weight:bold' lang=3Den-US>2. Debug mode:</span><span lang=
+=3Den-IN>
+    debug pages/config exposed hain ya nahi. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'font-weight:bold' lang=3Den-US>3. Default credentials:</span><=
+span
+    lang=3Den-IN> test environment me default/admin credentials remain to n=
+ahi. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'font-weight:bold' lang=3Den-US>4. HTTP methods:</span><span
+    lang=3Den-IN> unnecessary OPTIONS/PUT/DELETE etc. enabled.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    lang=3Den-IN><span style=3D'mso-spacerun:yes'>=C2=A0</span></span><span
+    style=3D'font-weight:bold' lang=3Den-US>5. CORS:</span><span lang=3Den-=
+IN> overly
+    broad origins/credentials</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    lang=3Den-IN>. </span><span style=3D'font-weight:bold' lang=3Den-US>6. =
+Security
+    headers:</span><span lang=3Den-IN> CSP, HSTS, X-Content-Type-Options et=
+c.
+    review.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    lang=3Den-IN><span style=3D'mso-spacerun:yes'>=C2=A0</span></span><span
+    style=3D'font-weight:bold' lang=3Den-US>7. Exposed admin/management end=
+point.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    lang=3Den-IN><span style=3D'mso-spacerun:yes'>=C2=A0</span></span><span
+    style=3D'font-weight:bold' lang=3Den-US>8. Directory listing / backup f=
+iles.</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:7.443in;padding:=
+2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>1. Secure baseline/configuration standard ma=
+intain
+    karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'><span style=3D'mso-spacerun:yes'>=C2=A0</spa=
+n>2. Debug
+    disable karo. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>3. Default accounts/credentials remove/change
+    karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'><span style=3D'mso-spacerun:yes'>=C2=A0</spa=
+n>4.
+    Unnecessary services/features disable karo. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>5. Management interface restrict karo. </spa=
+n></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>6. CORS explicitly allowlist karo. </span></=
+p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>7. Safe error messages use karo. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>8. Secure headers and TLS configuration impl=
+ement
+    karo. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>9. Regular configuration review karo.</span>=
+</p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'>&nbsp;</p>
+    </td>
+   </tr>
+   <tr>
+    <td style=3D'border-width:0pt;vertical-align:top;width:1.2145in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US>&nbsp;</p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:2.7708in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold'>Software Supply Chain Failures</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:10.0006in;paddin=
+g:
+    2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'font-weight:bold'>1. Dependency inventory:</span>
+    libraries/frameworks identify karo. </p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'font-weight:bold' lang=3Den-US>2. Version analysis:</span><span
+    lang=3Den-IN> old/vulnerable versions identify karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    lang=3Den-IN><span style=3D'mso-spacerun:yes'>=C2=A0</span></span><span
+    style=3D'font-weight:bold' lang=3Den-US>3. Transitive dependency review=
+:</span><span
+    lang=3Den-IN> dependency ki dependency bhi check karo. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'
+    lang=3Den-US><span style=3D'font-weight:bold'>4. SBOM verification. </s=
+pan></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'font-weight:bold' lang=3Den-US>5. Package source review:</span=
+><span
+    lang=3Den-IN> trusted repository use ho rahi hai ya nahi. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'font-weight:bold' lang=3Den-US>6. CI/CD review:</span><span
+    lang=3Den-IN> build pipeline me unauthorized modification possible hai =
+ya
+    nahi. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'font-weight:bold' lang=3Den-US>7. Artifact integrity:</span><s=
+pan
+    lang=3Den-IN> build/release artifacts signed/verified hain ya nahi.**</=
+span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:7.443in;padding:=
+2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>1. SBOM maintain karo. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>2. SCA scanning implement karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'><span style=3D'mso-spacerun:yes'>=C2=A0</spa=
+n>3.
+    Dependencies pin/verify karo. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>4. Trusted repositories use karo. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>5. CI/CD pipeline protect karo. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>6. Build/release artifacts sign &amp; verify=
+ karo.
+    </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>7. Dependency patch SLA define karo. </span>=
+</p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>8. Unsupported components remove/upgrade kar=
+o.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'>&nbsp;</p>
+    </td>
+   </tr>
+   <tr>
+    <td style=3D'border-width:0pt;vertical-align:top;width:1.2145in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US>&nbsp;</p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:2.7708in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold'>Cryptographic Failures</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:10.0006in;paddin=
+g:
+    2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'font-weight:bold'>1. Sensitive data over HTTP:</span>
+    credentials/session/PII insecure transport par ja raha hai ya nahi.</p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    lang=3Den-IN><span style=3D'mso-spacerun:yes'>=C2=A0</span></span><span
+    style=3D'font-weight:bold' lang=3Den-US>2. TLS review:</span><span lang=
+=3Den-IN>
+    weak protocol/cipher/certificate configuration.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    lang=3Den-IN><span style=3D'mso-spacerun:yes'>=C2=A0</span></span><span
+    style=3D'font-weight:bold' lang=3Den-US>3. Cookie security:</span><span
+    lang=3Den-IN> Secure/HttpOnly/SameSite flags. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'font-weight:bold' lang=3Den-US>4. Password storage:</span><span
+    lang=3Den-IN> plaintext/weak hashing indication.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    lang=3Den-IN><span style=3D'mso-spacerun:yes'>=C2=A0</span></span><span
+    style=3D'font-weight:bold' lang=3Den-US>5. Hardcoded secrets/keys:</spa=
+n><span
+    lang=3Den-IN> application code/config me secrets. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'>**6.
+    Weak/deprecated algorithm usage.</p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    lang=3Den-IN><span style=3D'mso-spacerun:yes'>=C2=A0</span></span><span
+    style=3D'font-weight:bold' lang=3Den-US>7. Sensitive data unnecessarily=
+ stored.</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:7.5541in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>1. Sensitive traffic ke liye strong TLS use =
+karo. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>2. Passwords ko dedicated password-hashing
+    algorithms se store karo. 3. Keys ko application source se separate rak=
+ho. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>4. Centralized key management use karo. </sp=
+an></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>5. Deprecated crypto remove karo. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>6. Sensitive data minimize karo. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>7. Secure cookie attributes configure karo. =
+</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>8. Key rotation/revocation process rakho.</s=
+pan></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'>&nbsp;</p>
+    </td>
+   </tr>
+   <tr>
+    <td style=3D'border-width:0pt;vertical-align:top;width:1.2145in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US>&nbsp;</p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:2.7708in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold'>Injection</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:10.0006in;paddin=
+g:
+    2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'font-weight:bold'>1. SQL injection:</span> parameters/search/f=
+ilter
+    inputs ko controlled test values se test karna.</p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    lang=3Den-IN><span style=3D'mso-spacerun:yes'>=C2=A0</span></span><span
+    style=3D'font-weight:bold' lang=3Den-US>2. NoSQL injection:</span><span
+    lang=3Den-IN> JSON/query operators ke handling test.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    lang=3Den-IN><span style=3D'mso-spacerun:yes'>=C2=A0</span></span><span
+    style=3D'font-weight:bold' lang=3Den-US>3. OS command injection:</span>=
+<span
+    lang=3Den-IN> user input command execution context tak pahunchta hai ya=
+ nahi.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    lang=3Den-IN><span style=3D'mso-spacerun:yes'>=C2=A0</span></span><span
+    style=3D'font-weight:bold' lang=3Den-US>4. LDAP injection. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'
+    lang=3Den-US><span style=3D'font-weight:bold'>5. Template injection.</s=
+pan></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'
+    lang=3Den-US><span style=3D'font-weight:bold'><span
+    style=3D'mso-spacerun:yes'>=C2=A0</span>6. Header-based injection.</spa=
+n></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'font-weight:bold' lang=3Den-US><span
+    style=3D'mso-spacerun:yes'>=C2=A0</span>7. XML/XPath injection where ap=
+plicable.</span><span
+    lang=3Den-IN> Testing me baseline request vs modified request compare k=
+aro
+    aur backend error/behavior observe karo.</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:7.443in;padding:=
+2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>1. Parameterized queries/prepared statements=
+ use
+    karo. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>2. User input ko command string me concatena=
+te mat
+    karo. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>3. Allowlist validation use karo jahan pract=
+ical
+    ho. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>4. Context-aware output encoding karo. 5</sp=
+an></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>. Safe framework APIs use karo. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>6. Backend service accounts ko least privile=
+ge do.
+    </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>7. Unnecessary interpreters/shell execution =
+avoid
+    karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'>&nbsp;</p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'>&nbsp;</p>
+    </td>
+   </tr>
+   <tr>
+    <td style=3D'border-width:0pt;vertical-align:top;width:1.2145in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US>&nbsp;</p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:2.7708in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold'>Insecure Design</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:10.0006in;paddin=
+g:
+    2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'font-weight:bold'>1. Business-logic abuse:</span> workflow ko
+    expected sequence se bahar execute karna.</p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    lang=3Den-IN><span style=3D'mso-spacerun:yes'>=C2=A0</span></span><span
+    style=3D'font-weight:bold' lang=3Den-US>2. Trust-boundary testing:</spa=
+n><span
+    lang=3Den-IN> client-side value par excessive trust.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    lang=3Den-IN><span style=3D'mso-spacerun:yes'>=C2=A0</span></span><span
+    style=3D'font-weight:bold' lang=3Den-US>3. Missing anti-automation cont=
+rols.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'
+    lang=3Den-US><span style=3D'font-weight:bold'><span
+    style=3D'mso-spacerun:yes'>=C2=A0</span>4. Missing transaction limits.<=
+/span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'
+    lang=3Den-US><span style=3D'font-weight:bold'><span
+    style=3D'mso-spacerun:yes'>=C2=A0</span>5. Password-reset/account-recov=
+ery design
+    weaknesses.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'
+    lang=3Den-US><span style=3D'font-weight:bold'><span
+    style=3D'mso-spacerun:yes'>=C2=A0</span>6. Multi-step process me author=
+ization
+    missing. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'
+    lang=3Den-US><span style=3D'font-weight:bold'>7. Threat-model gaps iden=
+tify
+    karna.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'
+    lang=3Den-US>&nbsp;</p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:7.443in;padding:=
+2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>1. Threat modeling development se pehle karo=
+. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>2. Abuse cases define karo. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>3. Security requirements architecture me inc=
+lude
+    karo. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>4. Server-side business rules enforce karo. =
+</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>5. Sensitive workflows par transaction limit=
+s/risk
+    controls lagao. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>6. Security design review mandatory karo.</s=
+pan></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'>&nbsp;</p>
+    </td>
+   </tr>
+   <tr>
+    <td style=3D'border-width:0pt;vertical-align:top;width:1.2145in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US>&nbsp;</p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:2.7708in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold'>Authentication Failures</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:10.0006in;paddin=
+g:
+    2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'font-weight:bold'>1. Login bypass attempts. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'font-weight:bold'>2. Weak password policy. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'font-weight:bold'>3. Brute-force/rate-limit testing in authori=
+zed
+    lab.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'font-weight:bold'><span style=3D'mso-spacerun:yes'>=C2=A0</spa=
+n>4. Session
+    fixation. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'font-weight:bold'>5. Session token reuse after logout. </span>=
+</p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'font-weight:bold'>6. Password-reset workflow testing. </span><=
+/p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'font-weight:bold'>7. MFA enforcement/flow review. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'font-weight:bold'>8. Remember-me/session persistence review. <=
+/span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'font-weight:bold'>9. Reauthentication for sensitive actions.</=
+span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'>&nbsp;</p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:7.443in;padding:=
+2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>1. Strong authentication mechanism use karo.=
+ </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>2. MFA implement karo where appropriate. </s=
+pan></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>3. Rate-limit login attempts. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>4. Session rotate karo after
+    authentication/privilege change. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>5. Logout par session/token invalidate karo.=
+ </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>6. Secure password recovery implement karo. =
+</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>7. Sensitive actions ke liye reauthenticatio=
+n use
+    karo. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>8. Authentication events log/monitor karo.</=
+span></p>
+    </td>
+   </tr>
+   <tr>
+    <td style=3D'border-width:0pt;vertical-align:top;width:1.2145in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US>&nbsp;</p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:2.7708in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold'>Software or Data Integrity Failures</span></=
+p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:10.0006in;paddin=
+g:
+    2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'font-weight:bold'>1. Insecure update mechanism.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'font-weight:bold'><span style=3D'mso-spacerun:yes'>=C2=A0</spa=
+n>2.
+    Unsigned/unverified software artifacts</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'font-weight:bold'>. 3. CI/CD artifact manipulation possibility=
+.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'font-weight:bold'><span style=3D'mso-spacerun:yes'>=C2=A0</spa=
+n>4. Unsafe
+    deserialization paths. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'font-weight:bold'>5. Client/server data integrity assumptions<=
+/span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'font-weight:bold'>. 6. Third-party package/artifact trust revi=
+ew.</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:7.443in;padding:=
+2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>1. Software/artifacts sign karo. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>2. Signature/integrity verify karo.</span></=
+p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'><span style=3D'mso-spacerun:yes'>=C2=A0</spa=
+n>3. CI/CD
+    access strongly protect karo. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>4. Unsafe deserialization avoid karo. </span=
+></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>5. Build provenance maintain karo. </span></=
+p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>6. Deployment pipeline me integrity checks
+    mandatory karo. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>7. Least privilege apply karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'>&nbsp;</p>
+    </td>
+   </tr>
+   <tr>
+    <td style=3D'border-width:0pt;vertical-align:top;width:1.2145in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US>&nbsp;</p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:2.7708in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold'>Security Logging and Alerting Failures</span=
+></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:10.0006in;paddin=
+g:
+    2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'font-weight:bold'>1. Failed login generate karo =E2=86=92 log =
+banta hai ya
+    nahi.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'font-weight:bold'><span style=3D'mso-spacerun:yes'>=C2=A0</spa=
+n>2.
+    Unauthorized admin access attempt =E2=86=92 alert generate hota hai ya =
+nahi.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'font-weight:bold'><span style=3D'mso-spacerun:yes'>=C2=A0</spa=
+n>3.
+    Privilege change =E2=86=92 audit event verify. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'font-weight:bold'>4. Password reset/account change =E2=86=92 a=
+udit trail
+    check. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'font-weight:bold'>5. Input/security failures =E2=86=92 logging=
+ verify.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'font-weight:bold'><span style=3D'mso-spacerun:yes'>=C2=A0</spa=
+n>6. Log
+    fields: timestamp, user, source, action, result, correlation ID. </span=
+></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'font-weight:bold'>7. Check whether logs can be modified/delete=
+d by
+    normal users.</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:7.443in;padding:=
+2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>1. Security events centrally log karo. </spa=
+n></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>2. SIEM integration karo. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>3. High-risk events par alerts banao. </span=
+></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>4. Logs tamper-resistant rakho. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>5. Time synchronization maintain karo. </spa=
+n></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>6. Log retention policy define karo. </span>=
+</p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>7. Monitoring + incident-response playbooks =
+link
+    karo. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>8. Sensitive data ko logs me unnecessarily s=
+tore
+    mat karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'>&nbsp;</p>
+    </td>
+   </tr>
+   <tr>
+    <td style=3D'border-width:0pt;vertical-align:top;width:1.2145in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US>&nbsp;</p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:2.7708in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold'>Mishandling of Exceptional Conditions</span>=
+</p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:10.0006in;paddin=
+g:
+    2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'>**1.
+    Invalid input/state tests.</p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'mso-spacerun:yes'>=C2=A0</span>2. Missing parameters.</p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'mso-spacerun:yes'>=C2=A0</span>3. Timeout/connection-failure b=
+ehavior.</p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'mso-spacerun:yes'>=C2=A0</span>4. Unexpected server response. =
+</p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'>5.
+    Concurrent request/state handling.</p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'mso-spacerun:yes'>=C2=A0</span>6. Transaction failure halfway =
+through
+    workflow.</p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    lang=3Den-IN><span style=3D'mso-spacerun:yes'>=C2=A0</span>7. Error han=
+dling me
+    fail-open behavior check. </span><span style=3D'font-weight:bold' lang=
+=3Den-US>Goal:</span><span
+    lang=3Den-IN> exception ke time security control bypass hota hai ya
+    fail-closed?</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:7.443in;padding:=
+2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>1. Fail-closed design follow karo. </span></=
+p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>2. Centralized exception handling use karo. =
+</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>3. Sensitive information error response me e=
+xpose
+    mat karo. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>4. Transaction rollback/integrity ensure kar=
+o. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>5. Timeouts properly handle karo. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>6. Concurrency/state controls implement karo=
+. </span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>7. Exceptional events ko security logs me ca=
+pture
+    karo.</span></p>
+    </td>
+   </tr>
+  </table>
+  </div>
+  </td>
+  <td valign=3Dtop style=3D'vertical-align:top;margin:0in;padding:0pt;width=
+:5.4895in;
+  height:.25in;font-size:1pt'>
+  <p style=3D'font-size:1pt'></p>
+  </td>
+  <td valign=3Dtop style=3D'vertical-align:top;margin:0in;padding:0pt;width=
+:19.0861in;
+  height:.25in;font-size:1pt'>
+  <p style=3D'font-size:1pt'></p>
+  </td>
+ </tr>
+ <tr>
+  <td valign=3Dtop style=3D'vertical-align:top;margin:0in;padding:0pt;width=
+:1px;
+  height:28.3312in;font-size:1pt'>
+  <p style=3D'font-size:1pt'>&nbsp;</p>
+  </td>
+  <td valign=3Dtop style=3D'vertical-align:top;margin:0in;padding:0pt;width=
+:5.4895in;
+  height:28.3312in;font-size:1pt'>
+  <p style=3D'font-size:1pt'></p>
+  </td>
+  <td rowspan=3D2 valign=3Dtop style=3D'vertical-align:top;margin:0in;paddi=
+ng:0pt;
+  width:19.0861in;height:29.0493in'>
+  <div style=3D'direction:ltr'>
+  <table border=3D0 cellpadding=3D0 cellspacing=3D0 valign=3Dtop style=3D'd=
+irection:ltr;
+   border-collapse:collapse;border-style:solid;border-color:#A3A3A3;border-=
+width:
+   0pt' title=3D"" summary=3D"">
+   <tr>
+    <td style=3D'border-width:0pt;vertical-align:top;width:1.4784in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>OWASP</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:1.7194in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'font-weight:bold'>Vulnerability</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:9.3937in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>Practical testing / attack types</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:6.1638in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>Recommendation / Protection</span></p>
+    </td>
+   </tr>
+   <tr>
+    <td style=3D'border-width:0pt;vertical-align:top;width:1.4979in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>LLM01:2025</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:1.7194in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'font-weight:bold'>Prompt Injection</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:9.3937in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>1. Direct prompt injection:</span> user prom=
+pt ke
+    through model ke intended behavior/instructions ko alter karne ki koshi=
+sh.</p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>2. Instruction override:</span>=
+<span
+    lang=3Den-IN> system/developer instructions ko ignore karne ke liye
+    conflicting instructions dena.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>3. Context manipulation:</span>=
+<span
+    lang=3Den-IN> prompt mein fake roles, priorities ya authority introduce
+    karna.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>4. Indirect prompt injection:</=
+span><span
+    lang=3Den-IN> RAG/document/web content mein malicious instructions embed
+    karke model se unhe follow karwane ki koshish.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>5. Multi-turn injection:</span>=
+<span
+    lang=3Den-IN> multiple conversations ke through model behavior gradually
+    manipulate karna.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>6. Tool-oriented injection:</sp=
+an><span
+    lang=3Den-IN> model ko unintended tool/function call karne ke liye infl=
+uence
+    karna.</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:6.3791in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>1. User input aur trusted instructions ko
+    logically separate rakho.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>2. Least-privilege tool access do.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>3. Model output ko authorization mechanism m=
+at
+    banao.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>4. External/RAG content ko untrusted treat k=
+aro.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>5. Tool calls par independent policy validat=
+ion
+    lagao.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>6. High-impact actions ke liye human
+    approval/confirmation use karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>7. Prompt-injection detection + monitoring
+    implement karo.</span></p>
+    </td>
+   </tr>
+   <tr>
+    <td style=3D'border-width:0pt;vertical-align:top;width:1.4979in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>LLM02:2025</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:1.7194in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'font-weight:bold'>Sensitive Information Disclosure</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:9.3937in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>1. Sensitive-data prompting:</span> model se
+    confidential information reveal karne ki controlled lab testing.</p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>2. Context leakage:</span><span
+    lang=3Den-IN> current conversation/context mein doosre user's confident=
+ial
+    data exposure check.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>3. RAG leakage:</span><span lan=
+g=3Den-IN>
+    restricted documents retrieve ho rahe hain ya nahi.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>4. PII exposure:</span><span
+    lang=3Den-IN> names, email, financial, credentials, internal data outpu=
+t mein
+    appear ho raha hai ya nahi.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>5. Memory/session isolation:</s=
+pan><span
+    lang=3Den-IN> ek session/user ka information doosre context mein access=
+ible
+    hai ya nahi.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>6. Error/debug disclosure:</spa=
+n><span
+    lang=3Den-IN> backend errors, API responses ya traces mein secrets leak=
+ ho
+    rahe hain ya nahi.</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:6.2756in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>1. Data classification + minimization karo.<=
+/span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>2. Sensitive data ko model context mein
+    unnecessary mat bhejo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>3. RAG access-control enforce karo.</span></=
+p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>4. PII/secret detection and redaction use ka=
+ro.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>5. Tenant/session isolation enforce karo.</s=
+pan></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>6. Secrets ko prompts/system context mein ha=
+rdcode
+    mat karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>7. Output DLP controls implement karo.</span=
+></p>
+    </td>
+   </tr>
+   <tr>
+    <td style=3D'border-width:0pt;vertical-align:top;width:1.4979in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>LLM03:2025</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:1.7194in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'font-weight:bold'>Supply Chain</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:9.3937in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>1. Model provenance:</span> model/source ver=
+ify
+    karo.</p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>2. Third-party model/plug=
+in/SDK
+    inventory.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>3. Dependency vulnerabili=
+ty
+    review.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>4. Model/package integrity:</sp=
+an><span
+    lang=3Den-IN> downloaded model/artifact tampered to nahi.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>5. Dataset/source trust r=
+eview.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>6. Build/deployment pipel=
+ine
+    security.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>7. Dependency
+    substitution/typosquatting risks review.</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:6.2756in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>1. Trusted model repositories use karo.</spa=
+n></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>2. Model/artifact integrity verify karo.</sp=
+an></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>3. SBOM/dependency inventory maintain karo.<=
+/span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>4. Third-party models/plugins evaluate karo.=
+</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>5. CI/CD pipeline protect karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>6. Dependencies pin/verify karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>7. Model provenance aur version tracking mai=
+ntain
+    karo.</span></p>
+    </td>
+   </tr>
+   <tr>
+    <td style=3D'border-width:0pt;vertical-align:top;width:1.4979in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>LLM04:2025</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:1.7194in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'font-weight:bold'>Data and Model Poisoning</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:9.3937in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>1. Training-data integrity:</span>
+    unauthorized/malicious records identify karo.</p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>2. Fine-tuning dataset review:<=
+/span><span
+    lang=3Den-IN> malicious samples/instructions detect karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>3. RAG data poisoning:</span><s=
+pan
+    lang=3Den-IN> indexed documents mein manipulated content check karo.</s=
+pan></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>4. Embedding poisoning:</span><=
+span
+    lang=3Den-IN> malicious content retrieval ranking ko influence kar raha=
+ hai
+    ya nahi.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>5. Backdoor behavior:</span><sp=
+an
+    lang=3Den-IN> specific trigger/input par abnormal model behavior test k=
+aro.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>6. Data-source trust:</span><sp=
+an
+    lang=3Den-IN> external ingestion pipeline verify karo.</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:6.2756in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>1. Training/fine-tuning data provenance main=
+tain
+    karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>2. Dataset validation and sanitization karo.=
+</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>3. Trusted sources use karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>4. Data integrity/signing/versioning impleme=
+nt
+    karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>5. RAG ingestion pipeline secure karo.</span=
+></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>6. Dataset changes review/approve karo.</spa=
+n></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>7. Model behavior baseline + regression test=
+ing
+    maintain karo.</span></p>
+    </td>
+   </tr>
+   <tr>
+    <td style=3D'border-width:0pt;vertical-align:top;width:1.4979in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>LLM05:2025</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:1.7194in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'font-weight:bold'>Improper Output Handling</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:9.3937in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>1. XSS-style testing:</span> model output di=
+rectly
+    HTML/UI mein render ho raha hai ya nahi.</p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>2. SQL/command sink:</span><span
+    lang=3Den-IN> LLM-generated output backend query/command mein directly =
+pass
+    ho raha hai ya nahi.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>3. Code execution:</span><span
+    lang=3Den-IN> generated code automatically execute to nahi hota.</span>=
+</p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>4. URL/output injection:</span>=
+<span
+    lang=3Den-IN> model-generated URLs/markup blindly trusted to nahi.</spa=
+n></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>5. Structured output manipulati=
+on:</span><span
+    lang=3Den-IN> JSON/function arguments validate ho rahe hain ya nahi.</s=
+pan></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>6. Markdown/HTML rendering:</sp=
+an><span
+    lang=3Den-IN> unsafe content browser/client mein interpreted to nahi.</=
+span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:6.2756in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>1. LLM output ko untrusted input treat karo.=
+</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US>&nbsp;</p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>2. Context-specific encoding/sanitization ka=
+ro.3.
+    SQL/command inputs ke liye parameterization use karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>4. Generated code ko automatically execute m=
+at
+    karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>5. Structured output schema validate karo.</=
+span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>6. Tool arguments ko independent
+    authorization/policy checks se validate karo.</span></p>
+    </td>
+   </tr>
+   <tr>
+    <td style=3D'border-width:0pt;vertical-align:top;width:1.4979in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>LLM06:2025</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:1.7194in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'font-weight:bold'>Excessive Agency</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:9.4131in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>1. Tool inventory:</span> model kin
+    tools/functions ko call kar sakta hai.</p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>2. Excessive permissions:</span=
+><span
+    lang=3Den-IN> model ko required se zyada privileges diye gaye hain ya n=
+ahi.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>3. Autonomous action:</span><sp=
+an
+    lang=3Den-IN> model sensitive action human approval ke bina execute kar=
+ sakta
+    hai ya nahi.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>4. Chained actions:</span><span
+    lang=3Den-IN> ek low-risk request se multiple high-impact tool calls po=
+ssible
+    hain ya nahi.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>5. Parameter manipulation:</spa=
+n><span
+    lang=3Den-IN> generated tool arguments insufficiently checked hain ya n=
+ahi.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>6. Cross-system access:</span><=
+span
+    lang=3Den-IN> model unnecessary external systems/resources access kar s=
+akta
+    hai ya nahi.</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:6.125in;padding:=
+2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>1. Least privilege apply karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>2. Tool/function allowlist maintain karo.</s=
+pan></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>3. High-risk actions ke liye human approval =
+rakho.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>4. Every tool call ko independently authorize
+    karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>5. Tool arguments schema-validate karo.</spa=
+n></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>6. Blast radius limit karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>7. Tool execution logging + monitoring enable
+    karo.</span></p>
+    </td>
+   </tr>
+   <tr>
+    <td style=3D'border-width:0pt;vertical-align:top;width:1.4979in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>LLM07:2025</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:1.7194in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'font-weight:bold'>System Prompt Leakage</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:9.3937in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>1. System-instruction disclosure testing:</s=
+pan>
+    model se hidden instructions disclose karne ke attempts.</p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>2. Indirect extraction:</span><=
+span
+    lang=3Den-IN> conversation/context manipulation ke through hidden
+    instructions reveal hote hain ya nahi.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>3. Role/format tricks:</span><s=
+pan
+    lang=3Den-IN> output formatting ke through hidden configuration expose =
+hoti
+    hai ya nahi.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>4. Error-based disclosure:</spa=
+n><span
+    lang=3Den-IN> malformed requests se system/developer instructions leak =
+hoti
+    hain ya nahi.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>5. Secret placement review:</sp=
+an><span
+    lang=3Den-IN> API keys/passwords/confidential policy system prompt mein
+    stored hain ya nahi.</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:6.2756in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>1. System prompt ko secret-storage mechanism=
+ mat
+    samjho.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>2. Secrets prompt mein store mat karo.</span=
+></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>3. Sensitive authorization logic backend ser=
+vices
+    mein enforce karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>4. Prompt disclosure ko catastrophic impact =
+na
+    banne do.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>5. Sensitive configuration ko model context =
+se
+    separate rakho.</span></p>
+    </td>
+   </tr>
+   <tr>
+    <td style=3D'border-width:0pt;vertical-align:top;width:1.4979in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>LLM08:2025</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:1.7194in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'font-weight:bold'>Vector and Embedding Weaknesses</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:9.3937in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>1. RAG authorization test:</span> User A
+    restricted document ko retrieve kar sakta hai ya nahi.</p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>2. Cross-tenant retrieval:</spa=
+n><span
+    lang=3Den-IN> tenant A ke query results mein tenant B data appear hota =
+hai ya
+    nahi.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>3. Document poisoning:</span><s=
+pan
+    lang=3Den-IN> malicious/incorrect indexed content retrieval influence k=
+ar
+    raha hai ya nahi.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>4. Metadata manipulation:</span=
+><span
+    lang=3Den-IN> document metadata/ACLs tamperable hain ya nahi.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>5. Embedding collision/similari=
+ty
+    issues:</span><span lang=3Den-IN> unintended documents retrieval mein a=
+a rahe
+    hain ya nahi.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>6. Retrieval boundary testing:<=
+/span><span
+    lang=3Den-IN> top-k/filters ke through restricted content expose to nah=
+i.</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:6.2756in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>1. Retrieval-time authorization enforce karo=
+.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>2. Document-level ACL metadata protect karo.=
+</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>3. Tenant isolation enforce karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>4. Ingested content validate/sanitize karo.<=
+/span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>5. Trusted embedding pipeline use karo.</spa=
+n></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>6. Metadata integrity protect karo.</span></=
+p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>7. Retrieval results ko user permissions ke
+    against filter karo.</span></p>
+    </td>
+   </tr>
+   <tr>
+    <td style=3D'border-width:0pt;vertical-align:top;width:1.4979in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>LLM09:2025</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:1.7256in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'font-weight:bold'>Misinformation</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:9.3937in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>1. Factuality testing:</span> known-answer
+    questions ke against model response compare karo.</p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>2. Hallucination testing:</span=
+><span
+    lang=3Den-IN> model unsupported facts invent karta hai ya nahi.</span><=
+/p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>3. RAG grounding:</span><span
+    lang=3Den-IN> answer retrieved source se actually supported hai ya nahi=
+.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>4. Citation verification:</span=
+><span
+    lang=3Den-IN> model citations/source references valid hain ya nahi.</sp=
+an></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>5. Confidence testing:</span><s=
+pan
+    lang=3Den-IN> incorrect answer ko excessive certainty ke saath present =
+karta
+    hai ya nahi.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>6. High-impact domain testing:<=
+/span><span
+    lang=3Den-IN> sensitive decision workflows mein unsupported output use =
+ho
+    raha hai ya nahi.</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:6.3791in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>1. Grounding/RAG use karo where appropriate.=
+</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>2. Source verification implement karo.</span=
+></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>3. High-impact decisions ke liye human review
+    rakho.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>4. Confidence/uncertainty appropriately
+    communicate karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>5. Automated factuality/regression tests mai=
+ntain
+    karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>6. Model output ko sole authoritative source=
+ mat
+    banao.</span></p>
+    </td>
+   </tr>
+   <tr>
+    <td style=3D'border-width:0pt;vertical-align:top;width:1.4979in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>LLM10:2025</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:1.7194in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#7030=
+A0'><span
+    style=3D'font-weight:bold'>Unbounded Consumption</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:9.3937in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>1. Large-input testing:</span> excessive
+    prompt/context size handling check.</p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>2. Large-output testing:</span>=
+<span
+    lang=3Den-IN> maximum output/token limits verify karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>3. Repeated request testing:</s=
+pan><span
+    lang=3Den-IN> controlled lab mein rate limiting/throttling check karo.<=
+/span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>4. Expensive operation testing:=
+</span><span
+    lang=3Den-IN> repeated tool/model calls ka cost/resource impact check k=
+aro.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>5. Recursive/agent loop:</span>=
+<span
+    lang=3Den-IN> workflow uncontrolled repeated calls kar sakta hai ya nah=
+i.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>6. File/context processing limi=
+ts:</span><span
+    lang=3Den-IN> very large uploads/context windows handle kaise hote hain=
+.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>7. Quota bypass:</span><span
+    lang=3Den-IN> user/IP/API key limits properly enforce ho rahe hain ya n=
+ahi.</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:6.2756in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>1. Input/token limits set karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>2. Output/token limits set karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>3. Per-user/API-key rate limiting implement =
+karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>4. Model/tool call budgets define karo.</spa=
+n></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>5. Agent loops ke maximum iterations rakho.<=
+/span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>6. File/context size limits rakho.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>7. Cost/resource monitoring + alerting imple=
+ment
+    karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>8. Quotas and circuit breakers use karo.</sp=
+an></p>
+    </td>
+   </tr>
+  </table>
+  </div>
+  <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-US=
+>&nbsp;</p>
+  <p><cite style=3D'margin:0in;font-family:Calibri;font-size:9.0pt;color:#5=
+95959'>From
+  &lt;<a href=3D"https://chatgpt.com/c/6a9ecae4-2c24-83ee-ace2-797d21d9eea6=
+">https://chatgpt.com/c/6a9ecae4-2c24-83ee-ace2-797d21d9eea6</a>&gt;
+  </cite></p>
+  </td>
+ </tr>
+ <tr>
+  <td valign=3Dtop style=3D'vertical-align:top;margin:0in;padding:0pt;width=
+:1px;
+  height:.718in;font-size:1pt'>
+  <p style=3D'font-size:1pt'>&nbsp;</p>
+  </td>
+  <td valign=3Dtop style=3D'vertical-align:top;margin:0in;padding:0pt;width=
+:21.7604in;
+  height:.718in;font-size:1pt'>
+  <p style=3D'font-size:1pt'></p>
+  </td>
+  <td valign=3Dtop style=3D'vertical-align:top;margin:0in;padding:0pt;width=
+:5.4895in;
+  height:.718in;font-size:1pt'>
+  <p style=3D'font-size:1pt'></p>
+  </td>
+ </tr>
+</table>
+
+<table border=3D0 cellpadding=3D0 cellspacing=3D0 cols=3D3 valign=3Dtop sty=
+le=3D'direction:
+ ltr;border-collapse:collapse;border-width:0pt;margin-top:4.2006in;margin-l=
+eft:
+ 1.5in;width:49.2895in'>
+ <tr>
+  <td valign=3Dtop style=3D'vertical-align:top;margin:0in;padding:0pt;width=
+:1px;
+  height:1px;font-size:1pt'>
+  <p style=3D'font-size:1pt'>&nbsp;</p>
+  </td>
+  <td valign=3Dtop style=3D'vertical-align:top;margin:0in;padding:0pt;width=
+:24.2131in;
+  height:1px;font-size:1pt'>
+  <p style=3D'font-size:1pt'></p>
+  </td>
+  <td valign=3Dtop style=3D'vertical-align:top;margin:0in;padding:0pt;width=
+:1.7868in;
+  height:1px;font-size:1pt'>
+  <p style=3D'font-size:1pt'></p>
+  </td>
+  <td valign=3Dtop style=3D'vertical-align:top;margin:0in;padding:0pt;width=
+:23.2895in;
+  height:1px;font-size:1pt'>
+  <p style=3D'font-size:1pt'></p>
+  </td>
+ </tr>
+ <tr>
+  <td valign=3Dtop style=3D'vertical-align:top;margin:0in;padding:0pt;width=
+:1px;
+  height:.75in;font-size:1pt'>
+  <p style=3D'font-size:1pt'>&nbsp;</p>
+  </td>
+  <td valign=3Dtop style=3D'vertical-align:top;margin:0in;padding:0pt;width=
+:24.2131in;
+  height:.75in;font-size:1pt'>
+  <p style=3D'font-size:1pt'></p>
+  </td>
+  <td valign=3Dtop style=3D'vertical-align:top;margin:0in;padding:0pt;width=
+:1.7868in;
+  height:.75in;font-size:1pt'>
+  <p style=3D'font-size:1pt'></p>
+  </td>
+  <td rowspan=3D2 valign=3Dtop style=3D'vertical-align:top;margin:0in;paddi=
+ng:0pt;
+  width:23.2895in;height:25.4569in'>
+  <div style=3D'direction:ltr'>
+  <table border=3D0 cellpadding=3D0 cellspacing=3D0 valign=3Dtop style=3D'd=
+irection:ltr;
+   border-collapse:collapse;border-style:solid;border-color:#A3A3A3;border-=
+width:
+   0pt' title=3D"" summary=3D"">
+   <tr>
+    <td style=3D'border-width:0pt;vertical-align:top;width:.9048in;padding:=
+2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>OWASP</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:2.7729in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#0070=
+C0'><span
+    style=3D'font-weight:bold'>Vulnerability</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:11.3958in;paddin=
+g:
+    2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>Practical testing / attack types</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:7.8854in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>Recommendation / Protection</span></p>
+    </td>
+   </tr>
+   <tr>
+    <td style=3D'border-width:0pt;vertical-align:top;width:.9069in;padding:=
+2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>M1:2024</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:2.7729in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#0070=
+C0'><span
+    style=3D'font-weight:bold'>Improper Credential Usage</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:11.4152in;paddin=
+g:
+    2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>1. Hardcoded credentials:</span> APK/IPA,
+    resources, configs aur source/decompiled code mein API keys, passwords,
+    tokens, certificates search karo.</p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>2. Insecure credential storage:=
+</span><span
+    lang=3Den-IN> Android SharedPreferences/files ya iOS UserDefaults/plain=
+ files
+    mein credentials stored hain ya nahi.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>3. Embedded secrets:</span><span
+    lang=3Den-IN> production app mein reusable service/API secrets present =
+hain
+    ya nahi.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>4. Credential leakage through l=
+ogs:</span><span
+    lang=3Den-IN> login/token-related values Android Logcat ya iOS logs mei=
+n aa
+    rahe hain ya nahi.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>5. Weak token handling:</span><=
+span
+    lang=3Den-IN> long-lived access tokens improperly stored/reused ho rahe=
+ hain
+    ya nahi.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>6. Backup/extraction test:</spa=
+n><span
+    lang=3Den-IN> app data backup/extraction ke baad sensitive credentials
+    accessible hain ya nahi.</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:7.9965in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>1. Long-lived secrets app ke andar hardcode =
+mat
+    karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>2. Android Keystore / iOS Keychain use karo.=
+</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>3. Short-lived access tokens use karo.</span=
+></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>4. Refresh-token lifecycle securely manage k=
+aro.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>5. Logs mein credentials/tokens mat likho.</=
+span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>6. Compromised credentials ko revoke/rotate =
+karne
+    ka mechanism rakho.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>7. Backend secrets ko server-side rakho.</sp=
+an></p>
+    </td>
+   </tr>
+   <tr>
+    <td style=3D'border-width:0pt;vertical-align:top;width:.9069in;padding:=
+2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>M2:2024</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:2.7916in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#0070=
+C0'><span
+    style=3D'font-weight:bold'>Insecure Authentication/Authorization</span>=
+</p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:11.3958in;paddin=
+g:
+    2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-IN>1. Authentication bypass:</span=
+><span
+    lang=3Den-IN> protected screen/API ko authentication ke bina invoke kar=
+ne ki
+    koshish.</span><span style=3D'font-weight:bold' lang=3Den-US>2. Token
+    manipulation:</span><span lang=3Den-IN> invalid/expired session token ke
+    behavior ko test karo.</span><span style=3D'font-weight:bold' lang=3Den=
+-US>3.
+    Session reuse:</span><span lang=3Den-IN> logout ke baad old session/tok=
+en
+    valid hai ya nahi.</span><span style=3D'font-weight:bold' lang=3Den-US>=
+4.
+    Client-side authorization:</span><span lang=3Den-IN> app sirf UI hide k=
+arke
+    admin function protect to nahi kar rahi.</span><span style=3D'font-weig=
+ht:
+    bold' lang=3Den-US>5. Role testing:</span><span lang=3Den-IN> normal us=
+er aur
+    privileged user ke requests compare karo.</span><span style=3D'font-wei=
+ght:
+    bold' lang=3Den-US>6. Biometric flow:</span><span lang=3Den-IN> biometr=
+ic
+    success/failure ke baad sensitive action ka server-side authorization c=
+heck
+    verify karo.</span><span style=3D'font-weight:bold' lang=3Den-US>7. Dee=
+p-link
+    authentication:</span><span lang=3Den-IN> protected deep link ko
+    unauthenticated state mein open karke behavior dekho.</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:8.1006in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>1. Authentication + authorization server-side
+    enforce karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>2. Client ko trust boundary mat samjho.</spa=
+n></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>3. Strong session/token lifecycle maintain k=
+aro.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>4. Logout/revocation properly implement karo=
+.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>5. Sensitive actions ke liye
+    reauthentication/step-up authentication use karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>6. Biometric ko authorization ka sole replac=
+ement
+    na banao; secure platform APIs use karo.</span></p>
+    </td>
+   </tr>
+   <tr>
+    <td style=3D'border-width:0pt;vertical-align:top;width:.9069in;padding:=
+2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>M3:2024</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:2.7916in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#0070=
+C0'><span
+    style=3D'font-weight:bold'>Insecure Communication</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:11.3958in;paddin=
+g:
+    2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>1. Cleartext traffic:</span> HTTP endpoints
+    identify karo.</p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>2. TLS validation:</span><span
+    lang=3Den-IN> certificate/hostname validation properly ho rahi hai ya n=
+ahi.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>3. Custom trust logic:</span><s=
+pan
+    lang=3Den-IN> insecure custom certificate validation/trust managers ins=
+pect
+    karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>4. Mixed-content communication:=
+</span><span
+    lang=3Den-IN> secure app ka koi request insecure channel par fallback k=
+arta
+    hai ya nahi.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>5. Sensitive traffic inspection=
+:</span><span
+    lang=3Den-IN> credentials, tokens, PII encrypted transport se ja rahe h=
+ain ya
+    nahi.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>Android:</span><span lang=3Den-=
+IN>
+    Network Security Configuration review</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>iOS:</span><span lang=3Den-IN> =
+ATS
+    configuration aur networking implementation review.</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:7.9965in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>1. HTTPS/TLS use karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>2. Certificate and hostname validation prope=
+rly
+    enforce karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>3. Cleartext traffic disable karo unless
+    explicitly required.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>4. Insecure custom trust managers avoid karo=
+.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>5. Sensitive API communications ko authentic=
+ated
+    encrypted channel par rakho.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>6. Development exceptions ko production buil=
+d mein
+    disable karo.</span></p>
+    </td>
+   </tr>
+   <tr>
+    <td style=3D'border-width:0pt;vertical-align:top;width:.9069in;padding:=
+2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>M4:2024</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:2.7729in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#0070=
+C0'><span
+    style=3D'font-weight:bold'>Insecure Data Storage</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:11.3958in;paddin=
+g:
+    2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>1. Local database:</span> SQLite/Core Data f=
+iles
+    mein PII, tokens, passwords etc. check karo.</p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>2. Preferences:</span><span lan=
+g=3Den-IN>
+    Android SharedPreferences / iOS UserDefaults inspect karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>3. Files/cache:</span><span lan=
+g=3Den-IN>
+    app sandbox mein sensitive files/cache identify karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>4. Logs:</span><span lang=3Den-=
+IN>
+    Android Logcat/iOS logs inspect karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>5. Screenshots:</span><span lan=
+g=3Den-IN>
+    sensitive screens screenshot/app-switcher preview mein expose ho rahe h=
+ain
+    ya nahi.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>6. Backups:</span><span lang=3D=
+en-IN>
+    backup/restore behavior se sensitive data recover hota hai ya nahi.</sp=
+an></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>7. Clipboard:</span><span lang=
+=3Den-IN>
+    sensitive values unnecessarily clipboard mein ja rahe hain ya nahi.</sp=
+an></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:7.8833in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>1. Sensitive data ko minimum rakho.</span></=
+p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>2. Android Keystore-backed encryption aur iOS
+    Keychain use karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>3. Sensitive local databases/files appropria=
+tely
+    encrypt/protect karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>4. Logs mein secrets/PII mat store karo.</sp=
+an></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>5. Secure backup policy configure karo.</spa=
+n></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>6. Sensitive data ki retention minimize karo=
+.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>7. Clipboard aur screenshots ko risk ke hisa=
+ab se
+    control karo.</span></p>
+    </td>
+   </tr>
+   <tr>
+    <td style=3D'border-width:0pt;vertical-align:top;width:.9069in;padding:=
+2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>M5:2024</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:2.7729in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#0070=
+C0'><span
+    style=3D'font-weight:bold'>Insufficient Cryptography</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:11.3958in;paddin=
+g:
+    2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>1. Weak algorithm:</span> deprecated/weak cr=
+ypto
+    implementation identify karo.</p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>2. Hardcoded encryption keys:</=
+span><span
+    lang=3Den-IN> binary/source/config mein keys search karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>3. Weak random generation:</spa=
+n><span
+    lang=3Den-IN> security-sensitive tokens/keys ke liye predictable random
+    functions use ho rahe hain ya nahi.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>4. Static IV/nonce:</span><span
+    lang=3Den-IN> encryption implementation mein reuse/misconfiguration che=
+ck
+    karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>5. Key storage:</span><span lan=
+g=3Den-IN>
+    keys app files/preferences mein plain stored to nahi.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>6. Custom crypto implementation=
+:</span><span
+    lang=3Den-IN> home-grown encryption identify karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>7. Key lifecycle:</span><span
+    lang=3Den-IN> generation, storage, rotation/revocation review.</span></=
+p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:7.9965in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>1. Platform cryptographic APIs use karo.</sp=
+an></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>2. Strong, approved algorithms use karo.</sp=
+an></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>3. Keys ko secure hardware-backed/platform s=
+torage
+    mein rakho where appropriate.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>4. Cryptographic keys hardcode mat karo.</sp=
+an></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>5. Secure random generator use karo.</span><=
+/p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>6. Nonce/IV handling correctly implement kar=
+o.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>7. Home-grown cryptography avoid karo.</span=
+></p>
+    </td>
+   </tr>
+   <tr>
+    <td style=3D'border-width:0pt;vertical-align:top;width:.9069in;padding:=
+2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>M6:2024</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:2.7729in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#0070=
+C0'><span
+    style=3D'font-weight:bold'>Insecure Code Quality</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:11.3958in;paddin=
+g:
+    2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>1. Input validation review.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>2. Unsafe API usage:</span><span
+    lang=3Den-IN> deprecated/insecure platform APIs identify karo.</span></=
+p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>3. Memory/resource handling:</s=
+pan><span
+    lang=3Den-IN> risky native-code patterns where applicable</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>4. Error handling:</span><span
+    lang=3Den-IN> sensitive information exception/error mein leak to nahi</=
+span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>5. WebView code:</span><span
+    lang=3Den-IN> unsafe JavaScript/interface handling inspect karo.</span>=
+</p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>6. Native bridge:</span><span
+    lang=3Den-IN> Android JNI / iOS native interfaces ke trust boundaries i=
+nspect
+    karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>7. Static-analysis findings:</s=
+pan><span
+    lang=3Den-IN> high-risk code patterns identify karo.</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:7.8833in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>1. Secure coding standards adopt karo.</span=
+></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>2. SAST/static analysis integrate karo.</spa=
+n></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>3. Dangerous/deprecated APIs replace karo.</=
+span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>4. Input validation + safe output handling u=
+se
+    karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>5. WebView/native bridges tightly restrict k=
+aro.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>6. Code review + security testing CI/CD mein
+    include karo.</span></p>
+    </td>
+   </tr>
+   <tr>
+    <td style=3D'border-width:0pt;vertical-align:top;width:.9069in;padding:=
+2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>M7:2024</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:2.7729in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#0070=
+C0'><span
+    style=3D'font-weight:bold'>Insufficient Binary Protections</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:11.3958in;paddin=
+g:
+    2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>1. Debuggable build:</span> production app
+    debug-enabled hai ya nahi.</p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>2. Binary analysis:</span><span
+    lang=3Den-IN> package ko decompile karke sensitive logic/strings identi=
+fy
+    karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>3. Reverse-engineering resistan=
+ce:</span><span
+    lang=3Den-IN> critical client-side logic unnecessarily exposed hai ya n=
+ahi.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>4. Code signing:</span><span
+    lang=3Den-IN> application properly signed hai ya nahi.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>5. Runtime integrity:</span><sp=
+an
+    lang=3Den-IN> modified/tampered application ke against security controls
+    review karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>6. Sensitive logic location:</s=
+pan><span
+    lang=3Den-IN> security-critical decisions entirely client-side hain ya =
+nahi.</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:7.9965in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>1. Production builds ko debug-disabled rakho=
+.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>2. Strong application signing use karo.</spa=
+n></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>3. Sensitive business/security decisions
+    server-side rakho.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>4. Obfuscation ko defense-in-depth ke roop m=
+ein
+    use karo where justified.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>5. Integrity/tamper protections risk ke acco=
+rding
+    implement karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>6. Secrets ko client binary mein mat rakho.<=
+/span></p>
+    </td>
+   </tr>
+   <tr>
+    <td style=3D'border-width:0pt;vertical-align:top;width:.9069in;padding:=
+2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>M8:2024</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:2.7729in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#0070=
+C0'><span
+    style=3D'font-weight:bold'>Security Misconfiguration</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:11.3958in;paddin=
+g:
+    2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>1. Android Manifest / iOS entitlements revie=
+w.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>2. Exported components:</span><=
+span
+    lang=3Den-IN> Android Activities, Services, Receivers, Providers
+    unnecessarily exported hain ya nahi.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>3. Excessive permissions:</span=
+><span
+    lang=3Den-IN> app unnecessarily high-risk permissions request kar rahi =
+hai ya
+    nahi.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>4. Debug configuration:</span><=
+span
+    lang=3Den-IN> debug flags/test endpoints enabled hain ya nahi.</span></=
+p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>5. Backup configuration:</span>=
+<span
+    lang=3Den-IN> app data backup policy secure hai ya nahi.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>6. WebView settings:</span><span
+    lang=3Den-IN> unnecessary JavaScript/file access enabled hai ya nahi.</=
+span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>7. iOS URL schemes/deep
+    links/entitlements:</span><span lang=3Den-IN> overly broad or unsafe
+    configuration.</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:7.8833in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>1. Least-privilege permissions use karo.</sp=
+an></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>2. Android components ko required hone par hi
+    exported rakho.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>3. Debug/test configuration production se re=
+move
+    karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>4. Backup policy securely configure karo.</s=
+pan></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>5. WebView harden karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>6. iOS entitlements ko minimum required scop=
+e tak
+    rakho.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>7. Configuration baseline maintain + review =
+karo.</span></p>
+    </td>
+   </tr>
+   <tr>
+    <td style=3D'border-width:0pt;vertical-align:top;width:.9069in;padding:=
+2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>M9:2024</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:2.7916in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#0070=
+C0'><span
+    style=3D'font-weight:bold'>Insecure Data Storage =E2=80=94</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:11.3958in;paddin=
+g:
+    2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-IN>Note:</span><span lang=3Den-IN>=
+ Current
+    OWASP Mobile Top 10 2024 mein M9 specifically </span><span
+    style=3D'font-weight:bold' lang=3Den-US>Insecure Data Storage</span><sp=
+an
+    lang=3Den-IN> nahi hai; </span><span style=3D'font-weight:bold' lang=3D=
+en-US>M9 =3D
+    Improper Session Handling</span><span lang=3Den-IN>. Older Mobile Top 10
+    versions ke saath confusion hota hai.</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:7.9965in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold' lang=3Den-IN>Session security ko dedicated c=
+ontrol
+    ke roop mein test karo:</span><span lang=3Den-IN> secure token storage,
+    expiration, revocation, logout invalidation, reauthentication aur sessi=
+on
+    binding. (</span><a
+    href=3D"https://devguide.owasp.org/en/07-training-education/06-mobile-t=
+op-ten/?utm_source=3Dchatgpt.com"><span
+    lang=3Den-US>OWASP Developer Guide</span></a><span lang=3Den-IN>)</span=
+></p>
+    </td>
+   </tr>
+   <tr>
+    <td style=3D'border-width:0pt;vertical-align:top;width:.9069in;padding:=
+2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>M9:2024</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:2.7729in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#0070=
+C0'><span
+    style=3D'font-weight:bold'>Insecure Session Handling</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:11.3958in;paddin=
+g:
+    2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>1. Logout test:</span> logout ke baad old
+    token/session reuse.</p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>2. Session timeout:</span><span
+    lang=3Den-IN> inactivity ke baad session remains valid ya expire hota h=
+ai.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>3. Token rotation:</span><span
+    lang=3Den-IN> login/privilege change ke baad token rotate hota hai ya n=
+ahi.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>4. Concurrent sessions:</span><=
+span
+    lang=3Den-IN> old devices/sessions ko revoke karne ka mechanism hai ya =
+nahi.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>5. Device change:</span><span
+    lang=3Den-IN> sensitive session new/untrusted device context mein
+    unnecessarily valid to nahi.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>6. Biometric unlock:</span><span
+    lang=3Den-IN> local unlock ko server-side session authorization se
+    incorrectly equate to nahi kiya gaya.</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:7.9965in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>1. Short-lived sessions use karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>2. Logout par tokens/session invalidate karo=
+.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>3. Sensitive events par session/token rotate=
+ karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>4. Refresh tokens securely protect karo.</sp=
+an></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>5. Device/session management provide karo wh=
+ere
+    needed.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>6. Sensitive actions par reauthentication/st=
+ep-up
+    authentication use karo.</span></p>
+    </td>
+   </tr>
+   <tr>
+    <td style=3D'border-width:0pt;vertical-align:top;width:.9069in;padding:=
+2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>M10:2024</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:2.7729in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#0070=
+C0'><span
+    style=3D'font-weight:bold'>Insufficient Security Controls</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:11.3958in;paddin=
+g:
+    2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>1. Runtime abuse controls review.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>2. Anti-tamper/integrity =
+controls
+    where justified.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>3. Root/jailbreak risk ha=
+ndling
+    review.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>4. Debugger/runtime
+    instrumentation exposure assessment in authorized test builds.</span></=
+p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>5. Fraud/abuse controls:</span>=
+<span
+    lang=3Den-IN> sensitive functionality ko automated misuse se protect ki=
+ya
+    gaya hai ya nahi.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>6. Paid/protected functionality=
+:</span><span
+    lang=3Den-IN> client-side checks alone par depend to nahi.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-US>7. Defense-in-depth review:</sp=
+an><span
+    lang=3Den-IN> authentication, authorization, integrity, monitoring sab
+    independent layers mein hain ya nahi.</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:7.9965in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>1. Security controls ko layered/defense-in-d=
+epth
+    approach mein implement karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>2. Critical operations server-side enforce k=
+aro.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>3. Runtime integrity controls risk-based rak=
+ho.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>4. Abuse/fraud monitoring implement karo.</s=
+pan></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>5. Sensitive functionality ko client-only ch=
+ecks
+    se protect mat karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>6. Security events monitor/log karo.</span><=
+/p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-=
+US><span
+    style=3D'font-weight:bold'>7. Controls ko regular security testing se
+    validate karo.</span></p>
+    </td>
+   </tr>
+  </table>
+  </div>
+  <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-US=
+>&nbsp;</p>
+  <p><cite style=3D'margin:0in;font-family:Calibri;font-size:9.0pt;color:#5=
+95959'>From
+  &lt;<a href=3D"https://chatgpt.com/c/6a9ecae4-2c24-83ee-ace2-797d21d9eea6=
+">https://chatgpt.com/c/6a9ecae4-2c24-83ee-ace2-797d21d9eea6</a>&gt;
+  </cite></p>
+  </td>
+ </tr>
+ <tr>
+  <td valign=3Dtop style=3D'vertical-align:top;margin:0in;padding:0pt;width=
+:1px;
+  height:24.7069in;font-size:1pt'>
+  <p style=3D'font-size:1pt'>&nbsp;</p>
+  </td>
+  <td rowspan=3D2 valign=3Dtop style=3D'vertical-align:top;margin:0in;paddi=
+ng:0pt;
+  width:24.2131in;height:24.777in'>
+  <div style=3D'direction:ltr'>
+  <table border=3D0 cellpadding=3D0 cellspacing=3D0 valign=3Dtop style=3D'd=
+irection:ltr;
+   border-collapse:collapse;border-style:solid;border-color:#A3A3A3;border-=
+width:
+   0pt' title=3D"" summary=3D"">
+   <tr>
+    <td style=3D'border-width:0pt;vertical-align:top;width:1.025in;padding:=
+2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>OWASP</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:2.6409in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>Vulnerability</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:11.8888in;paddin=
+g:
+    2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold'>Practical testing / attack types</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:8.3277in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>Recommendation / Protection</span></p>
+    </td>
+   </tr>
+   <tr>
+    <td style=3D'border-width:0pt;vertical-align:top;width:1.025in;padding:=
+2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>API1:2023</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:2.6409in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>Broken Object Level Authorization (BOLA)</sp=
+an></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:11.8888in;paddin=
+g:
+    2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold' lang=3Den-IN>1. Parameter tampering: </span>=
+<span
+    lang=3Den-US>id</span><span lang=3Den-IN>, </span><span lang=3Den-US>us=
+er_id</span><span
+    lang=3Den-IN>, </span><span lang=3Den-US>account_id</span><span lang=3D=
+en-IN>, </span><span
+    lang=3Den-US>order_id</span><span lang=3Den-IN> change karke doosre use=
+r ka
+    object access karna.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold' lang=3Den-US>2. Horizontal access:</span><sp=
+an
+    lang=3Den-IN> User A ke token se User B ka object read/update/delete ka=
+rna.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold' lang=3Den-US>3. Object ID enumeration:</span=
+><span
+    lang=3Den-IN> sequential/random object IDs ko test karna.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold' lang=3Den-US>4. Nested object testing:</span=
+><span
+    lang=3Den-IN> </span><span lang=3Den-US>/users/101/orders/5001</span><s=
+pan
+    lang=3Den-IN> me parent/child IDs manipulate karna.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold' lang=3Den-US>5. HTTP method testing:</span><=
+span
+    lang=3Den-IN> same object par GET/PUT/PATCH/DELETE authorization compare
+    karna.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold' lang=3Den-US>6. UUID/reference substitution:=
+</span><span
+    lang=3Den-IN> valid reference ko another valid reference se replace kar=
+na.</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:8.3277in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>1. Har object access par server-side authori=
+zation
+    check karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>2. Deny-by-default follow=
+ karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>3. Ownership/tenant valid=
+ation
+    backend par karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>4. Client-supplied ID ko
+    authorization ka proof mat samjho.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>5. Centralized authorizat=
+ion
+    policy use karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>6. Cross-tenant access ko
+    strictly block karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>7. Unauthorized access at=
+tempts
+    log + alert karo.</span></p>
+    </td>
+   </tr>
+   <tr>
+    <td style=3D'border-width:0pt;vertical-align:top;width:1.025in;padding:=
+2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>API2:2023</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:2.6409in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>Broken Authentication</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:11.8888in;paddin=
+g:
+    2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold'>1. Missing authentication:</span> protected
+    endpoint bina token call karna.</p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold' lang=3Den-US>2. Invalid token:</span><span
+    lang=3Den-IN> modified/expired/revoked token test karna.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold' lang=3Den-US>3. Token validation:</span><span
+    lang=3Den-IN> issuer, audience, expiry, signature validation verify kar=
+na.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold' lang=3Den-US>4. Authentication bypass:</span=
+><span
+    lang=3Den-IN> alternative endpoint/version/method se protected function
+    access karna.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold' lang=3Den-US>5. Brute-force protection:</spa=
+n><span
+    lang=3Den-IN> authorized lab me repeated login attempts ke baad
+    throttling/lockout check karna.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold' lang=3Den-US>6. MFA bypass:</span><span lang=
+=3Den-IN>
+    MFA ke baad direct sensitive endpoint access test.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold' lang=3Den-US>7. Session/token lifecycle:</sp=
+an><span
+    lang=3Den-IN> logout/revocation ke baad token reuse check.</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:8.3277in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>1. Strong authentication mechanism use karo.=
+</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>2. Token signature, issue=
+r,
+    audience and expiry validate karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>3. Short-lived access tok=
+ens use
+    karo</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>.4. Refresh-token lifecyc=
+le
+    securely manage karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>5. Login attempts rate-li=
+mit
+    karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>6. MFA where appropriate
+    implement karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>7. Logout/revocation par
+    session/token invalidate karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>8. Authentication events
+    centrally log karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US>&nbsp;</p>
+    </td>
+   </tr>
+   <tr>
+    <td style=3D'border-width:0pt;vertical-align:top;width:1.025in;padding:=
+2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>API3:2023</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:2.6604in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>Broken Object Property Level Authorization (=
+BOPLA)</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:11.8888in;paddin=
+g:
+    2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold'>1. Excessive data exposure:</span> API respo=
+nse me
+    unnecessary fields mil rahe hain ya nahi.</p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold' lang=3Den-US>2. Hidden/sensitive fields:</sp=
+an><span
+    lang=3Den-IN> </span><span lang=3Den-US>isAdmin</span><span lang=3Den-I=
+N>, </span><span
+    lang=3Den-US>role</span><span lang=3Den-IN>, </span><span lang=3Den-US>=
+salary</span><span
+    lang=3Den-IN>, </span><span lang=3Den-US>internal_id</span><span lang=
+=3Den-IN>, </span><span
+    lang=3Den-US>reset_token</span><span lang=3Den-IN> jaise fields respons=
+e me
+    check karna.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold' lang=3Den-US>3. Mass assignment:</span><span
+    lang=3Den-IN> request body me normally allowed fields ke saath addition=
+al
+    properties insert karke server behavior dekhna.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold' lang=3Den-US>4. Read vs write authorization:=
+</span><span
+    lang=3Den-IN> field read allowed hai but update allowed nahi hona chahi=
+ye=E2=80=94ye
+    verify karna.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold' lang=3Den-US>5. Role-based field testing:</s=
+pan><span
+    lang=3Den-IN> different roles ke response compare karna.</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:8.3083in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>1. Response me only required fields return k=
+aro.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>2. Explicit field allowli=
+st/DTO
+    use karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>3. Sensitive fields ke li=
+ye
+    field-level authorization lagao.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>4. Mass assignment preven=
+t karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>5. Server-controlled prop=
+erties
+    ko client se writable mat rakho.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>6. Different roles ke liye
+    response schema appropriately restrict karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US>&nbsp;</p>
+    </td>
+   </tr>
+   <tr>
+    <td style=3D'border-width:0pt;vertical-align:top;width:1.025in;padding:=
+2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>API4:2023</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:2.6409in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>Unrestricted Resource Consumption</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:11.8888in;paddin=
+g:
+    2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold'>1. Rate-limit testing:</span> repeated reque=
+sts
+    controlled lab me bhejkar throttling check karna.</p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold' lang=3Den-US>2. Large payload:</span><span
+    lang=3Den-IN> excessive JSON/body size submit karna.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold' lang=3Den-US>3. Pagination abuse:</span><span
+    lang=3Den-IN> very large </span><span lang=3Den-US>limit/page_size</spa=
+n><span
+    lang=3Den-IN> values test karna</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    lang=3Den-IN>.</span><span style=3D'font-weight:bold' lang=3Den-US>4. E=
+xpensive
+    operation:</span><span lang=3Den-IN> report/search/export jaise
+    resource-heavy APIs test karna.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold' lang=3Den-US>5. Concurrent request testing:<=
+/span><span
+    lang=3Den-IN> controlled parallel requests se resource handling observe
+    karna.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold' lang=3Den-US>6. File upload:</span><span lan=
+g=3Den-IN>
+    size/type/count limits verify karna.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold' lang=3Den-US>7. Timeout testing:</span><span
+    lang=3Den-IN> slow/long-running requests par limits check karna.</span>=
+</p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:8.3277in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>1. Per-user/IP/token rate limiting lagao.</s=
+pan></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>2. Request/body size limi=
+ts
+    define karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>3. Pagination maximum set=
+ karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>4. File upload size/count=
+ limits
+    rakho.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>5. Timeouts and concurren=
+cy
+    limits implement karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>6. Resource quotas define=
+ karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>7. Expensive APIs ko
+    authorization + throttling se protect karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>8. Abnormal consumption p=
+ar
+    monitoring/alerting enable karo.</span></p>
+    </td>
+   </tr>
+   <tr>
+    <td style=3D'border-width:0pt;vertical-align:top;width:1.025in;padding:=
+2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>API5:2023</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:2.6409in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>Broken Function Level Authorization (BFLA)</=
+span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:11.8888in;paddin=
+g:
+    2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold' lang=3Den-IN>1. Admin endpoint guessing: </s=
+pan><span
+    lang=3Den-US>/admin</span><span lang=3Den-IN>, </span><span lang=3Den-U=
+S>/admin/users</span><span
+    lang=3Den-IN>, </span><span lang=3Den-US>/management</span><span lang=
+=3Den-IN>
+    etc. ko low-privileged token se request karna.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold' lang=3Den-US>2. HTTP method tampering:</span=
+><span
+    lang=3Den-IN> GET/POST/PUT/PATCH/DELETE ke authorization differences ch=
+eck
+    karna.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold' lang=3Den-US>3. Endpoint substitution:</span=
+><span
+    lang=3Den-IN> </span><span lang=3Den-US>/user/...</span><span lang=3Den=
+-IN> ko </span><span
+    lang=3Den-US>/admin/...</span><span lang=3Den-IN> pattern se test karna=
+.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold' lang=3Den-US>4. Role switching:</span><span
+    lang=3Den-IN> normal user vs manager vs admin requests compare karna.</=
+span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold' lang=3Den-US>5. Hidden API testing:</span><s=
+pan
+    lang=3Den-IN> frontend me hidden function ko directly backend se call k=
+arna.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold' lang=3Den-US>6. Version testing:</span><span
+    lang=3Den-IN> old API version me privileged function accessible hai ya =
+nahi.</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:8.3277in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>1. Function-level authorization server-side
+    enforce karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>2. RBAC/ABAC centralized =
+rakho.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>3. Har privileged functio=
+n par
+    role/permission check karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>4. Hidden UI button ko se=
+curity
+    control mat samjho.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>5. Old/deprecated endpoin=
+ts
+    retire karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>6. Unauthorized function =
+calls
+    log + alert karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US>&nbsp;</p>
+    </td>
+   </tr>
+   <tr>
+    <td style=3D'border-width:0pt;vertical-align:top;width:1.025in;padding:=
+2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>API6:2023</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:2.6409in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>Unrestricted Access to Sensitive Business Fl=
+ows</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:11.8888in;paddin=
+g:
+    2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold'>1. Account creation automation:</span> repea=
+ted
+    creation workflow test.</p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold' lang=3Den-US>2. Login/OTP abuse:</span><span
+    lang=3Den-IN> automated repeated attempts ke protection controls check =
+karna.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold' lang=3Den-US>3. Password reset abuse:</span>=
+<span
+    lang=3Den-IN> excessive/reset automation test.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold' lang=3Den-US>4. Coupon/promotion workflow:</=
+span><span
+    lang=3Den-IN> repeated redemption logic test.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold' lang=3Den-US>5. Booking/order workflow:</spa=
+n><span
+    lang=3Den-IN> same business action repeatedly execute karna.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold' lang=3Den-US>6. Transaction workflow:</span>=
+<span
+    lang=3Den-IN> limits, step-up verification and anti-bot controls verify
+    karna.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold' lang=3Den-US>7. Workflow bypass:</span><span
+    lang=3Den-IN> expected sequence ke steps skip karke next API directly c=
+all
+    karna.</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:8.3277in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>1. Sensitive business flows identify karo.</=
+span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>2. Rate limiting + quotas=
+ use
+    karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>3. Anti-automation/bot co=
+ntrols
+    implement karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>4. Step-up verification f=
+or risky
+    actions.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>5. Business transaction l=
+imits
+    define karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>6. Server-side workflow s=
+tate
+    validate karo</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>7. Fraud/risk monitoring
+    implement karo.</span></p>
+    </td>
+   </tr>
+   <tr>
+    <td style=3D'border-width:0pt;vertical-align:top;width:1.025in;padding:=
+2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>API7:2023</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:2.6409in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>Server-Side Request Forgery (SSRF)</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:11.9076in;paddin=
+g:
+    2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold'>1. URL parameter testing:</span> API jo
+    user-supplied URL fetch karti hai us input ko controlled lab endpoint se
+    test karna.</p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold' lang=3Den-US>2. Webhook testing:</span><span
+    lang=3Den-IN> callback/webhook destination validation check karna.</spa=
+n></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold' lang=3Den-US>3. Import/fetch function:</span=
+><span
+    lang=3Den-IN> remote resource import feature test karna.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold' lang=3Den-US>4. Redirect handling:</span><sp=
+an
+    lang=3Den-IN> server redirects ko follow karta hai ya nahi.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold' lang=3Den-US>5. Protocol validation:</span><=
+span
+    lang=3Den-IN> HTTP/HTTPS ke alawa unexpected schemes accept hote hain ya
+    nahi.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold' lang=3Den-US>6. Internal destination protect=
+ion:</span><span
+    lang=3Den-IN> lab network me internal-only service ko application se
+    reachable hai ya nahi.</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:8.3083in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>1. Destination allowlist use karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>2. User-supplied URLs ko =
+blindly
+    fetch mat karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>3. Outbound network egress
+    restrict karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>4. Internal/private desti=
+nations
+    block karo where applicable.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>5. Redirect handling stri=
+ctly
+    validate karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>6. Allowed schemes/ports =
+restrict
+    karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>7. SSRF-prone service ko =
+network
+    isolation do.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US>&nbsp;</p>
+    </td>
+   </tr>
+   <tr>
+    <td style=3D'border-width:0pt;vertical-align:top;width:1.025in;padding:=
+2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>API8:2023</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:2.6409in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>Security Misconfiguration</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:11.8888in;paddin=
+g:
+    2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold'>1. Verbose errors:</span> invalid API request
+    bhejkar stack trace/version/path disclosure check.</p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold' lang=3Den-US>2. CORS review:</span><span lan=
+g=3Den-IN>
+    allowed origins/credentials verify.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold' lang=3Den-US>3. Debug endpoints:</span><span
+    lang=3Den-IN> Swagger/debug/management interfaces exposed hain ya nahi<=
+/span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold' lang=3Den-US>4. Unnecessary methods:</span><=
+span
+    lang=3Den-IN> OPTIONS/PUT/DELETE etc. unnecessarily enabled hain ya nah=
+i.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'
+    lang=3Den-US><span style=3D'font-weight:bold'>5. Default settings/crede=
+ntials
+    review.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'
+    lang=3Den-US><span style=3D'font-weight:bold'>6. Security headers/TLS
+    configuration review.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'
+    lang=3Den-US><span style=3D'font-weight:bold'>7. Old API versions or te=
+st
+    endpoints exposed.</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:8.4583in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>1. Hardened API configuration baseline maint=
+ain
+    karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>2. Debug mode disable kar=
+o.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>3. Default credentials
+    remove/change karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>4. CORS explicitly allowl=
+ist
+    karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>5. Unused endpoints/metho=
+ds
+    disable karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>6. Management interfaces =
+restrict
+    karo.7. Safe error responses use karo.8. API gateway + TLS hardening
+    implement karo.</span></p>
+    </td>
+   </tr>
+   <tr>
+    <td style=3D'border-width:0pt;vertical-align:top;width:1.025in;padding:=
+2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>API9:2023</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:2.6409in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>Improper Inventory Management</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:11.8888in;paddin=
+g:
+    2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold'>1. API discovery:</span> documented API vs
+    actually deployed API compare karna.</p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold' lang=3Den-US>2. Version enumeration:</span><=
+span
+    lang=3Den-IN> </span><span lang=3Den-US>/v1</span><span lang=3Den-IN>, =
+</span><span
+    lang=3Den-US>/v2</span><span lang=3Den-IN>, </span><span lang=3Den-US>/=
+v3</span><span
+    lang=3Den-IN> etc. check karna.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold' lang=3Den-US>3. Shadow APIs:</span><span lan=
+g=3Den-IN>
+    undocumented endpoints identify karna.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold' lang=3Den-US>4. Deprecated API testing:</spa=
+n><span
+    lang=3Den-IN> old versions still accessible hain ya nahi.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold' lang=3Den-US>5. Swagger/OpenAPI exposure:</s=
+pan><span
+    lang=3Den-IN> documentation publicly exposed hai ya nahi.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold' lang=3Den-US>6. Host discovery:</span><span
+    lang=3Den-IN> dev/test/staging API accidentally internet-facing hai ya =
+nahi.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold' lang=3Den-US>7. Endpoint ownership review:</=
+span><span
+    lang=3Den-IN> every API ka owner/data classification available hai ya n=
+ahi.</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:8.3277in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>1. Complete API inventory maintain karo.</sp=
+an></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>2. API gateway/catalog us=
+e karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>3. Version lifecycle defi=
+ne karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>4. Deprecated APIs formal=
+ly
+    retire karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>5. Shadow APIs continuous=
+ly
+    discover karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>6. Dev/test environments
+    production se isolate karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>7. API owner, data type a=
+nd
+    authentication model document karo.</span></p>
+    </td>
+   </tr>
+   <tr>
+    <td style=3D'border-width:0pt;vertical-align:top;width:1.025in;padding:=
+2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>API10:2023</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:2.6604in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+    style=3D'font-weight:bold'>Unsafe Consumption of APIs</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:11.8888in;paddin=
+g:
+    2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold'>1. Third-party API trust review:</span> exte=
+rnal
+    response ko automatically trusted maana ja raha hai ya nahi.</p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold' lang=3Den-US>2. Response validation:</span><=
+span
+    lang=3Den-IN> malformed/unexpected fields ke handling ko controlled test
+    environment me verify karna.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold' lang=3Den-US>3. Schema mismatch:</span><span
+    lang=3Den-IN> expected datatype ke against unexpected response test</sp=
+an></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    lang=3Den-IN>.</span><span style=3D'font-weight:bold' lang=3Den-US>4. R=
+edirect
+    handling:</span><span lang=3Den-IN> third-party service ke redirects sa=
+fely
+    handled hain ya nahi.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'
+    lang=3Den-US><span style=3D'font-weight:bold'>5. TLS/certificate valida=
+tion
+    review.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold' lang=3Den-US>6. Timeout/error handling:</spa=
+n><span
+    lang=3Den-IN> external API unavailable ho to application safe behavior =
+rakhti
+    hai ya nahi.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#00B0=
+50'><span
+    style=3D'font-weight:bold' lang=3Den-US>7. External API data injection:=
+</span><span
+    lang=3Den-IN> third-party returned data downstream interpreters me unsa=
+fe way
+    se use ho rahi hai ya nahi.</span></p>
+    </td>
+    <td style=3D'border-width:0pt;vertical-align:top;width:8.4583in;padding=
+:2.0pt 3.0pt 2.0pt 3.0pt'>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold'>1. Third-party API responses ko untrusted in=
+put
+    treat karo</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'><span
+    style=3D'font-weight:bold' lang=3Den-IN>.</span><span style=3D'font-wei=
+ght:bold'
+    lang=3Den-US>2. Strict schema/data validation implement karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>3. TLS/certificate verifi=
+cation
+    enforce karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>4. Timeouts and retry lim=
+its
+    define karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>5. External integrations =
+ko least
+    privilege do.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>6. Third-party API failur=
+es
+    safely handle karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>7. Downstream
+    SQL/HTML/command/template sinks se pehle appropriate validation/encoding
+    karo.</span></p>
+    <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt;color:#C000=
+00'
+    lang=3Den-US><span style=3D'font-weight:bold'>8. Third-party dependenci=
+es and
+    integrations continuously monitor karo.</span></p>
+    </td>
+   </tr>
+  </table>
+  </div>
+  <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt' lang=3Den-US=
+>&nbsp;</p>
+  <p><cite style=3D'margin:0in;font-family:Calibri;font-size:9.0pt;color:#5=
+95959'>From
+  &lt;<a href=3D"https://chatgpt.com/c/6a9ecae4-2c24-83ee-ace2-797d21d9eea6=
+">https://chatgpt.com/c/6a9ecae4-2c24-83ee-ace2-797d21d9eea6</a>&gt;
+  </cite></p>
+  </td>
+  <td valign=3Dtop style=3D'vertical-align:top;margin:0in;padding:0pt;width=
+:1.7868in;
+  height:24.7069in;font-size:1pt'>
+  <p style=3D'font-size:1pt'></p>
+  </td>
+ </tr>
+ <tr>
+  <td valign=3Dtop style=3D'vertical-align:top;margin:0in;padding:0pt;width=
+:1px;
+  height:.0701in;font-size:1pt'>
+  <p style=3D'font-size:1pt'>&nbsp;</p>
+  </td>
+  <td valign=3Dtop style=3D'vertical-align:top;margin:0in;padding:0pt;width=
+:1.7868in;
+  height:.0701in;font-size:1pt'>
+  <p style=3D'font-size:1pt'></p>
+  </td>
+  <td valign=3Dtop style=3D'vertical-align:top;margin:0in;padding:0pt;width=
+:23.2895in;
+  height:.0701in;font-size:1pt'>
+  <p style=3D'font-size:1pt'></p>
+  </td>
+ </tr>
+</table>
+
+<div style=3D'direction:ltr;margin-top:.7229in;margin-left:2.0in;width:11.4=
+173in'>
+
+<p style=3D'margin:0in;font-family:Calibri;font-size:16.0pt'><span
+style=3D'font-weight:bold'>API VAPT mein ek important distinction</span></p>
+
+<p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span lang=3De=
+n-IN>API
+testing mein </span><span style=3D'font-weight:bold' lang=3Den-US>API1, API=
+3 aur
+API5</span><span lang=3Den-IN> ko alag rakhna bahut important hai:</span></=
+p>
+
+<div style=3D'direction:ltr'>
+
+<table border=3D0 cellpadding=3D0 cellspacing=3D0 valign=3Dtop style=3D'dir=
+ection:ltr;
+ border-collapse:collapse;border-style:solid;border-color:#A3A3A3;border-wi=
+dth:
+ 0pt' title=3D"" summary=3D"">
+ <tr>
+  <td style=3D'border-width:0pt;vertical-align:top;width:1.6076in;padding:2=
+.0pt 3.0pt 2.0pt 3.0pt'>
+  <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+  style=3D'font-weight:bold'>Category</span></p>
+  </td>
+  <td style=3D'border-width:0pt;vertical-align:top;width:9.6465in;padding:2=
+.0pt 3.0pt 2.0pt 3.0pt'>
+  <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+  style=3D'font-weight:bold'>Main Question</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td style=3D'border-width:0pt;vertical-align:top;width:1.6076in;padding:2=
+.0pt 3.0pt 2.0pt 3.0pt'>
+  <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+  style=3D'font-weight:bold'>API1 =E2=80=93 BOLA</span></p>
+  </td>
+  <td style=3D'border-width:0pt;vertical-align:top;width:9.6465in;padding:2=
+.0pt 3.0pt 2.0pt 3.0pt'>
+  <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+  style=3D'font-weight:bold'>Kya main kisi doosre user's object ko access k=
+ar
+  sakta hoon?</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td style=3D'border-width:0pt;vertical-align:top;width:1.627in;padding:2.=
+0pt 3.0pt 2.0pt 3.0pt'>
+  <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+  style=3D'font-weight:bold'>API3 =E2=80=93 BOPLA</span></p>
+  </td>
+  <td style=3D'border-width:0pt;vertical-align:top;width:9.627in;padding:2.=
+0pt 3.0pt 2.0pt 3.0pt'>
+  <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+  style=3D'font-weight:bold'>Kya main object ke unauthorized properties/fie=
+lds
+  read ya modify kar sakta hoon?</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td style=3D'border-width:0pt;vertical-align:top;width:1.6076in;padding:2=
+.0pt 3.0pt 2.0pt 3.0pt'>
+  <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+  style=3D'font-weight:bold'>API5 =E2=80=93 BFLA</span></p>
+  </td>
+  <td style=3D'border-width:0pt;vertical-align:top;width:9.7159in;padding:2=
+.0pt 3.0pt 2.0pt 3.0pt'>
+  <p style=3D'margin:0in;font-family:Calibri;font-size:18.0pt'><span
+  style=3D'font-weight:bold'>Kya main aisa function/API operation chala sak=
+ta
+  hoon jo meri role ke liye allowed nahi hai?</span></p>
+  </td>
+ </tr>
+</table>
+
+</div>
+
+</div>
+
+<div style=3D'direction:ltr;margin-top:20.6041in;margin-left:2.9472in;width=
+:2.5527in'><img
+src=3D"Owasptop10_files/image001.png" width=3D245 height=3D500
+alt=3D"Ink Drawings&#13;&#10;Ink Drawings&#13;&#10;Ink Drawings&#13;&#10;In=
+k Drawings&#13;&#10;"></div>
+
+<div style=3D'direction:ltr;margin-top:3.6486in;margin-left:2.9243in;width:=
+3.1312in'><img
+src=3D"Owasptop10_files/image002.png" width=3D301 height=3D871
+alt=3D"Ink Drawings&#13;&#10;Ink Drawings&#13;&#10;Ink Drawings&#13;&#10;In=
+k Drawings&#13;&#10;Ink Drawings&#13;&#10;"></div>
+
+<div style=3D'direction:ltr;margin-top:2.8423in;margin-left:2.9937in;width:=
+3.227in'><img
+src=3D"Owasptop10_files/image003.png" width=3D310 height=3D54></div>
+
+</div>
+
+</div>
+
+<div>
+
+<p style=3D'margin:0in'>&nbsp;</p>
+
+<p style=3D'text-align:left;margin:0in;font-family:Arial;font-size:9pt;
+color:#969696;direction:ltr'>Created with OneNote.</p>
+
+</div>
+
+</body>
+
+</html>
+
+------=_NextPart_01DD3F3D.67724580
+Content-Location: file:///C:/2F289A50/Owasptop10_files/image001.png
+Content-Transfer-Encoding: base64
+Content-Type: image/png
+
+iVBORw0KGgoAAAANSUhEUgAAAPUAAAH0CAIAAABq+PwjAAAAAXNSR0IArs4c6QAAAARnQU1BAACx
+jwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAlhSURBVHhe7d2/b5xpgcDxmfHYHscJSZwfZLVk
+CQu7WXHopGu47joqrrmOhoo/gwZR3X9w1VWIhoqCBgktlAhokJB2RQTFHctxuyuSHPm18XheCicT
+e7IczsJu7G8+H40nz/s8j8eS/fXElhM/42EYRhA1WZ2AEH1Tpm/Kxh/h6+/f3v7ZcvyZ01/63Z1f
+HVrmRHn17JdXp0Keue+f/+F7b9/64eosJ9bX3/jP1akQX5+80K6f+8rqVIu+KdM3ZfqmTN+U6Zsy
+fVOmb8r0TZm+KdM3ZfqmTN+U6ZuyI/372O//5pvDaLG8vLP77qFlTqzr577y5StfW50NOdLz9935
+e3d2313eVpfhuDpS33BC6ZsyfVOmb8r0TZm+KdM3ZfqmTN+U6ZsyfVOmb8r0TZm+KdM3ZfqmTN+U
+6Zsyfb/QFsPeT//nu6uzIfp+od24/eaN22/efPDO6kKFvinTN2X6pkzflOmbMn1Tpm/K9E2ZvinT
+N2X6pkzflB2p78WwtzoFJ8GR+oYTSt+UHanvren5g7fVZTiujnR+2kE//8P33r71w9VZTrJ/vfbt
+87OXV2cTjvT8DSeUvinTN2X6pkzflOmbMn1Tpm/K9E2ZvinTN2X6pkzflOmbMn1Tpm/K9E2ZvinT
+N2X+/+XzMRlPL2+9sbP5yumNi1vTc6emZ2fTM7O1M8NoGI2GYRhGo+HxePRkPBqNhsWwP3iybTQa
+LY7+YXzrjz+6cfvN5eXaeOPfPv/vW9OzhzZV6PsTdXH2hZe2/+HKqeuf3n5t/Pz+8ny4d2853lg7
+dWitRd8fu+lk9vL2P728/aWXtt84tX5udZmPk74/Luc3P/vy9j++tP3FK9uvr67xSdH339P29OLl
+U9c/vfX6le03zmxcXF3mE6fvv8lkvH5p9trFrVd3Zq9cmL1yZuPS6g6eK30/s53Nz13YevXi7NrO
+7OrO7OrqMseJvv+60+uXL81eu7B1bWf2ys7s6vpkc3UHx9Uz9/3WH9/89a0fLy9na5/aG3bXxuuH
+Nj1Xe8PuYpgvhr3FMH88ni+G+WI0/9BfZD4db04nm2uTzUeD8cZ0srkxOXVqeu7C1rWLW587vb6z
++jqcEM/c9wm3/4OSJ8aj8Wg0PjhDyYvWNy+W5/YjNPgE6JsyfVOmb8r0TZm+KdM3ZfqmTN+U6Zsy
+fVOmb8r0TZm+KdM3ZfqmTN+U6ZsyfVOmb8r0TZm+KdM3ZfqmTN+U6ZsyfVOmb8r0TZm+KdM3Zfqm
+TN+U6ZsyfVOmb8r0TZm+KdM3ZfqmTN+U6ZsyfVOmb8r0TZm+KdM3ZfqmTN+U6ZsyfVOmb8r0TZm+
+KdM3ZfqmTN+U6ZsyfVOmb8r0TZm+KdM3ZfqmTN+U6ZsyfVOmb8r0TZm+KdM3ZfqmTN+U6ZsyfVOm
+b8r0TZm+KdM3ZfqmTN+U6ZsyfVOmb8r0TZm+KdM3ZfqmTN+U6ZsyfVOmb8r0TZm+KdM3ZfqmTN+U
+6ZsyfVOmb8r0TZm+KdM3ZfqmTN+U6ZsyfVOmb8r0TZm+KdM3ZfqmTN+U6ZsyfVOmb8r0TZm+KdM3
+ZfqmTN+U6ZsyfVOmb8r0TZm+KdM3ZfqmTN+U6ZsyfVOmb8r0TZm+KdM3ZfqmTN+U6ZsyfVOmb8r0
+TZm+KdM3ZfqmTN+U6ZsyfVOmb8r0TZm+KdM3ZfqmTN+U6ZsyfVOmb8r0TZm+KdM3ZfqmTN+U6Zsy
+fVOmb8r0TZm+KdM3ZfqmTN+U6ZsyfVOmb8r0TZm+KdM3ZfqmTN+U6ZsyfVOmb8r0TZm+KdM3Zfqm
+TN+U6ZsyfVOmb8r0TZm+KdM3ZfqmTN+U6ZsyfVOmb8r0TZm+KdM3ZfqmTN+U6ZsyfVOmb8r0TZm+
+KdM3ZfqmTN+U6ZsyfVOmb8r0TZm+KdM3ZfqmTN+U6ZsyfVOmb8r0TZm+KdM3ZfqmTN+U6ZsyfVOm
+b8r0TZm+KdM3ZfqmTN+U6ZsyfVOmb8r0TZm+KdM3ZfqmTN+U6ZsyfVOmb8r0TZm+KdM3ZfqmTN+U
+6ZsyfVOmb8r0TZm+KdM3ZfqmTN+U6ZsyfVOmb8r0TZm+KdM3ZfqmTN+U6ZsyfVOmb8r0TZm+KdM3
+ZfqmTN+U6ZsyfVOmb8r0TZm+KdM3ZfqmTN+U6ZsyfVOmb8r0TZm+KdM3ZfqmTN+U6ZsyfVOmb8r0
+TZm+KdM3ZfqmTN+U6ZsyfVOmb8r0TZm+KdM3ZfqmTN+U6ZsyfVOmb8r0TZm+KdM3ZfqmTN+U6Zsy
+fVOmb8r0TZm+KdM3ZfqmTN+U6ZsyfVOmb8r0TZm+KdM3ZfqmTN+U6ZsyfVOmb8r0TZm+KdM3Zfqm
+TN+U6ZsyfVOmb8r0TZm+KdM3ZfqmTN+U6ZsyfVOmb8r0TZm+KdM3ZfqmTN+U6ZsyfVOmb8r0TZm+
+KdM3ZfqmTN+U6ZsyfVOmb8r0TZm+KRsPw7A6B8fMMCzuzm/d2715d/fmfPFgMVoshr1h2BuP1xbD
+fLltPBqvTTaun/+XJzP65ni6+eCd/7134937N25+8F//9/D3q8t/2VevfWtndnV//HTfw+/vvr28
+uDi7dm9+a3v9/Ppk9mTHaLG3mC+GveXMx2o8Hh+8evSyf/doajmxXH3y54HV0Wi0fKyDj8mHGh69
+PB4fuDjYzEfdtj8aho21rYd79x8u7t2f3/7Tw/dvffDO+w9++/79G3vD7nLbM/n/+v7J7/7jv+/8
+4uDMvrXxxsba9t6wO198sPiob/j42f980Pojj4tceco7YQ72fdTvL/eGh/fnNx/u3QnFvf+BHIbR
+wm3/tv8OWX0nnWRH7RtOIn1Tpm/K9E2ZvinTN2X6pkzflOmbMn1Tpm/K9E2ZvinTN2X6pkzflOmb
+Mn1Tpm/K9E2ZvinTN2X6pkzflOmbMn1Tpm/K9E2ZvinTN2X6pkzflOmbsqOeTwLHxNp4/dzm1e31
+S9vTC9vrO7O108NocXDDq2f/eTle7fs7b3/j4CUcB2fWX7q09fnLW69dPvWFs5tXVpf/stW+f/ne
+D+7svn9vfvPB/PbDxd354oPF6NA5aePRZDKeTsaTyWg6Ga9PJxvTyebaeGNtvH5w299medbWsH/E
+1lNLj2YOnYf06O7QCUkHL59+HJ62vX7p7u57K+fLPT7C7kOP4zo8uTy17qmdjy+fTB44GW9//5Px
+dLKxNT13Zv3Spzav7GxenU1PL1/rmaz2DSW+v6RM35Tpm7I/A5hqc83jhkG/AAAAAElFTkSuQmCC
+
+------=_NextPart_01DD3F3D.67724580
+Content-Location: file:///C:/2F289A50/Owasptop10_files/image002.png
+Content-Transfer-Encoding: base64
+Content-Type: image/png
+
+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
+RU5ErkJggk==
+
+------=_NextPart_01DD3F3D.67724580
+Content-Location: file:///C:/2F289A50/Owasptop10_files/image003.png
+Content-Transfer-Encoding: base64
+Content-Type: image/png
+
+iVBORw0KGgoAAAANSUhEUgAAATYAAAA2CAIAAADCqSJKAAAAAXNSR0IArs4c6QAAAARnQU1BAACx
+jwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAMdSURBVHhe7d2/ilNBFIDxMzN3BRsLhbW0tRd7
+H8LWtxFLn0fxWWzSCIKFzYrmzhyL+T+Jq416lnw/LktmssEU9+NMwoJOVQWAVX7dAGAJiQKmkShg
+GokCpjm+LgJukTT2S2LSfdrpyz1pTNKXsT/bf0bZk5Yr6q4ao+4P7j3++v1T+xefXb98dP9JW5Io
+7FLRMQDVGM+nMneie9SoEmOJIe/vSfNOW+5R91Saya869n095peL/OtAnl+/evrwRVuSKH5JNY09
+lDx0V019Ssj5SHoP5eVjJGMVQy25EGmbx6RxfU8XgETvijZA6jWPjnxMquXUMKbfyfd6nyElknrW
+GmoZl3l6HJNGlbS+Kfx9JPpHVNJcSG8jnXzkqKmc9CBtv2UwzpnpZKUS87Jtru8Jl+FuJDqEkZbJ
+MKWSlzLe+ksDLZVxVizLpZZj0p0Bgv/l94kun9H7dSaVPWlqj2MZL+Pv7MsYKctzZ618vso/l7cE
+XI7bEv3y7fDu8PoyP6MDRiyJTn+6EC/1OzTALP66CDCNRAHTSBQwjUQB00gUMI1EAdNIFDCNRAHT
+SBQwjUQB00gUMI1EAdNIFDCNRAHTSBQwjUQB00gUMI1EAdNIFDCNRAHTSBQwjUQB00gUMI1EAdNI
+FDCNRAHTSBQwjUQB00gUMG36zws/33x8f3gzPQ9cHic+uCvvtny1x6HueLd5F8ZlkM25EFxoz3q3
+5WXZl7LpXRiutty8lM3N35veDInCmjGMnorkm77VMsVQ+6k3vfRn6/6cRwkmb/qlHGfpdEmimDjx
+UxjD6Bg2Q54bLY/cjOuDpfWwBRdcqeukk7ys06M+5UXc+rYuGInaModx5WU6XM2PT8ZIGR1jBr2T
+/NhJO4yNYXhfU3HO0AABiS5cDqPkMScxLctYGMdICOVTR92cgilHqeHQdbaWwADBwlCi3oUehuT7
+PtfS8mg9zMsaw7A5zRBfP5zkw1jbbEcvJ74WAtgyJfoj3nw4vJ2edvne3ZYT19xDeRDcNk+GJZX6
+WELOY6zFu+AYIMCJKVEA1vDdAGAaiQKmkShg2k+zzNFHLKfj1gAAAABJRU5ErkJggk==
+
+------=_NextPart_01DD3F3D.67724580
+Content-Location: file:///C:/2F289A50/Owasptop10_files/filelist.xml
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/xml; charset="utf-8"
+
+<xml xmlns:o=3D"urn:schemas-microsoft-com:office:office">
+ <o:MainFile HRef=3D"../Owasptop10.htm"/>
+ <o:File HRef=3D"image001.png"/>
+ <o:File HRef=3D"image002.png"/>
+ <o:File HRef=3D"image003.png"/>
+ <o:File HRef=3D"filelist.xml"/>
+</xml>
+------=_NextPart_01DD3F3D.67724580--
